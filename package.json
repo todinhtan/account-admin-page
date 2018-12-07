@@ -1,0 +1,37 @@
+{
+  "name": "wallet_admin_page",
+  "version": "1.0.0",
+  "description": "Wallet admin page",
+  "scripts": {
+    "start": "cd dist && node server.js",
+    "dev": "npx babel-node server.js",
+    "watch": "nodemon --exec npm run dev",
+    "build": "./build.sh"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.5",
+    "@babel/node": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.1.5",
+    "@babel/preset-es2015": "^7.0.0-beta.53",
+    "@babel/runtime": "^7.2.0",
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  },
+  "dependencies": {
+    "admin-lte": "^2.4.8",
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.3",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^6.1.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "express-static": "^1.2.6",
+    "http-status-codes": "^1.3.0",
+    "log4js": "^3.0.6"
+  }
+}

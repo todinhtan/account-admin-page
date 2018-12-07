@@ -1,0 +1,106 @@
+<% var page_title = 'EPIAPI Admin | Dashboard'; %>
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <% include ../partials/header %>
+  <% include ../partials/left-sidebar %>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>Dashboard</h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Accounts</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table id="account_list" class="table no-margin">
+                  <thead>
+                    <tr>
+                      <th>Account ID</th>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Created at</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% locals.accounts.forEach(function(acc, index) { %>
+                    <tr>
+                      <td><a href="/account/<%= acc.id %>"><%= acc.id %></a></td>
+                      <td><%= acc.profile.name %></td>
+                      <% var labelType = 'default' %>
+                      <%
+                        switch (acc.status) {
+                          case 'APPROVED':
+                            labelType = 'success';
+                            break;
+                          case 'IN_REVIEW':
+                            labelType = 'warning';
+                            break;
+                          case 'DENIED':
+                            labelType = 'danger';
+                            break;
+                        }
+                      %>
+                      <td><%= acc.profile.type %></td>
+                      <td><%= new Date(acc.createdAt).toLocaleDateString() %></td>
+                      <td><span class="label label-<%= labelType %>"><%= acc.status %></span></td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <% include ../partials/footer %>
+</div>
+<!-- ./wrapper -->
+
+<% include ../partials/foot %>
+
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->
+<script>
+  $(function () {
+    $('#account_list').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    })
+  })
+</script>
+</body>
+</html>
