@@ -1,17 +1,17 @@
+/* eslint-disable max-len */
 import axios from 'axios';
 import HttpStatusCode from 'http-status-codes';
 
 import config from '../config';
-import { checkSessionAdmin, getAccount } from '../middlewares';
+import { checkSessionAdmin } from '../middlewares';
+import services from '../services';
 
 export async function getLogin(req, res) {
   const verfied = await checkSessionAdmin(req.session.sessionId);
   if (verfied) {
     res.redirect('/');
   } else {
-    delete req.session.sessionId;
-    delete req.session.accountId;
-    delete req.session.account;
+    services.sessionService.clearSession(req);
     res.render('pages/login');
   }
 }
@@ -27,7 +27,7 @@ export async function postLogin(req, res) {
       if (isAdmin) {
         req.session.sessionId = response.data.sessionId;
         req.session.accountId = response.data.authenticatedAs.replace('account:', '');
-        req.session.account = await getAccount(req.session.sessionId, req.session.accountId);
+        req.session.account = await services.accountService.getAccountById(req.session.sessionId, req.session.accountId);
         res.redirect('/');
       } else res.render('pages/login', { error: 'Only administrator can access the page' });
     }
@@ -52,8 +52,6 @@ export async function getIndex(req, res) {
 }
 
 export function logout(req, res) {
-  delete req.session.sessionId;
-  delete req.session.accountId;
-  delete req.session.account;
+  services.sessionService.clearSession(req);
   res.redirect('/login');
 }

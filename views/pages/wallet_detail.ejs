@@ -1,4 +1,4 @@
-<% var page_title = 'EPIAPI Admin | Account | ' + currentAccount.profile.name; %>
+<% var page_title = 'EPIAPI Admin | Wallet | ' + currentWallet.name; %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +13,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>Account: <%= currentAccount.profile.name %></h1>
+      <h1>Wallet: <%= currentWallet.name %></h1>
     </section>
 
     <!-- Main content -->
@@ -35,169 +35,75 @@
                 <table class="table no-margin">
                   <tbody>
                     <tr>
-                      <td>Account ID</td>
-                      <td><%= currentAccount.id %></td>
-                    </tr>
-                    <tr>
-                      <td>Type</td>
-                      <td><%= currentAccount.profile.type %></td>
-                    </tr>
-                    <tr>
-                      <td>Status</td>
-                      <td><%= currentAccount.status %></td>
-                    </tr>
-                    <tr>
-                      <td>Created at</td>
-                      <td><%= new Date(currentAccount.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }) %></td>
+                      <td>Wallet ID</td>
+                      <td><%= currentWallet.id %></td>
                     </tr>
                     <tr>
                       <td>Name</td>
-                      <td><%= currentAccount.profile.name %></td>
+                      <td><%= currentWallet.name %></td>
                     </tr>
                     <tr>
-                      <td>Email</td>
-                      <td><%= currentAccount.email %></td>
+                      <td>Owner</td>
+                      <td><a href="/account/<%= currentWallet.owner.split(':')[1] %>"><%= currentWallet.owner %></a></td>
                     </tr>
                     <tr>
-                      <td>Cellphone</td>
-                      <td><%= currentAccount.cellphone %></td>
+                      <td>Created date</td>
+                      <td><%= new Date(currentWallet.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }) %></td>
                     </tr>
                     <tr>
-                      <td>Address</td>
-                      <td>
-                        Street 1: <%= currentAccount.profile.address.street1 %><br>
-                        Street 2: <%= currentAccount.profile.address.street2 %><br>
-                        City: <%= currentAccount.profile.address.city %><br>
-                        State: <%= currentAccount.profile.address.state %><br>
-                        Postal code: <%= currentAccount.profile.address.postalCode %><br>
-                        Country: <%= currentAccount.profile.address.country %><br>
-                      </td>
+                      <td>Type</td>
+                      <td><%= currentWallet.type %></td>
                     </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <% if (currentAccount.ledgers.length > 0) { %>
-        <div class="col-md-6">
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Balances</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="table-responsive">
-                <table class="table no-margin">
-                  <thead>
                     <tr>
-                      <th>Currency</th>
-                      <th>Total balance</th>
-                      <th>Available balance</th>
+                      <td>Status</td>
+                      <td><%= currentWallet.status %></td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    <% currentAccount.ledgers.forEach(function(lg, index) { %>
                     <tr>
-                      <td><%= lg.currency %></td>
-                      <td><%= lg.totalBalance %></td>
-                      <td><%= lg.balance %></td>
+                      <td>Callback URL</td>
+                      <td><%= currentWallet.callbackUrl %></td>
                     </tr>
-                    <% }) %>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
-            <!-- /.box-body -->
-          </div>
-        </div>
-        <% } %>
-        <% if (currentAccount.identities.length > 0) { %>
-        <div class="col-md-6">
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Identities</h3>
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="table-responsive">
-                <table class="table no-margin">
-                  <thead>
                     <tr>
-                      <th>SRN</th>
-                      <th>Verified</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% currentAccount.identities.forEach(function(iden, index) { %>
-                    <tr>
-                      <td><%= iden.srn %></td>
-                      <td><i class="fa <%= iden.verifiedAt > 0 ? 'fa-check' : 'fa-close' %>"></i></td>
-                    </tr>
-                    <% }) %>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
-            <!-- /.box-body -->
-          </div>
-        </div>
-        <% } %>
-        <% if (wallets.length > 0) { %>
-        <div class="col-md-6">
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Child wallets</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="table-responsive">
-                <table id="wallet_list" class="table no-margin">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Name</th>
-                      <th>Type</th>
-                      <th>Balances</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% wallets.forEach(function(wallet, index) { %>
-                    <tr>
-                      <td><a href="/wallet/<%= wallet.id %>"><%= wallet.id %></a></td>
-                      <td><%= wallet.name %></td>
-                      <td><%= wallet.type %></td>
+                      <td>Balances</td>
                       <td>N/A</td>
                     </tr>
-                    <% }) %>
                   </tbody>
                 </table>
               </div>
-              <!-- /.table-responsive -->
             </div>
-            <!-- /.box-body -->
           </div>
         </div>
-        <% } %>
+        <div class="col-md-6">
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">VBA data</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+              </div>
+            </div>
+            <div class="box-body">
+              <pre><%= JSON.stringify(currentWallet.vbaData, undefined, 2) %></pre>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">VBA verification data</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+              </div>
+            </div>
+            <div class="box-body">
+              <pre><%= JSON.stringify(currentWallet.vbaVerificationData, undefined, 2) %></pre>
+            </div>
+          </div>
+        </div>
         <% if (transfers.length > 0) { %>
         <div class="col-md-12">
           <div class="box box-info">
@@ -272,14 +178,6 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#wallet_list').DataTable({
-      'paging'      : true,
-      'lengthChange': false,
-      'searching'   : false,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : false
-    })
     $('#transfer_list').DataTable({
       'paging'      : true,
       'lengthChange': false,
