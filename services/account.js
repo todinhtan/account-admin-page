@@ -104,6 +104,34 @@ async function getAccounts(sessionId, limit, offset) {
   return result;
 }
 
+async function searchByKeyword(sessionId, keyword, limit, offset) {
+  const result = {
+    items: [],
+    total: 0,
+    size: config.api.pageSize,
+  };
+  let l = parseInt(limit, 10);
+  let o = parseInt(offset, 10);
+  if (isNaN(l) || l < 1) l = config.api.pageSize;
+  if (isNaN(o) || o < 1) o = 0;
+
+  result.size = l;
+
+  try {
+    const allAccountsResp = await axios.get(`${config.api.prefix}/accounts?sessionId=${sessionId}&query=${keyword}&limit=${l}&offset=${o}`);
+    if (allAccountsResp && allAccountsResp.status === HttpStatusCode.OK && allAccountsResp.data) {
+      result.items = allAccountsResp.data.data;
+      result.total = allAccountsResp.data.recordsTotal;
+    }
+  } catch (error) {
+    // leave empty
+  }
+
+  result.totalPage = Math.ceil(result.total / limit);
+
+  return result;
+}
+
 export default {
   isAdmin: sessionId => isAdmin(sessionId),
   getAccountById: (sessionId, accountId) => getAccountById(sessionId, accountId),
@@ -111,4 +139,5 @@ export default {
   disableAccount: (sessionId, accountId) => disableAccount(sessionId, accountId),
   getSessionHistory: (sessionId, accountId, limit, offset) => getSessionHistory(sessionId, accountId, limit, offset),
   getAccounts: (sessionId, limit, offset) => getAccounts(sessionId, limit, offset),
+  searchByKeyword: (sessionId, keyword, limit, offset) => searchByKeyword(sessionId, keyword, limit, offset),
 };

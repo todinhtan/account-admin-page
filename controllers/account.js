@@ -107,3 +107,29 @@ export async function getAccountsAjax(req, res) {
     });
   }
 }
+
+export async function searchAccountByKeyword(req, res) {
+  const listAccount = await services.accountService.searchByKeyword(req.session.sessionId, req.query.q, config.api.pageSize, 0);
+  res.render('pages/account_search', {
+    listAccount,
+    keyword: req.query.q,
+  });
+}
+
+export async function searchAccountByKeywordAjax(req, res) {
+  if (!req.xhr) res.send(null);
+  else {
+    let page = parseInt(req.query.page, 10);
+    if (isNaN(page) || page < 1) page = 1;
+    const offset = (page - 1) * config.api.pageSize;
+    let listAccount = {};
+    try {
+      listAccount = await services.accountService.searchByKeyword(req.session.sessionId, req.query.q, config.api.pageSize, offset);
+    } catch (error) {
+      // let accounts empty
+    }
+    res.render('ajax/accounts', {
+      listAccount,
+    });
+  }
+}

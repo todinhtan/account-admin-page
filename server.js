@@ -25,6 +25,8 @@ app.use((req, res, next) => {
   res.locals.account = req.session.account;
   res.locals.messages = req.session.messages;
   req.session.messages = [];
+  res.locals.errors = req.session.errors;
+  req.session.errors = [];
   next();
 });
 

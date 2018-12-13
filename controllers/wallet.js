@@ -51,3 +51,12 @@ export async function downloadTransactions(req, res) {
   res.type('text/csv');
   return res.send(transactionsCsv).end();
 }
+
+export async function searchWallet(req, res) {
+  const wallet = await services.walletService.searchWallet(req.session.sessionId, req.params.accountId, req.query.q, req.query.type);
+  if (wallet !== null) res.redirect(`/wallet/${wallet.id}`);
+  else {
+    req.session.errors = ['No wallet found!'];
+    res.redirect(`/account/${req.params.accountId}`);
+  }
+}

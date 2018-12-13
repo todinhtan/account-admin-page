@@ -1,4 +1,6 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable no-restricted-globals */
+/* eslint-disable max-len */
 import axios from 'axios';
 import HttpStatusCode from 'http-status-codes';
 
@@ -36,7 +38,7 @@ async function getWalletById(sessionId, walletId) {
   try {
     if (sessionId === undefined || sessionId === null) return null;
     if (walletId === undefined || walletId === null) return null;
-    const response = await axios.get(`${config.api.prefix}/wallet/${walletId}?sessionId=${sessionId}`);
+    const response = await axios.get(`${config.api.prefix}/wallet?walletId=${walletId}&sessionId=${sessionId}`);
     if (response && response.status === HttpStatusCode.OK && response.data) return response.data;
   } catch (error) {
     // just return false
@@ -62,9 +64,31 @@ async function updateNote(sessionId, walletId, notes) {
   return false;
 }
 
+async function searchWallet(sessionId, accountId, keyword, type) {
+  try {
+    if (sessionId === undefined || sessionId === null) return null;
+    switch (type) {
+      case 'id':
+        const response = await axios.get(`${config.api.prefix}/wallet/${accountId}?sessionId=${sessionId}&walletId=${keyword}`);
+        if (response && response.status === HttpStatusCode.OK && response.data) return response.data;
+        break;
+      case 'name':
+        const resp = await axios.get(`${config.api.prefix}/wallet/${accountId}?sessionId=${sessionId}&name=${keyword}`);
+        if (resp && resp.status === HttpStatusCode.OK && resp.data) return resp.data;
+        break;
+      default:
+        return null;
+    }
+  } catch (error) {
+    // just return false
+  }
+  return null;
+}
+
 export default {
   getWalletsByAccountId: (sessionId, accountId, limit, offset) => getWalletsByAccountId(sessionId, accountId, limit, offset),
   getWalletById: (sessionId, walletId) => getWalletById(sessionId, walletId),
   getWalletName: (sessionId, walletId) => getWalletName(sessionId, walletId),
   updateNote: (sessionId, walletId, notes) => updateNote(sessionId, walletId, notes),
+  searchWallet: (sessionId, accountId, keyword, type) => searchWallet(sessionId, accountId, keyword, type),
 };
