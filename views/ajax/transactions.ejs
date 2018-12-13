@@ -1,0 +1,19 @@
+<% listTransaction.items.forEach(function(trans, index) { %>
+<tr>
+  <td><%= trans.transferId %></td>
+  <td><%= (trans.createdAt !== null) ? (new Date(trans.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
+  <td><%= (trans.confirmedAt !== null) ? (new Date(trans.confirmedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
+  <td><%= (trans.cancelledAt !== null) ? (new Date(trans.cancelledAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
+  <td><%= (trans.reversedAt !== null) ? (new Date(trans.reversedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
+  <td><a href="<%= friendlyNames[trans.source].url %>"><%= friendlyNames[trans.source].name %></a></td>
+  <td><a href="<%= friendlyNames[trans.dest].url %>"><%= friendlyNames[trans.dest].name %></a></td>
+  <td><%= trans.status %></td>
+  <td><%= trans.type %></td>
+  <td><%= trans.amount %></td>
+  <td><%= trans.currency %></td>
+  <td><%= trans.fees %></td>
+  <td><%= trans.delta %></td>
+  <td><%= trans.updatedBalance %></td>
+  <td><%= trans.message %></td>
+</tr>
+<% }) %>

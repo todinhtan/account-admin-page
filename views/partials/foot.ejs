@@ -11,3 +11,35 @@
 <!-- DataTables -->
 <script src="/base/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="/base/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
+<!-- script to async paginate -->
+<script>
+  $('.ajax_paginate').on('click', 'a', function(e) {
+    var self = this;
+    var curPage = $(this).data('dt-idx');
+    e.preventDefault();
+    $('.paginate_button').not(this).removeClass('active');
+    $(this).parent().addClass('active');
+    var tableBody = $(this).parents('.box').find('.table tbody');
+    $(this).parents('.box').find('.overlay').show();
+    var url = $(this).attr('href');
+    $.ajax({
+      url: url,
+      type: 'GET',
+      success: function(data) {
+        tableBody.html(data);
+      },
+      error: function(error) {
+        console.log(error);
+      },
+      complete: function() {
+        $(self).parents('.box').find('.overlay').hide();
+        var btnDownload = $(self).parents('.box-footer').find('.btn-download');
+        if (btnDownload.length) {
+          var urlDownload = btnDownload.attr('href').split('?')[0];
+          btnDownload.attr('href', urlDownload + '?page=' + curPage);
+        }
+      }
+    })
+  })
+</script>

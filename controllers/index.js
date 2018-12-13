@@ -37,17 +37,14 @@ export async function postLogin(req, res) {
 }
 
 export async function getIndex(req, res) {
-  let accounts = [];
+  let listAccount = {};
   try {
-    const allAccountsResp = await axios.get(`${config.api.prefix}/accounts?sessionId=${req.session.sessionId}`);
-    if (allAccountsResp && allAccountsResp.status === HttpStatusCode.OK && allAccountsResp.data) {
-      accounts = allAccountsResp.data.data;
-    }
+    listAccount = await services.accountService.getAccounts(req.session.sessionId, config.api.pageSize, 0);
   } catch (error) {
     // let accounts empty
   }
   res.render('pages/index', {
-    accounts,
+    listAccount,
   });
 }
 

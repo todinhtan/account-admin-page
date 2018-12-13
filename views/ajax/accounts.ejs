@@ -1,0 +1,23 @@
+<% locals.listAccount.items.forEach(function(acc, index) { %>
+<tr>
+  <td><a href="/account/<%= acc.id %>"><%= acc.id %></a></td>
+  <td><%= acc.profile.name %></td>
+  <% var labelType = 'default' %>
+  <%
+    switch (acc.status) {
+      case 'APPROVED':
+        labelType = 'success';
+        break;
+      case 'IN_REVIEW':
+        labelType = 'warning';
+        break;
+      case 'DENIED':
+        labelType = 'danger';
+        break;
+    }
+  %>
+  <td><%= acc.profile.type %></td>
+  <td><%= new Date(acc.createdAt).toLocaleDateString() %></td>
+  <td><span class="label label-<%= labelType %>"><%= acc.status %></span></td>
+</tr>
+<% }) %>

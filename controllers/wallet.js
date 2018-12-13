@@ -1,16 +1,53 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable max-len */
 import services from '../services';
+import config from '../config';
 
-export default async function getWalletDetail(req, res) {
+export async function getWalletDetail(req, res) {
   const currentWallet = await services.walletService.getWalletById(req.session.sessionId, req.params.walletId);
-  const transfers = await services.transferService.getTransfersByWalletId(req.session.sessionId, req.params.walletId);
+  const listTransfer = await services.transferService.getTransfersBySRN(req.session.sessionId, `wallet:${req.params.walletId}`, config.api.pageSize, 0);
+  const listTransaction = await services.transactionService.getTransactionsBySRN(req.session.sessionId, `wallet:${req.params.accountId}`, config.api.pageSize, 0);
   let friendlyNames = {};
   // get friendly name of SRN
-  for (const tr of transfers) {
+  for (const tr of listTransfer.items) {
     friendlyNames = await services.commonService.storeSrnFriendlyName(tr.source, friendlyNames, req.session.sessionId);
     friendlyNames = await services.commonService.storeSrnFriendlyName(tr.dest, friendlyNames, req.session.sessionId);
   }
-  res.render('pages/wallet_detail', { currentWallet, transfers, friendlyNames });
+  for (const tr of listTransaction.items) {
+    friendlyNames = await services.commonService.storeSrnFriendlyName(tr.source, friendlyNames, req.session.sessionId);
+    friendlyNames = await services.commonService.storeSrnFriendlyName(tr.dest, friendlyNames, req.session.sessionId);
+  }
+  res.render('pages/wallet_detail', {
+    currentWallet, listTransfer, listTransaction, friendlyNames,
+  });
+}
+
+export async function updateWalletNote(req, res) {
+  const isSuccess = await services.walletService.updateNote(req.session.sessionId, req.params.walletId, req.body.notes);
+  if (isSuccess) {
+    req.session.messages = ['Updated wallet successfully!'];
+  }
+  res.redirect(`/wallet/${req.params.walletId}`);
+}
+
+export async function downloadTransfers(req, res) {
+  let page = parseInt(req.query.page, 10);
+  if (isNaN(page) || page < 1) page = 1;
+  const offset = (page - 1) * config.api.pageSize;
+  const transferCsv = await services.transferService.getTransferCsvBySRN(req.session.sessionId, `wallet:${req.params.walletId}`, config.api.pageSize, offset);
+  res.setHeader('Content-Disposition', `attachment; filename=${req.params.walletId}_transfers.csv`);
+  res.type('text/csv');
+  return res.send(transferCsv).end();
+}
+
+export async function downloadTransactions(req, res) {
+  let page = parseInt(req.query.page, 10);
+  if (isNaN(page) || page < 1) page = 1;
+  const offset = (page - 1) * config.api.pageSize;
+  const transactionsCsv = await services.transactionService.getTransactionCsvBySRN(req.session.sessionId, `wallet:${req.params.walletId}`, config.api.pageSize, offset);
+  res.setHeader('Content-Disposition', `attachment; filename=${req.params.walletId}_transactions.csv`);
+  res.type('text/csv');
+  return res.send(transactionsCsv).end();
 }

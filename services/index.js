@@ -3,6 +3,7 @@ import walletService from './wallet';
 import accountService from './account';
 import sessionService from './session';
 import commonService from './common';
+import transactionService from './transaction';
 
 export default {
   transferService,
@@ -10,4 +11,5 @@ export default {
   accountService,
   sessionService,
   commonService,
+  transactionService,
 };

@@ -1,0 +1,8 @@
+<% listWallet.items.forEach(function(wallet, index) { %>
+<tr>
+  <td><a href="/wallet/<%= wallet.id %>"><%= wallet.id %></a></td>
+  <td><%= wallet.name %></td>
+  <td><%= wallet.type %></td>
+  <td>N/A</td>
+</tr>
+<% }) %>

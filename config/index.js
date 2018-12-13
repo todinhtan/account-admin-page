@@ -7,5 +7,6 @@ export default {
   },
   api: {
     prefix: process.env.API_PREFIX,
+    pageSize: process.env.PAGE_SIZE,
   },
 };

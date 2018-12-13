@@ -1,19 +1,35 @@
+/* eslint-disable no-restricted-globals */
 import axios from 'axios';
 import HttpStatusCode from 'http-status-codes';
 
 import config from '../config';
 
-async function getWalletsByAccountId(sessionId, accountId) {
-  let wallets = [];
+async function getWalletsByAccountId(sessionId, accountId, limit, offset) {
+  const result = {
+    items: [],
+    total: 0,
+    size: config.api.pageSize,
+  };
+  let l = parseInt(limit, 10);
+  let o = parseInt(offset, 10);
+  if (isNaN(l) || l < 1) l = config.api.pageSize;
+  if (isNaN(o) || o < 1) o = 0;
+
+  result.size = l;
+
   try {
-    const allWalletsResp = await axios.get(`${config.api.prefix}/wallets?accountId=${accountId}&sessionId=${sessionId}`);
+    const allWalletsResp = await axios.get(`${config.api.prefix}/wallets?accountId=${accountId}&sessionId=${sessionId}&limit=${l}&offset=${o}`);
     if (allWalletsResp && allWalletsResp.status === HttpStatusCode.OK && allWalletsResp.data) {
-      wallets = allWalletsResp.data.data;
+      result.items = allWalletsResp.data.data;
+      result.total = allWalletsResp.data.recordsTotal;
     }
   } catch (error) {
     // let accounts empty
   }
-  return wallets;
+
+  result.totalPage = Math.ceil(result.total / limit);
+
+  return result;
 }
 
 async function getWalletById(sessionId, walletId) {
@@ -34,8 +50,21 @@ async function getWalletName(sessionId, walletId) {
   return '';
 }
 
+async function updateNote(sessionId, walletId, notes) {
+  try {
+    if (sessionId === undefined || sessionId === null) return false;
+    if (walletId === undefined || walletId === null) return false;
+    const response = await axios.post(`${config.api.prefix}/wallet/${walletId}/update?sessionId=${sessionId}`, { notes });
+    if (response && response.status === HttpStatusCode.OK) return true;
+  } catch (error) {
+    // just return false
+  }
+  return false;
+}
+
 export default {
-  getWalletsByAccountId: (sessionId, accountId) => getWalletsByAccountId(sessionId, accountId),
+  getWalletsByAccountId: (sessionId, accountId, limit, offset) => getWalletsByAccountId(sessionId, accountId, limit, offset),
   getWalletById: (sessionId, walletId) => getWalletById(sessionId, walletId),
   getWalletName: (sessionId, walletId) => getWalletName(sessionId, walletId),
+  updateNote: (sessionId, walletId, notes) => updateNote(sessionId, walletId, notes),
 };

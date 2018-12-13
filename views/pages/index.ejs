@@ -19,6 +19,7 @@
     <!-- Main content -->
     <section class="content container-fluid">
       <div class="row">
+        <% if (listAccount.items.length > 0) { %>
         <div class="col-md-12">
           <div class="box box-info">
             <div class="box-header with-border">
@@ -44,7 +45,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% locals.accounts.forEach(function(acc, index) { %>
+                    <% locals.listAccount.items.forEach(function(acc, index) { %>
                     <tr>
                       <td><a href="/account/<%= acc.id %>"><%= acc.id %></a></td>
                       <td><%= acc.profile.name %></td>
@@ -73,8 +74,29 @@
               <!-- /.table-responsive -->
             </div>
             <!-- /.box-body -->
+            <div class="box-footer clearfix dataTables_wrapper">
+              <div class="row">
+                <% if (listAccount.totalPage > 1) { %>
+                <div class="col-md-12 pull-left">
+                  <div style="text-align: center;" class="dataTables_paginate paging_simple_numbers" id="account_list_paginate">
+                    <ul class="pagination">
+                      <% for (let i = 1; i <= listAccount.totalPage; i++) { %>
+                      <li class="paginate_button ajax_paginate <%= (i === 1) ? 'active' : '' %>">
+                        <a href="/accounts/ajax?page=<%= i %>" data-dt-idx="<%= i %>" tabindex="<%= i - 1 %>"><%= i %></a>
+                      </li>
+                      <% } %>
+                    </ul>
+                  </div>
+                </div>
+                <% } %>
+              </div>
+            </div>
+            <div class="overlay" style="display: none;">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
           </div>
         </div>
+        <% } %>
       </div>
     </section>
     <!-- /.content -->
@@ -90,17 +112,5 @@
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
-<script>
-  $(function () {
-    $('#account_list').DataTable({
-      'paging'      : true,
-      'lengthChange': false,
-      'searching'   : false,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : false
-    })
-  })
-</script>
 </body>
 </html>

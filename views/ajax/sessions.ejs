@@ -1,0 +1,13 @@
+<% listSession.items.forEach(function(sess, index) { %>
+<tr>
+  <td><%= sess.id %></td>
+  <td><%= (new Date(sess.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) %></td>
+  <td><%= (new Date(sess.expiresAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) %></td>
+  <td><%= sess.deviceType %></td>
+  <td><%= sess.ipAddress %></td>
+  <td><%= sess.language %></td>
+  <td><%= sess.location %></td>
+  <td><%= sess.city %></td>
+  <td><%= sess.country %></td>
+</tr>
+<% }) %>

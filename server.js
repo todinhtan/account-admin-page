@@ -23,6 +23,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // middleware to make 'user' available to all templates
 app.use((req, res, next) => {
   res.locals.account = req.session.account;
+  res.locals.messages = req.session.messages;
+  req.session.messages = [];
   next();
 });
 

@@ -34,7 +34,7 @@
 
               <p>
                 <%= locals.account.profile.name %> - Administrator
-                <small>Joined at <%= (new Date(locals.account.createdAt)).toLocaleDateString() %></small>
+                <small>Joined at <%= (new Date(locals.account.createdAt)).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }) %></small>
               </p>
             </li>
             <!-- Menu Footer-->
