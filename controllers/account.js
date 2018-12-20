@@ -133,3 +133,60 @@ export async function searchAccountByKeywordAjax(req, res) {
     });
   }
 }
+
+export async function updateStatus(req, res) {
+  let isSuccess = false;
+  switch (req.body.status) {
+    case 'SUBMITTED_AND_PENDING_REVIEW':
+      isSuccess = await services.accountService.markUnderReview(req.session.sessionId, req.params.accountId);
+      break;
+    case 'NEED_ATTENTION':
+      isSuccess = await services.accountService.markNeedAttention(req.session.sessionId, req.params.accountId);
+      break;
+    case 'APPROVED':
+      isSuccess = await services.accountService.markApproved(req.session.sessionId, req.params.accountId);
+      break;
+    case 'REJECTED':
+      isSuccess = await services.accountService.markRejected(req.session.sessionId, req.params.accountId);
+      break;
+    case 'DISABLED':
+      isSuccess = await services.accountService.disableAccount(req.session.sessionId, req.params.accountId);
+      break;
+    default:
+      break;
+  }
+  if (isSuccess) {
+    req.session.messages = ['Updated status successfully!'];
+  }
+  res.redirect(`/account/${req.params.accountId}`);
+}
+
+export async function verifyIdentity(req, res) {
+  const isSuccess = await services.accountService.verifyIdentity(req.session.sessionId, req.params.accountId, req.params.identity);
+  if (isSuccess) {
+    req.session.messages = [`Verified identity ${req.params.identity} successfully!`];
+  } else {
+    req.session.errors = [`Verified identity ${req.params.identity} failed!`];
+  }
+  res.redirect(`/account/${req.params.accountId}`);
+}
+
+export async function removeIdentity(req, res) {
+  const isSuccess = await services.accountService.removeIdentity(req.session.sessionId, req.params.accountId, req.params.identity);
+  if (isSuccess) {
+    req.session.messages = [`Removed identity ${req.params.identity} successfully!`];
+  } else {
+    req.session.errors = [`Removed identity ${req.params.identity} failed!`];
+  }
+  res.redirect(`/account/${req.params.accountId}`);
+}
+
+export async function sendResetPassword(req, res) {
+  const isSuccess = await services.accountService.sendResetPassword(req.session.sessionId, req.body.identity);
+  if (isSuccess) {
+    req.session.messages = [`Send reset password token to ${req.body.identity} successfully!`];
+  } else {
+    req.session.errors = [`Send reset password token to ${req.body.identity} failed!`];
+  }
+  res.redirect(`/account/${req.params.accountId}`);
+}

@@ -1,6 +1,6 @@
 <% listTransaction.items.forEach(function(trans, index) { %>
 <tr>
-  <td><%= trans.transferId %></td>
+  <td><%= trans.id %></td>
   <td><%= (trans.createdAt !== null) ? (new Date(trans.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
   <td><%= (trans.confirmedAt !== null) ? (new Date(trans.confirmedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
   <td><%= (trans.cancelledAt !== null) ? (new Date(trans.cancelledAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>

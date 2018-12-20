@@ -68,7 +68,21 @@ async function getTransferCsvBySRN(sessionId, srn, limit, offset) {
   return json2csvParser.parse(reMappingData);
 }
 
+export async function getTransferById(sessionId, tid) {
+  try {
+    if (sessionId === undefined || sessionId === null) return false;
+    if (tid === undefined || tid === null) return false;
+    const response = await axios.get(`${config.api.prefix}/transfer/${tid}?sessionId=${sessionId}`);
+    if (response && response.status === HttpStatusCode.OK && response.data) return response.data;
+  } catch (error) {
+    // just return null
+  }
+
+  return null;
+}
+
 export default {
   getTransfersBySRN: (sessionId, srn, limit, offset) => getTransfersBySRN(sessionId, srn, limit, offset),
   getTransferCsvBySRN: (sessionId, srn, limit, offset) => getTransferCsvBySRN(sessionId, srn, limit, offset),
+  getTransferById: (sessionId, tid) => getTransferById(sessionId, tid),
 };

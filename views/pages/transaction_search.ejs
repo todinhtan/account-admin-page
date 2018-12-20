@@ -1,0 +1,115 @@
+<% var page_title = 'EPIAPI Admin | Search: ' + tid; %>
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <% include ../partials/header %>
+  <% include ../partials/left-sidebar %>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>Search transaction: <%= tid %>
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+      <div class="row" style="margin-bottom: 15px;">
+        <div class="col-md-4 col-sm-12">
+          <form action="/transactions/search">
+            <div class="input-group">
+              <input type="text" class="form-control" required name="tid" placeholder="Search transaction by ID..." value="<%= tid %>">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-default" type="button">
+                  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+              </span>
+            </div><!-- /input-group -->
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Transaction</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin data-tbl">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Created at</th>
+                      <th>Confirmed at</th>
+                      <th>Cancelled at</th>
+                      <th>Reversed at</th>
+                      <th>Source</th>
+                      <th>Destination</th>
+                      <th>Status</th>
+                      <th>Type</th>
+                      <th>Amount</th>
+                      <th>Currency</th>
+                      <th>Fees</th>
+                      <th>Delta</th>
+                      <th>Updated balance</th>
+                      <th>Message</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% if (transaction != null) { %>
+                    <tr>
+                      <td><%= transaction.id %></td>
+                      <td><%= (transaction.createdAt !== null) ? (new Date(transaction.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
+                      <td><%= (transaction.confirmedAt !== null) ? (new Date(transaction.confirmedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
+                      <td><%= (transaction.cancelledAt !== null) ? (new Date(transaction.cancelledAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
+                      <td><%= (transaction.reversedAt !== null) ? (new Date(transaction.reversedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
+                      <td><a href="<%= friendlyNames[transaction.source].url %>"><%= friendlyNames[transaction.source].name %></a></td>
+                      <td><a href="<%= friendlyNames[transaction.dest].url %>"><%= friendlyNames[transaction.dest].name %></a></td>
+                      <td><%= transaction.status %></td>
+                      <td><%= transaction.type %></td>
+                      <td><%= transaction.amount %></td>
+                      <td><%= transaction.currency %></td>
+                      <td><%= transaction.fees %></td>
+                      <td><%= transaction.delta %></td>
+                      <td><%= transaction.updatedBalance %></td>
+                      <td><%= transaction.message %></td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <% include ../partials/footer %>
+</div>
+<!-- ./wrapper -->
+
+<% include ../partials/foot %>
+
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->
+</body>
+</html>

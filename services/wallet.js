@@ -85,10 +85,27 @@ async function searchWallet(sessionId, accountId, keyword, type) {
   return null;
 }
 
+async function updateStatus(sessionId, walletId, status) {
+  try {
+    if (sessionId === undefined || sessionId === null) return false;
+    if (walletId === undefined || walletId === null) return false;
+    if (!['NEED_ATTENTION', 'APPROVED', 'REJECTED', 'DISABLED'].includes(status)) return false;
+    const response = await axios.post(`${config.api.prefix}/wallet/${walletId}/status?sessionId=${sessionId}`, {
+      status,
+      reason: 'made by admin',
+    });
+    if (response && response.status === HttpStatusCode.OK && response.data) return true;
+  } catch (error) {
+    // just return false
+  }
+  return false;
+}
+
 export default {
   getWalletsByAccountId: (sessionId, accountId, limit, offset) => getWalletsByAccountId(sessionId, accountId, limit, offset),
   getWalletById: (sessionId, walletId) => getWalletById(sessionId, walletId),
   getWalletName: (sessionId, walletId) => getWalletName(sessionId, walletId),
   updateNote: (sessionId, walletId, notes) => updateNote(sessionId, walletId, notes),
   searchWallet: (sessionId, accountId, keyword, type) => searchWallet(sessionId, accountId, keyword, type),
+  updateStatus: (sessionId, walletId, status) => updateStatus(sessionId, walletId, status),
 };

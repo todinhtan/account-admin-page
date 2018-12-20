@@ -79,7 +79,21 @@ async function getTransactionCsvBySRN(sessionId, srn, limit, offset) {
   return json2csvParser.parse(reMappingData);
 }
 
+async function getTransactionById(sessionId, tid) {
+  try {
+    if (sessionId === undefined || sessionId === null) return false;
+    if (tid === undefined || tid === null) return false;
+    const response = await axios.get(`${config.api.prefix}/transaction/${tid}?sessionId=${sessionId}`);
+    if (response && response.status === HttpStatusCode.OK && response.data) return response.data;
+  } catch (error) {
+    // just return null
+  }
+
+  return null;
+}
+
 export default {
   getTransactionsBySRN: (sessionId, srn, limit, offset) => getTransactionsBySRN(sessionId, srn, limit, offset),
   getTransactionCsvBySRN: (sessionId, srn, limit, offset) => getTransactionCsvBySRN(sessionId, srn, limit, offset),
+  getTransactionById: (sessionId, tid) => getTransactionById(sessionId, tid),
 };

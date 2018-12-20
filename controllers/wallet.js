@@ -60,3 +60,11 @@ export async function searchWallet(req, res) {
     res.redirect(`/account/${req.params.accountId}`);
   }
 }
+
+export async function updateStatus(req, res) {
+  const isSuccess = await services.walletService.updateStatus(req.session.sessionId, req.params.walletId, req.body.status);
+  if (isSuccess) {
+    req.session.messages = ['Updated status successfully!'];
+  }
+  res.redirect(`/wallet/${req.params.walletId}`);
+}

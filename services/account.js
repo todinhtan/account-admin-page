@@ -39,7 +39,7 @@ async function disableAccount(sessionId, accountId) {
   try {
     if (sessionId === undefined || sessionId === null) return false;
     if (accountId === undefined || accountId === null) return false;
-    const response = await axios.post(`${config.api.prefix}/account/${accountId}/markForDisable?sessionId=${sessionId}`);
+    const response = await axios.post(`${config.api.prefix}/account/${accountId}/markForDisable?sessionId=${sessionId}`, { reason: 'made by admin' });
     if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
   } catch (error) {
     // just return false
@@ -132,6 +132,99 @@ async function searchByKeyword(sessionId, keyword, limit, offset) {
   return result;
 }
 
+async function markUnderReview(sessionId, accountId) {
+  try {
+    if (sessionId === undefined || sessionId === null) return false;
+    if (accountId === undefined || accountId === null) return false;
+    const response = await axios.post(`${config.api.prefix}/account/${accountId}/markForUnderReview?sessionId=${sessionId}`, { reason: 'made by admin' });
+    if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
+  } catch (error) {
+    // just return false
+  }
+
+  return false;
+}
+
+async function markNeedAttention(sessionId, accountId) {
+  try {
+    if (sessionId === undefined || sessionId === null) return false;
+    if (accountId === undefined || accountId === null) return false;
+    const response = await axios.post(`${config.api.prefix}/account/${accountId}/markForNeedAttention?sessionId=${sessionId}`, { reason: 'made by admin' });
+    if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
+  } catch (error) {
+    // just return false
+  }
+
+  return false;
+}
+
+async function markApproved(sessionId, accountId) {
+  try {
+    if (sessionId === undefined || sessionId === null) return false;
+    if (accountId === undefined || accountId === null) return false;
+    const response = await axios.post(`${config.api.prefix}/account/${accountId}/markForApproved?sessionId=${sessionId}`, { reason: 'made by admin' });
+    if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
+  } catch (error) {
+    // just return false
+  }
+
+  return false;
+}
+
+async function markRejected(sessionId, accountId) {
+  try {
+    if (sessionId === undefined || sessionId === null) return false;
+    if (accountId === undefined || accountId === null) return false;
+    const response = await axios.post(`${config.api.prefix}/account/${accountId}/markForRejected?sessionId=${sessionId}`, { reason: 'made by admin' });
+    if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
+  } catch (error) {
+    // just return false
+  }
+
+  return false;
+}
+
+async function verifyIdentity(sessionId, accountId, identity) {
+  try {
+    if (sessionId === undefined || sessionId === null) return false;
+    if (accountId === undefined || accountId === null) return false;
+    if (identity === undefined || identity === null) return false;
+    const response = await axios.post(`${config.api.prefix}/account/${accountId}/markIdentityVerified?sessionId=${sessionId}`, { identity });
+    if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
+  } catch (error) {
+    // just return false
+  }
+
+  return false;
+}
+
+async function removeIdentity(sessionId, accountId, identity) {
+  try {
+    if (sessionId === undefined || sessionId === null) return false;
+    if (accountId === undefined || accountId === null) return false;
+    if (identity === undefined || identity === null) return false;
+    const response = await axios.post(`${config.api.prefix}/account/${accountId}/removeIdentity?sessionId=${sessionId}`, { srn: identity });
+    if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
+  } catch (error) {
+    // just return false
+  }
+
+  return false;
+}
+
+async function sendResetPassword(sessionId, identity) {
+  try {
+    if (sessionId === undefined || sessionId === null) return false;
+    if (identity === undefined || identity === null) return false;
+    const response = await axios.post(`${config.api.prefix}/sendResetPassword?sessionId=${sessionId}`, { identity });
+    if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
+  } catch (error) {
+    // just return false
+  }
+
+  return false;
+}
+
 export default {
   isAdmin: sessionId => isAdmin(sessionId),
   getAccountById: (sessionId, accountId) => getAccountById(sessionId, accountId),
@@ -140,4 +233,11 @@ export default {
   getSessionHistory: (sessionId, accountId, limit, offset) => getSessionHistory(sessionId, accountId, limit, offset),
   getAccounts: (sessionId, limit, offset) => getAccounts(sessionId, limit, offset),
   searchByKeyword: (sessionId, keyword, limit, offset) => searchByKeyword(sessionId, keyword, limit, offset),
+  markUnderReview: (sessionId, accountId) => markUnderReview(sessionId, accountId),
+  markNeedAttention: (sessionId, accountId) => markNeedAttention(sessionId, accountId),
+  markApproved: (sessionId, accountId) => markApproved(sessionId, accountId),
+  markRejected: (sessionId, accountId) => markRejected(sessionId, accountId),
+  verifyIdentity: (sessionId, accountId, identity) => verifyIdentity(sessionId, accountId, identity),
+  removeIdentity: (sessionId, accountId, identity) => removeIdentity(sessionId, accountId, identity),
+  sendResetPassword: (sessionId, identity) => sendResetPassword(sessionId, identity),
 };

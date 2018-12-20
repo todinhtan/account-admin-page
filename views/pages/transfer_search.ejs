@@ -1,0 +1,107 @@
+<% var page_title = 'EPIAPI Admin | Search: ' + tid; %>
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <% include ../partials/header %>
+  <% include ../partials/left-sidebar %>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>Search transfer: <%= tid %>
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+      <div class="row" style="margin-bottom: 15px;">
+        <div class="col-md-4 col-sm-12">
+          <form action="/transfers/search">
+            <div class="input-group">
+              <input type="text" class="form-control" required name="tid" placeholder="Search transfer by ID..." value="<%= tid %>">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-default" type="button">
+                  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+              </span>
+            </div><!-- /input-group -->
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Transfer</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin data-tbl">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Created at</th>
+                      <th>Closed at</th>
+                      <th>Source</th>
+                      <th>Destination</th>
+                      <th>Status</th>
+                      <th>Source amount</th>
+                      <th>Source currency</th>
+                      <th>Destination amount</th>
+                      <th>Destination currency</th>
+                      <th>Message</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% if (transfer != null) { %>
+                    <tr>
+                      <td><%= transfer.id %></td>
+                      <td><%= (new Date(transfer.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) %></td>
+                      <td><%= (new Date(transfer.closedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) %></td>
+                      <td><a href="<%= friendlyNames[transfer.source].url %>"><%= friendlyNames[transfer.source].name %></a></td>
+                      <td><a href="<%= friendlyNames[transfer.dest].url %>"><%= friendlyNames[transfer.dest].name %></a></td>
+                      <td><%= transfer.status %></td>
+                      <td><%= transfer.sourceAmount %></td>
+                      <td><%= transfer.sourceCurrency %></td>
+                      <td><%= transfer.destAmount %></td>
+                      <td><%= transfer.destCurrency %></td>
+                      <td><%= transfer.message %></td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <% include ../partials/footer %>
+</div>
+<!-- ./wrapper -->
+
+<% include ../partials/foot %>
+
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->
+</body>
+</html>

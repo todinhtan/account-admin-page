@@ -29,3 +29,17 @@ export async function getTransfersBySRNAjax(req, res) {
     });
   }
 }
+
+export async function getTransferById(req, res) {
+  const transfer = await services.transferService.getTransferById(req.session.sessionId, req.query.tid);
+  let friendlyNames = {};
+  if (transfer != null) {
+    friendlyNames = await services.commonService.storeSrnFriendlyName(transfer.source, friendlyNames, req.session.sessionId);
+    friendlyNames = await services.commonService.storeSrnFriendlyName(transfer.dest, friendlyNames, req.session.sessionId);
+  }
+  res.render('pages/transfer_search', {
+    transfer,
+    friendlyNames,
+    tid: req.query.tid,
+  });
+}

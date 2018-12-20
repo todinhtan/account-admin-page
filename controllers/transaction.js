@@ -29,3 +29,17 @@ export async function getTransactionsBySRNAjax(req, res) {
     });
   }
 }
+
+export async function getTransactionById(req, res) {
+  const transaction = await services.transactionService.getTransactionById(req.session.sessionId, req.query.tid);
+  let friendlyNames = {};
+  if (transaction != null) {
+    friendlyNames = await services.commonService.storeSrnFriendlyName(transaction.source, friendlyNames, req.session.sessionId);
+    friendlyNames = await services.commonService.storeSrnFriendlyName(transaction.dest, friendlyNames, req.session.sessionId);
+  }
+  res.render('pages/transaction_search', {
+    transaction,
+    friendlyNames,
+    tid: req.query.tid,
+  });
+}

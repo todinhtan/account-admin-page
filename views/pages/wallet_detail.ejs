@@ -13,7 +13,10 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>Wallet: <%= currentWallet.name %></h1>
+      <h1>
+        Wallet: <%= currentWallet.name %>
+        <a href="#" data-toggle="modal" data-target="#modal-default" class="btn btn-sm btn-info btn-flat">Change status</a>
+      </h1>
     </section>
 
     <!-- Main content -->
@@ -241,7 +244,7 @@
                   <tbody>
                     <% listTransaction.items.forEach(function(trans, index) { %>
                     <tr>
-                      <td><%= trans.transferId %></td>
+                      <td><%= trans.id %></td>
                       <td><%= (trans.createdAt !== null) ? (new Date(trans.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
                       <td><%= (trans.confirmedAt !== null) ? (new Date(trans.confirmedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
                       <td><%= (trans.cancelledAt !== null) ? (new Date(trans.cancelledAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
@@ -293,6 +296,38 @@
       </div>
     </section>
     <!-- /.content -->
+    <div class="modal fade" id="modal-default">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="/wallet/<%= currentWallet.id %>/status" method="POST">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Change status</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-6 col-sm-12">
+                  <select class="form-control" name="status" required>
+                    <option value="">Select status</option>
+                    <option value="NEED_ATTENTION">NEED_ATTENTION</option>
+                    <option value="APPROVED">APPROVED</option>
+                    <option value="REJECTED">REJECTED</option>
+                    <option value="DISABLED">DISABLED</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
   </div>
   <!-- /.content-wrapper -->
 
