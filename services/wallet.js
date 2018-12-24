@@ -69,11 +69,11 @@ async function searchWallet(sessionId, accountId, keyword, type) {
     if (sessionId === undefined || sessionId === null) return null;
     switch (type) {
       case 'id':
-        const response = await axios.get(`${config.api.prefix}/wallet/${accountId}?sessionId=${sessionId}&walletId=${keyword}`);
+        const response = await axios.get(`${config.api.prefix}/wallet?sessionId=${sessionId}&walletId=${keyword}`);
         if (response && response.status === HttpStatusCode.OK && response.data) return response.data;
         break;
       case 'name':
-        const resp = await axios.get(`${config.api.prefix}/wallet/${accountId}?sessionId=${sessionId}&name=${keyword}`);
+        const resp = await axios.get(`${config.api.prefix}/wallet?sessionId=${sessionId}&name=${keyword}`);
         if (resp && resp.status === HttpStatusCode.OK && resp.data) return resp.data;
         break;
       default:
