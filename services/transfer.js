@@ -78,11 +78,33 @@ export async function getTransferById(sessionId, tid) {
     // just return null
   }
 
-  return null;
+  return false;
+}
+
+export async function addFunds(sessionId, amount, srn) {
+  try {
+    if (sessionId === undefined || sessionId === null) return false;
+    if (srn === undefined || srn === null) return false;
+    const response = await axios.post(`${config.api.prefix}/transfers?sessionId=${sessionId}`, {
+      autoConfirm: true,
+      callbackUrl: 'http://requestbin.net/r/t18808t1?inspect',
+      sourceCurrency: 'USD',
+      destCurrency: 'USD',
+      sourceAmount: amount,
+      source: 'service:Fiat Credits',
+      dest: srn,
+    });
+    if (response && response.status === HttpStatusCode.OK) return true;
+  } catch (error) {
+    // just return null
+  }
+
+  return true;
 }
 
 export default {
   getTransfersBySRN: (sessionId, srn, limit, offset) => getTransfersBySRN(sessionId, srn, limit, offset),
   getTransferCsvBySRN: (sessionId, srn, limit, offset) => getTransferCsvBySRN(sessionId, srn, limit, offset),
   getTransferById: (sessionId, tid) => getTransferById(sessionId, tid),
+  addFunds: (sessionId, amount, srn) => addFunds(sessionId, amount, srn),
 };

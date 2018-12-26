@@ -1,0 +1,101 @@
+<div class="box box-info">
+  <div class="box-header with-border">
+    <h3 class="box-title">Transaction history</h3>
+
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+      </button>
+      <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+    </div>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <div class="table-responsive">
+      <table class="table no-margin data-tbl">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Created at</th>
+            <th>Confirmed at</th>
+            <th>Cancelled at</th>
+            <th>Reversed at</th>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Status</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Currency</th>
+            <th>Fees</th>
+            <th>Delta</th>
+            <th>Updated balance</th>
+            <th>Message</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% listTransaction.items.forEach(function(trans, index) { %>
+          <tr>
+            <td><%= trans.id %></td>
+            <td><%= (trans.createdAt !== null) ? (new Date(trans.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
+            <td><%= (trans.confirmedAt !== null) ? (new Date(trans.confirmedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
+            <td><%= (trans.cancelledAt !== null) ? (new Date(trans.cancelledAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
+            <td><%= (trans.reversedAt !== null) ? (new Date(trans.reversedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
+            <td><a href="<%= friendlyNames[trans.source].url %>"><%= friendlyNames[trans.source].name %></a></td>
+            <td><a href="<%= friendlyNames[trans.dest].url %>"><%= friendlyNames[trans.dest].name %></a></td>
+            <td><%= trans.status %></td>
+            <td><%= trans.type %></td>
+            <td><%= trans.amount %></td>
+            <td><%= trans.currency %></td>
+            <td><%= trans.fees %></td>
+            <td><%= trans.delta %></td>
+            <td><%= trans.updatedBalance %></td>
+            <td><%= trans.message %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <!-- /.table-responsive -->
+  </div>
+  <!-- /.box-body -->
+  <div class="box-footer clearfix">
+    <div class="row">
+      <div class="col-md-6">
+        <a target="_blank" href="<%= downloadLink %>" class="btn btn-sm btn-info btn-flat pull-left btn-download">Download transactions</a>
+      </div>
+      <div class="col-md-6 text-right">
+        <div class="dataTables_info" role="status" aria-live="polite">
+          <form action="/pagesize/update" method="POST" class="form-inline">
+            <input type="hidden" value="transaction" name="type">
+            <div class="form-group">
+              <span style="display: inline-block;">Showing&nbsp;</span>
+              <select style="max-width: 65px; margin: 0 auto; display: inline-block;" class="form-control sel-pagesize" name="pagesize">
+                <option <%= (pageSize.transaction == 10) ? 'selected' : '' %> value="10">10</option>
+                <option <%= (pageSize.transaction == 20) ? 'selected' : '' %> value="20">20</option>
+                <option <%= (pageSize.transaction == 30) ? 'selected' : '' %> value="30">30</option>
+                <option <%= (pageSize.transaction == 40) ? 'selected' : '' %> value="40">40</option>
+                <option <%= (pageSize.transaction == 50) ? 'selected' : '' %> value="50">50</option>
+              </select>
+              <span style="display: inline-block;">&nbsp;entries per page</span>
+            </div>
+          </form>
+        </div>
+      </div>
+      <% if (listTransaction.totalPage > 1) { %>
+      <div class="col-md-12 pull-left">
+        <div style="text-align: center;" class="dataTables_paginate paging_simple_numbers" id="account_list_paginate">
+          <ul class="pagination">
+            <% for (let i = 1; i <= listTransaction.totalPage; i++) { %>
+            <li class="paginate_button ajax_paginate <%= (i === 1) ? 'active' : '' %>">
+              <a href="/transactions/<%= srn %>/ajax?page=<%= i %>" data-dt-idx="<%= i %>" tabindex="<%= i - 1 %>"><%= i %></a>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+  <div class="overlay" style="display: none;">
+    <i class="fa fa-refresh fa-spin"></i>
+  </div>
+</div>

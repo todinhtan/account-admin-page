@@ -1,0 +1,24 @@
+<form action="/wallets/search">
+  <div class="form-row">
+    <div class="input-group">
+      <input type="text" class="form-control" required name="q" placeholder="Search a wallet by ID or name...">
+      <span class="input-group-btn">
+        <button type="submit" class="btn btn-default" type="button">
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </button>
+      </span>
+    </div><!-- /input-group -->
+    <div class="radio">
+      <label>
+        <input type="radio" name="type" id="type1" value="id" checked>
+        By ID
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="type" id="type2" value="name">
+        By name
+      </label>
+    </div>
+  </div>
+</form>

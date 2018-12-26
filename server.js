@@ -20,13 +20,27 @@ app.set('view engine', 'ejs');
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// middleware to make 'user' available to all templates
+// middleware to make session variables available to all templates
 app.use((req, res, next) => {
   res.locals.account = req.session.account;
   res.locals.messages = req.session.messages;
   req.session.messages = [];
   res.locals.errors = req.session.errors;
   req.session.errors = [];
+
+  // storing page size for each table
+  if (req.session.accountPageSize === undefined) req.session.accountPageSize = config.api.pageSize;
+  if (req.session.walletPageSize === undefined) req.session.walletPageSize = config.api.pageSize;
+  if (req.session.transferPageSize === undefined) req.session.transferPageSize = config.api.pageSize;
+  if (req.session.transactionPageSize === undefined) req.session.transactionPageSize = config.api.pageSize;
+  if (req.session.sessionPageSize === undefined) req.session.sessionPageSize = config.api.pageSize;
+  res.locals.pageSize = {
+    account: req.session.accountPageSize,
+    wallet: req.session.walletPageSize,
+    transfer: req.session.transferPageSize,
+    transaction: req.session.transactionPageSize,
+    session: req.session.sessionPageSize,
+  };
   next();
 });
 

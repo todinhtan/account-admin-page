@@ -20,6 +20,6 @@ router.get('/wallet/:walletId/transactions/download', verifySession, downloadTra
 router.post('/wallet/:walletId/status', verifySession, updateStatus);
 
 // search
-router.get('/wallet/:accountId/search', verifySession, searchWallet);
+router.get('/wallets/search', verifySession, searchWallet);
 
 export default router;

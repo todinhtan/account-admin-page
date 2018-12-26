@@ -1,0 +1,14 @@
+<% if (locals.messages && locals.messages.length) { %>
+<% locals.messages.forEach(function(msg, index) { %>
+<div class="callout callout-success">
+  <p><%= msg %></p>
+</div>
+<% }) %>
+<% } %>
+<% if (locals.errors && locals.errors.length) { %>
+<% locals.errors.forEach(function(err, index) { %>
+<div class="callout callout-warning">
+  <p><%= err %></p>
+</div>
+<% }) %>
+<% } %>

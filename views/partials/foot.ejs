@@ -18,7 +18,7 @@
     var self = this;
     var curPage = $(this).data('dt-idx');
     e.preventDefault();
-    $('.paginate_button').not(this).removeClass('active');
+    $(this).parents('.pagination').find('.paginate_button').not(this).removeClass('active');
     $(this).parent().addClass('active');
     var tableBody = $(this).parents('.box').find('.table tbody');
     $(this).parents('.box').find('.overlay').show();
@@ -41,5 +41,13 @@
         }
       }
     })
+  })
+
+  $('select.sel-pagesize').on('change', function(e) {
+    $(this).parents('form').submit();
+  })
+
+  $('.only-number').on('keypress', function(e) {
+    return /^[0-9.]*$/gm.test(e.key);
   })
 </script>

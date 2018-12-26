@@ -64,7 +64,7 @@ async function updateNote(sessionId, walletId, notes) {
   return false;
 }
 
-async function searchWallet(sessionId, accountId, keyword, type) {
+async function searchWallet(sessionId, keyword, type) {
   try {
     if (sessionId === undefined || sessionId === null) return null;
     switch (type) {
@@ -106,6 +106,6 @@ export default {
   getWalletById: (sessionId, walletId) => getWalletById(sessionId, walletId),
   getWalletName: (sessionId, walletId) => getWalletName(sessionId, walletId),
   updateNote: (sessionId, walletId, notes) => updateNote(sessionId, walletId, notes),
-  searchWallet: (sessionId, accountId, keyword, type) => searchWallet(sessionId, accountId, keyword, type),
+  searchWallet: (sessionId, keyword, type) => searchWallet(sessionId, keyword, type),
   updateStatus: (sessionId, walletId, status) => updateStatus(sessionId, walletId, status),
 };

@@ -18,121 +18,44 @@
 
     <!-- Main content -->
     <section class="content container-fluid">
+      <% include ../partials/message-container %>
       <div class="row" style="margin-bottom: 15px;">
-        <div class="col-md-4 col-sm-12">
-          <form action="/accounts/search">
-            <div class="input-group">
-              <input type="text" class="form-control" required name="q" placeholder="Search accounts by identities...">
-              <span class="input-group-btn">
-                <button type="submit" class="btn btn-default" type="button">
-                  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                </button>
-              </span>
-            </div><!-- /input-group -->
-          </form>
+        <div class="col-md-6 col-sm-12" style="margin-bottom: 15px;">
+          <% include ../includes/_form/search-account %>
         </div>
-        <div class="col-md-4 col-sm-12">
-          <form action="/transactions/search">
-            <div class="input-group">
-              <input type="text" class="form-control" required name="tid" placeholder="Search transaction by ID...">
-              <span class="input-group-btn">
-                <button type="submit" class="btn btn-default" type="button">
-                  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                </button>
-              </span>
-            </div><!-- /input-group -->
-          </form>
+        <div class="col-md-6 col-sm-12" style="margin-bottom: 15px;">
+          <% include ../includes/_form/search-transaction %>
         </div>
-        <div class="col-md-4 col-sm-12">
-          <form action="/transfers/search">
-            <div class="input-group">
-              <input type="text" class="form-control" required name="tid" placeholder="Search transfer by ID...">
-              <span class="input-group-btn">
-                <button type="submit" class="btn btn-default" type="button">
-                  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                </button>
-              </span>
-            </div><!-- /input-group -->
+        <div class="col-md-6 col-sm-12" style="margin-bottom: 15px;">
+          <% include ../includes/_form/search-transfer %>
+        </div>
+        <div class="col-md-6 col-sm-12" style="margin-bottom: 15px;">
+          <% include ../includes/_form/search-wallet %>
+        </div>
+        <div class="col-md-6 col-sm-12" style="margin-bottom: 15px;">
+          <form class="form-inline" action="/funds/add" method="POST">
+            <div class="form-group">
+              <label class="sr-only" for="amount">Amount</label>
+              <div class="input-group">
+                <div class="input-group-addon">$</div>
+                <input required type="text" class="form-control only-number" id="amount" placeholder="Amount" name="amount">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="sr-only" for="srn">Identity</label>
+              <div class="input-group">
+                <div class="input-group-addon">$</div>
+                <input required type="text" class="form-control" id="srn" placeholder="SRN, ex: account:XXX" name="srn">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Transfer cash</button>
           </form>
         </div>
       </div>
       <div class="row">
         <% if (listAccount.items.length > 0) { %>
         <div class="col-md-12">
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Accounts</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="table-responsive">
-                <table id="account_list" class="table no-margin">
-                  <thead>
-                    <tr>
-                      <th>Account ID</th>
-                      <th>Name</th>
-                      <th>Type</th>
-                      <th>Created at</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% locals.listAccount.items.forEach(function(acc, index) { %>
-                    <tr>
-                      <td><a href="/account/<%= acc.id %>"><%= acc.id %></a></td>
-                      <td><%= acc.profile.name %></td>
-                      <% var labelType = 'default' %>
-                      <%
-                        switch (acc.status) {
-                          case 'APPROVED':
-                            labelType = 'success';
-                            break;
-                          case 'IN_REVIEW':
-                            labelType = 'warning';
-                            break;
-                          case 'DENIED':
-                            labelType = 'danger';
-                            break;
-                        }
-                      %>
-                      <td><%= acc.profile.type %></td>
-                      <td><%= new Date(acc.createdAt).toLocaleDateString() %></td>
-                      <td><span class="label label-<%= labelType %>"><%= acc.status %></span></td>
-                    </tr>
-                    <% }) %>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer clearfix dataTables_wrapper">
-              <div class="row">
-                <% if (listAccount.totalPage > 1) { %>
-                <div class="col-md-12 pull-left">
-                  <div style="text-align: center;" class="dataTables_paginate paging_simple_numbers" id="account_list_paginate">
-                    <ul class="pagination">
-                      <% for (let i = 1; i <= listAccount.totalPage; i++) { %>
-                      <li class="paginate_button ajax_paginate <%= (i === 1) ? 'active' : '' %>">
-                        <a href="/accounts/ajax?page=<%= i %>" data-dt-idx="<%= i %>" tabindex="<%= i - 1 %>"><%= i %></a>
-                      </li>
-                      <% } %>
-                    </ul>
-                  </div>
-                </div>
-                <% } %>
-              </div>
-            </div>
-            <div class="overlay" style="display: none;">
-              <i class="fa fa-refresh fa-spin"></i>
-            </div>
-          </div>
+          <%- include('../includes/_table/accounts', { listAccount: listAccount, useDataTablePaging: true }) %>
         </div>
         <% } %>
       </div>

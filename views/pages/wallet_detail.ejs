@@ -21,13 +21,15 @@
 
     <!-- Main content -->
     <section class="content container-fluid">
-      <% if (locals.messages && locals.messages.length) { %>
-      <% locals.messages.forEach(function(msg, index) { %>
-      <div class="callout callout-success">
-        <p><%= msg %></p>
+      <% include ../partials/message-container %>
+      <div class="row" style="margin-bottom: 15px;">
+        <div class="col-md-6 col-sm-12" style="margin-bottom: 15px;">
+          <% include ../includes/_form/search-transaction %>
+        </div>
+        <div class="col-md-6 col-sm-12" style="margin-bottom: 15px;">
+          <% include ../includes/_form/search-transfer %>
+        </div>
       </div>
-      <% }) %>
-      <% } %>
       <div class="row">
         <div class="col-md-6">
           <div class="box box-info">
@@ -95,6 +97,48 @@
             </div>
           </div>
         </div>
+        <% if (balances.length > 0) { %>
+        <div class="col-md-6">
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Balances</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin">
+                  <thead>
+                    <tr>
+                      <th>Currency</th>
+                      <th>Balance</th>
+                      <th>Total balance</th>
+                      <th>Available balance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% balances.forEach(function(lg, index) { %>
+                    <tr>
+                      <td><%= lg.currency %></td>
+                      <td><%= lg.balances %></td>
+                      <td><%= lg.totalBalances %></td>
+                      <td><%= lg.availableBalances %></td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+        <% } %>
         <div class="col-md-6">
           <div class="box box-info">
             <div class="box-header with-border">
@@ -129,168 +173,20 @@
         </div>
         <% if (listTransfer.items.length > 0) { %>
         <div class="col-md-12">
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Transfer history</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="table-responsive">
-                <table id="transfer_list" class="table no-margin">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Created at</th>
-                      <th>Closed at</th>
-                      <th>Source</th>
-                      <th>Destination</th>
-                      <th>Status</th>
-                      <th>Source amount</th>
-                      <th>Source currency</th>
-                      <th>Destination amount</th>
-                      <th>Destination currency</th>
-                      <th>Message</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% listTransfer.items.forEach(function(transfer, index) { %>
-                    <tr>
-                      <td><%= transfer.id %></td>
-                      <td><%= (new Date(transfer.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) %></td>
-                      <td><%= (new Date(transfer.closedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) %></td>
-                      <td><a href="<%= friendlyNames[transfer.source].url %>"><%= friendlyNames[transfer.source].name %></a></td>
-                      <td><a href="<%= friendlyNames[transfer.dest].url %>"><%= friendlyNames[transfer.dest].name %></a></td>
-                      <td><%= transfer.status %></td>
-                      <td><%= transfer.sourceAmount %></td>
-                      <td><%= transfer.sourceCurrency %></td>
-                      <td><%= transfer.destAmount %></td>
-                      <td><%= transfer.destCurrency %></td>
-                      <td><%= transfer.message %></td>
-                    </tr>
-                    <% }) %>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer clearfix">
-              <div class="row">
-                <div class="col-md-12">
-                  <a target="_blank" href="/wallet/<%= currentWallet.id %>/transfers/download" class="btn btn-sm btn-info btn-flat pull-left btn-download">Download transfers</a>
-                </div>
-                <% if (listTransfer.totalPage > 1) { %>
-                <div class="col-md-12 pull-left">
-                  <div style="text-align: center;" class="dataTables_paginate paging_simple_numbers" id="account_list_paginate">
-                    <ul class="pagination">
-                      <% for (let i = 1; i <= listTransfer.totalPage; i++) { %>
-                      <li class="paginate_button ajax_paginate <%= (i === 1) ? 'active' : '' %>">
-                        <a href="/transfers/wallet:<%= currentWallet.id %>/ajax?page=<%= i %>" data-dt-idx="<%= i %>" tabindex="<%= i - 1 %>"><%= i %></a>
-                      </li>
-                      <% } %>
-                    </ul>
-                  </div>
-                </div>
-                <% } %>
-              </div>
-            </div>
-            <div class="overlay" style="display: none;">
-              <i class="fa fa-refresh fa-spin"></i>
-            </div>
-          </div>
+          <%- include('../includes/_table/transfers', {
+            listTransfer: listTransfer,
+            downloadLink: '/wallet/' + currentWallet.id + '/transfers/download',
+            srn: 'wallet:' + currentWallet.id
+          }) %>
         </div>
         <% } %>
         <% if (listTransaction.items.length > 0) { %>
         <div class="col-md-12">
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Transaction history</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="table-responsive">
-                <table class="table no-margin data-tbl">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Created at</th>
-                      <th>Confirmed at</th>
-                      <th>Cancelled at</th>
-                      <th>Reversed at</th>
-                      <th>Source</th>
-                      <th>Destination</th>
-                      <th>Status</th>
-                      <th>Type</th>
-                      <th>Amount</th>
-                      <th>Currency</th>
-                      <th>Fees</th>
-                      <th>Delta</th>
-                      <th>Updated balance</th>
-                      <th>Message</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% listTransaction.items.forEach(function(trans, index) { %>
-                    <tr>
-                      <td><%= trans.id %></td>
-                      <td><%= (trans.createdAt !== null) ? (new Date(trans.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
-                      <td><%= (trans.confirmedAt !== null) ? (new Date(trans.confirmedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
-                      <td><%= (trans.cancelledAt !== null) ? (new Date(trans.cancelledAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
-                      <td><%= (trans.reversedAt !== null) ? (new Date(trans.reversedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
-                      <td><a href="<%= friendlyNames[trans.source].url %>"><%= friendlyNames[trans.source].name %></a></td>
-                      <td><a href="<%= friendlyNames[trans.dest].url %>"><%= friendlyNames[trans.dest].name %></a></td>
-                      <td><%= trans.status %></td>
-                      <td><%= trans.type %></td>
-                      <td><%= trans.amount %></td>
-                      <td><%= trans.currency %></td>
-                      <td><%= trans.fees %></td>
-                      <td><%= trans.delta %></td>
-                      <td><%= trans.updatedBalance %></td>
-                      <td><%= trans.message %></td>
-                    </tr>
-                    <% }) %>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer clearfix">
-              <div class="row">
-                <div class="col-md-12">
-                  <a target="_blank" href="/wallet/<%= currentWallet.id %>/transactions/download" class="btn btn-sm btn-info btn-flat pull-left btn-download">Download transfers</a>
-                </div>
-                <% if (listTransaction.totalPage > 1) { %>
-                <div class="col-md-12 pull-left">
-                  <div style="text-align: center;" class="dataTables_paginate paging_simple_numbers" id="account_list_paginate">
-                    <ul class="pagination">
-                      <% for (let i = 1; i <= listTransaction.totalPage; i++) { %>
-                      <li class="paginate_button ajax_paginate <%= (i === 1) ? 'active' : '' %>">
-                        <a href="/transactions/wallet:<%= currentWallet.id %>/ajax?page=<%= i %>" data-dt-idx="<%= i %>" tabindex="<%= i - 1 %>"><%= i %></a>
-                      </li>
-                      <% } %>
-                    </ul>
-                  </div>
-                </div>
-                <% } %>
-              </div>
-            </div>
-            <div class="overlay" style="display: none;">
-              <i class="fa fa-refresh fa-spin"></i>
-            </div>
-          </div>
+          <%- include('../includes/_table/transactions', {
+            listTransaction: listTransaction,
+            downloadLink: '/wallet/' + currentWallet.id + '/transactions/download',
+            srn: 'wallet:' + currentWallet.id
+          }) %>
         </div>
         <% } %>
       </div>

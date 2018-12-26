@@ -3,14 +3,13 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable max-len */
 import services from '../services';
-import config from '../config';
 
 export async function getAccountDetail(req, res) {
   const currentAccount = await services.accountService.getAccountById(req.session.sessionId, req.params.accountId);
-  const listWallet = await services.walletService.getWalletsByAccountId(req.session.sessionId, req.params.accountId, config.api.pageSize, 0);
-  const listTransfer = await services.transferService.getTransfersBySRN(req.session.sessionId, `account:${req.params.accountId}`, config.api.pageSize, 0);
-  const listTransaction = await services.transactionService.getTransactionsBySRN(req.session.sessionId, `account:${req.params.accountId}`, config.api.pageSize, 0);
-  const listHistorySession = await services.accountService.getSessionHistory(req.session.sessionId, req.params.accountId, config.api.pageSize, 0);
+  const listWallet = await services.walletService.getWalletsByAccountId(req.session.sessionId, req.params.accountId, req.session.walletPageSize, 0);
+  const listTransfer = await services.transferService.getTransfersBySRN(req.session.sessionId, `account:${req.params.accountId}`, req.session.transferPageSize, 0);
+  const listTransaction = await services.transactionService.getTransactionsBySRN(req.session.sessionId, `account:${req.params.accountId}`, req.session.transactionPageSize, 0);
+  const listHistorySession = await services.accountService.getSessionHistory(req.session.sessionId, req.params.accountId, req.session.sessionPageSize, 0);
   let friendlyNames = {};
   // get friendly name of SRN
   for (const tr of listTransfer.items) {
@@ -31,10 +30,10 @@ export async function getWalletsByAccountIdAjax(req, res) {
   else {
     let page = parseInt(req.query.page, 10);
     if (isNaN(page) || page < 1) page = 1;
-    const offset = (page - 1) * config.api.pageSize;
+    const offset = (page - 1) * req.session.walletPageSize;
     let listWallet = {};
     try {
-      listWallet = await services.walletService.getWalletsByAccountId(req.session.sessionId, req.params.accountId, config.api.pageSize, offset);
+      listWallet = await services.walletService.getWalletsByAccountId(req.session.sessionId, req.params.accountId, req.session.walletPageSize, offset);
     } catch (error) {
       // let accounts empty
     }
@@ -49,10 +48,10 @@ export async function getSessionsByAccountIdAjax(req, res) {
   else {
     let page = parseInt(req.query.page, 10);
     if (isNaN(page) || page < 1) page = 1;
-    const offset = (page - 1) * config.api.pageSize;
+    const offset = (page - 1) * req.session.sessionPageSize;
     let listSession = {};
     try {
-      listSession = await services.accountService.getSessionHistory(req.session.sessionId, req.params.accountId, config.api.pageSize, offset);
+      listSession = await services.accountService.getSessionHistory(req.session.sessionId, req.params.accountId, req.session.sessionPageSize, offset);
     } catch (error) {
       // let accounts empty
     }
@@ -65,8 +64,8 @@ export async function getSessionsByAccountIdAjax(req, res) {
 export async function downloadTransfers(req, res) {
   let page = parseInt(req.query.page, 10);
   if (isNaN(page) || page < 1) page = 1;
-  const offset = (page - 1) * config.api.pageSize;
-  const transferCsv = await services.transferService.getTransferCsvBySRN(req.session.sessionId, `account:${req.params.accountId}`, config.api.pageSize, offset);
+  const offset = (page - 1) * req.session.transferPageSize;
+  const transferCsv = await services.transferService.getTransferCsvBySRN(req.session.sessionId, `account:${req.params.accountId}`, req.session.transferPageSize, offset);
   res.setHeader('Content-Disposition', `attachment; filename=${req.params.accountId}_transfers.csv`);
   res.type('text/csv');
   return res.send(transferCsv).end();
@@ -75,8 +74,8 @@ export async function downloadTransfers(req, res) {
 export async function downloadTransactions(req, res) {
   let page = parseInt(req.query.page, 10);
   if (isNaN(page) || page < 1) page = 1;
-  const offset = (page - 1) * config.api.pageSize;
-  const transactionsCsv = await services.transactionService.getTransactionCsvBySRN(req.session.sessionId, `account:${req.params.accountId}`, config.api.pageSize, offset);
+  const offset = (page - 1) * req.session.transactionPageSize;
+  const transactionsCsv = await services.transactionService.getTransactionCsvBySRN(req.session.sessionId, `account:${req.params.accountId}`, req.session.transactionPageSize, offset);
   res.setHeader('Content-Disposition', `attachment; filename=${req.params.accountId}_transactions.csv`);
   res.type('text/csv');
   return res.send(transactionsCsv).end();
@@ -95,10 +94,10 @@ export async function getAccountsAjax(req, res) {
   else {
     let page = parseInt(req.query.page, 10);
     if (isNaN(page) || page < 1) page = 1;
-    const offset = (page - 1) * config.api.pageSize;
+    const offset = (page - 1) * req.session.accountPageSize;
     let listAccount = {};
     try {
-      listAccount = await services.accountService.getAccounts(req.session.sessionId, config.api.pageSize, offset);
+      listAccount = await services.accountService.getAccounts(req.session.sessionId, req.session.accountPageSize, offset);
     } catch (error) {
       // let accounts empty
     }
@@ -109,7 +108,7 @@ export async function getAccountsAjax(req, res) {
 }
 
 export async function searchAccountByKeyword(req, res) {
-  const listAccount = await services.accountService.searchByKeyword(req.session.sessionId, req.query.q, config.api.pageSize, 0);
+  const listAccount = await services.accountService.searchByKeyword(req.session.sessionId, req.query.q, req.session.accountPageSize, 0);
   res.render('pages/account_search', {
     listAccount,
     keyword: req.query.q,
@@ -121,10 +120,10 @@ export async function searchAccountByKeywordAjax(req, res) {
   else {
     let page = parseInt(req.query.page, 10);
     if (isNaN(page) || page < 1) page = 1;
-    const offset = (page - 1) * config.api.pageSize;
+    const offset = (page - 1) * req.session.accountPageSize;
     let listAccount = {};
     try {
-      listAccount = await services.accountService.searchByKeyword(req.session.sessionId, req.query.q, config.api.pageSize, offset);
+      listAccount = await services.accountService.searchByKeyword(req.session.sessionId, req.query.q, req.session.accountPageSize, offset);
     } catch (error) {
       // let accounts empty
     }

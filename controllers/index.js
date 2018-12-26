@@ -39,7 +39,7 @@ export async function postLogin(req, res) {
 export async function getIndex(req, res) {
   let listAccount = {};
   try {
-    listAccount = await services.accountService.getAccounts(req.session.sessionId, config.api.pageSize, 0);
+    listAccount = await services.accountService.getAccounts(req.session.sessionId, req.session.accountPageSize, 0);
   } catch (error) {
     // let accounts empty
   }
@@ -51,4 +51,27 @@ export async function getIndex(req, res) {
 export function logout(req, res) {
   services.sessionService.clearSession(req);
   res.redirect('/login');
+}
+
+export function updatePagesize(req, res) {
+  switch (req.body.type) {
+    case 'account':
+      req.session.accountPageSize = req.body.pagesize;
+      break;
+    case 'wallet':
+      req.session.walletPageSize = req.body.pagesize;
+      break;
+    case 'transfer':
+      req.session.transferPageSize = req.body.pagesize;
+      break;
+    case 'transaction':
+      req.session.transactionPageSize = req.body.pagesize;
+      break;
+    case 'session':
+      req.session.sessionPageSize = req.body.pagesize;
+      break;
+    default:
+      break;
+  }
+  res.redirect(req.header('Referer'));
 }

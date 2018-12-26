@@ -4,18 +4,17 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable max-len */
 import services from '../services';
-import config from '../config';
 
 export async function getTransfersBySRNAjax(req, res) {
   if (!req.xhr) res.send(null);
   else {
     let page = parseInt(req.query.page, 10);
     if (isNaN(page) || page < 1) page = 1;
-    const offset = (page - 1) * config.api.pageSize;
+    const offset = (page - 1) * req.session.transferPageSize;
     let listTransfer = {};
     let friendlyNames = {};
     try {
-      listTransfer = await services.transferService.getTransfersBySRN(req.session.sessionId, req.params.srn, config.api.pageSize, offset);
+      listTransfer = await services.transferService.getTransfersBySRN(req.session.sessionId, req.params.srn, req.session.transferPageSize, offset);
       // get friendly name of SRN
       for (const tr of listTransfer.items) {
         friendlyNames = await services.commonService.storeSrnFriendlyName(tr.source, friendlyNames, req.session.sessionId);
@@ -42,4 +41,18 @@ export async function getTransferById(req, res) {
     friendlyNames,
     tid: req.query.tid,
   });
+}
+
+export async function addFunds(req, res) {
+  const { amount, srn } = req.body;
+
+  if (/^[+-]?\d+(\.\d+)?$/.test(amount)) {
+    const isSuccess = await services.transferService.addFunds(req.session.sessionId, amount, srn);
+    if (isSuccess) req.session.messages = ['Transfered'];
+    else req.session.errors = ['Transfer failed!'];
+  } else {
+    req.session.errors = ['Invalid amount, try again!'];
+  }
+
+  res.redirect(req.header('Referer'));
 }
