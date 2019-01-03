@@ -25,6 +25,7 @@
             <th>Destination amount</th>
             <th>Destination currency</th>
             <th>Message</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +42,7 @@
             <td><%= transfer.destAmount %></td>
             <td><%= transfer.destCurrency %></td>
             <td><%= transfer.message %></td>
+            <td><a href="/transfer/<%= transfer.id %>/finalise" title="Finalise" class="btn btn-sm btn-success btn-flat">Finalise</a></td>
           </tr>
           <% }) %>
         </tbody>

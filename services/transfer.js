@@ -102,9 +102,20 @@ export async function addFunds(sessionId, amount, srn) {
   return true;
 }
 
+export async function finalise(sessionId, tid) {
+  try {
+    if (sessionId === undefined || sessionId === null) return;
+    if (tid === undefined || tid === null) return;
+    await axios.post(`${config.api.prefix}/transfer/${tid}/finalise?sessionId=${sessionId}`);
+  } catch (error) {
+    // just return null
+  }
+}
+
 export default {
   getTransfersBySRN: (sessionId, srn, limit, offset) => getTransfersBySRN(sessionId, srn, limit, offset),
   getTransferCsvBySRN: (sessionId, srn, limit, offset) => getTransferCsvBySRN(sessionId, srn, limit, offset),
   getTransferById: (sessionId, tid) => getTransferById(sessionId, tid),
   addFunds: (sessionId, amount, srn) => addFunds(sessionId, amount, srn),
+  finalise: (sessionId, tid) => finalise(sessionId, tid),
 };

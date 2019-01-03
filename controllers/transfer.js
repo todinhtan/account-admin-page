@@ -56,3 +56,8 @@ export async function addFunds(req, res) {
 
   res.redirect(req.header('Referer'));
 }
+
+export async function finalise(req, res) {
+  await services.transferService.finalise(req.session.sessionId, req.params.transferId);
+  res.redirect(req.header('Referer'));
+}
