@@ -1,3 +1,6 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable max-len */
@@ -101,6 +104,55 @@ async function updateStatus(sessionId, walletId, status) {
   return false;
 }
 
+async function updateVerification(sessionId, walletId, vbaVerificationData) {
+  try {
+    if (sessionId === undefined || sessionId === null) return false;
+    if (walletId === undefined || walletId === null) return false;
+
+    // rebuild post param
+    for (const key of Object.keys(vbaVerificationData)) {
+      if (!vbaVerificationData[key]) delete vbaVerificationData[key];
+    }
+    if (vbaVerificationData.address != null) {
+      if (!vbaVerificationData.address.street1
+        || !vbaVerificationData.address.street2
+        || !vbaVerificationData.address.city
+        || !vbaVerificationData.address.state
+        || !vbaVerificationData.address.postalCode
+        || !vbaVerificationData.address.country) delete vbaVerificationData.address;
+    }
+    if (vbaVerificationData.repAddress != null) {
+      if (!vbaVerificationData.repAddress.street1
+        || !vbaVerificationData.repAddress.street2
+        || !vbaVerificationData.repAddress.city
+        || !vbaVerificationData.repAddress.state
+        || !vbaVerificationData.repAddress.postalCode
+        || !vbaVerificationData.repAddress.country) delete vbaVerificationData.repAddress;
+    }
+
+    if (vbaVerificationData.merchantId.length > 0) {
+      vbaVerificationData.merchantIds = [];
+      // merchant
+      for (let i = 0; i < vbaVerificationData.merchantId.length; i++) {
+        vbaVerificationData.merchantIds.push({
+          merchantId: vbaVerificationData.merchantId[i],
+          merchantIdType: vbaVerificationData.merchantIdType[i],
+          merchantIdCountry: vbaVerificationData.merchantIdCountry[i],
+        });
+      }
+
+      delete vbaVerificationData.merchantId;
+      delete vbaVerificationData.merchantIdType;
+      delete vbaVerificationData.merchantIdCountry;
+    }
+    const response = await axios.post(`${config.api.prefix}/wallet/${walletId}/update?sessionId=${sessionId}`, { vbaVerificationData });
+    if (response && response.status === HttpStatusCode.OK) return true;
+  } catch (error) {
+    // just return false
+  }
+  return false;
+}
+
 export default {
   getWalletsByAccountId: (sessionId, accountId, limit, offset) => getWalletsByAccountId(sessionId, accountId, limit, offset),
   getWalletById: (sessionId, walletId) => getWalletById(sessionId, walletId),
@@ -108,4 +160,5 @@ export default {
   updateNote: (sessionId, walletId, notes) => updateNote(sessionId, walletId, notes),
   searchWallet: (sessionId, keyword, type) => searchWallet(sessionId, keyword, type),
   updateStatus: (sessionId, walletId, status) => updateStatus(sessionId, walletId, status),
+  updateVerification: (sessionId, walletId, vbaVerificationData) => updateVerification(sessionId, walletId, vbaVerificationData),
 };

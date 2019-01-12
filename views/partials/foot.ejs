@@ -12,6 +12,9 @@
 <script src="/base/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="/base/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 
+<script src="/resources/tagEditor/jquery.caret.min.js"></script>
+<script src="/resources/tagEditor/jquery.tag-editor.js"></script>
+
 <!-- script to async paginate -->
 <script>
   $('.ajax_paginate').on('click', 'a', function(e) {
@@ -50,4 +53,8 @@
   $('.only-number').on('keypress', function(e) {
     return /^[0-9.]*$/gm.test(e.key);
   })
+
+  $('.tag-editor').tagEditor({
+    forceLowercase: false
+  });
 </script>

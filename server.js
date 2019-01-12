@@ -46,6 +46,7 @@ app.use((req, res, next) => {
 
 
 app.use('/base', express.static('./node_modules/admin-lte'));
+app.use('/resources', express.static('./views/resources'));
 app.use('/', routes);
 
 app.listen(config.server.port, (err) => {

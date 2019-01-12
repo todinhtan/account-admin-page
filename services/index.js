@@ -4,6 +4,7 @@ import accountService from './account';
 import sessionService from './session';
 import commonService from './common';
 import transactionService from './transaction';
+import documentService from './document';
 
 export default {
   transferService,
@@ -12,4 +13,5 @@ export default {
   sessionService,
   commonService,
   transactionService,
+  documentService,
 };

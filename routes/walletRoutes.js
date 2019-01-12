@@ -6,6 +6,7 @@ import {
   downloadTransactions,
   searchWallet,
   updateStatus,
+  updateVerification,
 } from '../controllers/wallet';
 import { verifySession } from '../middlewares';
 
@@ -18,6 +19,7 @@ router.get('/wallet/:walletId/transactions/download', verifySession, downloadTra
 
 // update
 router.post('/wallet/:walletId/status', verifySession, updateStatus);
+router.post('/wallet/:walletId/verification/update', verifySession, updateVerification);
 
 // search
 router.get('/wallets/search', verifySession, searchWallet);

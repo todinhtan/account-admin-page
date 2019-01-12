@@ -19,6 +19,13 @@ export async function getWalletDetail(req, res) {
     friendlyNames = await services.commonService.storeSrnFriendlyName(tr.dest, friendlyNames, req.session.sessionId);
   }
 
+  // get documents
+  const document = {};
+  if (currentWallet.vbaVerificationData) {
+    if (currentWallet.vbaVerificationData.idDoc) document.idDoc = await services.documentService.getDocumentUri(req.session.sessionId, currentWallet.vbaVerificationData.idDoc);
+    if (currentWallet.vbaVerificationData.coiDoc) document.coiDoc = await services.documentService.getDocumentUri(req.session.sessionId, currentWallet.vbaVerificationData.coiDoc);
+  }
+
   // get beauty array of balance currencies
   const balances = [];
   let currencies = [];
@@ -44,7 +51,7 @@ export async function getWalletDetail(req, res) {
   }
 
   res.render('pages/wallet_detail', {
-    currentWallet, listTransfer, listTransaction, friendlyNames, balances,
+    currentWallet, listTransfer, listTransaction, friendlyNames, balances, document,
   });
 }
 
@@ -89,6 +96,15 @@ export async function updateStatus(req, res) {
   const isSuccess = await services.walletService.updateStatus(req.session.sessionId, req.params.walletId, req.body.status);
   if (isSuccess) {
     req.session.messages = ['Updated status successfully!'];
+  }
+  res.redirect(`/wallet/${req.params.walletId}`);
+}
+
+export async function updateVerification(req, res) {
+  req.body.countries = req.body.countries.split(',');
+  const isSuccess = await services.walletService.updateVerification(req.session.sessionId, req.params.walletId, req.body);
+  if (isSuccess) {
+    req.session.messages = ['Updated VBA verification successfully!'];
   }
   res.redirect(`/wallet/${req.params.walletId}`);
 }
