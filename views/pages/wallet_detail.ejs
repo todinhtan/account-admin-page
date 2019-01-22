@@ -270,7 +270,7 @@
                 <% }) %>
                 <div class="form-group col-md-6 col-sm-12">
                   <label for="countries">countries</label>
-                  <input type="text" id="countries" name="countries" class="tag-editor form-control" value="<%= currentWallet.vbaVerificationData.countries.join(',') %>">
+                  <input type="text" id="countries" name="countries" class="tag-editor form-control" value="<%= currentWallet.vbaVerificationData.countries ? currentWallet.vbaVerificationData.countries.join(',') : '' %>">
                 </div>
               </div>
               <% if (currentWallet.vbaVerificationData.address == null) { %>
