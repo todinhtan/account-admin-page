@@ -7,6 +7,7 @@ import {
   searchWallet,
   updateStatus,
   updateVerification,
+  updateVbaData,
 } from '../controllers/wallet';
 import { verifySession } from '../middlewares';
 
@@ -20,6 +21,7 @@ router.get('/wallet/:walletId/transactions/download', verifySession, downloadTra
 // update
 router.post('/wallet/:walletId/status', verifySession, updateStatus);
 router.post('/wallet/:walletId/verification/update', verifySession, updateVerification);
+router.post('/wallet/:walletId/vbaData/update', verifySession, updateVbaData);
 
 // search
 router.get('/wallets/search', verifySession, searchWallet);

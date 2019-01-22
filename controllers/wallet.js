@@ -108,3 +108,24 @@ export async function updateVerification(req, res) {
   }
   res.redirect(`/wallet/${req.params.walletId}`);
 }
+
+export async function updateVbaData(req, res) {
+  const { walletId } = req.params;
+  const { country } = req.body;
+  let vbaData = null;
+  try {
+    vbaData = JSON.parse(req.body.vbaData);
+  } catch (error) {
+    // invalid VbaData
+  }
+
+  if (!vbaData) {
+    req.session.errors = ['vbaData is not valid json!'];
+  } else {
+    const isSuccess = await services.walletService.updateVbaData(walletId, country, vbaData);
+    if (isSuccess) {
+      req.session.messages = ['Updated VBA data successfully!'];
+    }
+  }
+  res.redirect(req.header('Referer'));
+}

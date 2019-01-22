@@ -153,6 +153,24 @@ async function updateVerification(sessionId, walletId, vbaVerificationData) {
   return false;
 }
 
+async function updateVbaData(walletId, country, vbaData) {
+  try {
+    if (country === undefined || country === null || country === '') return false;
+    if (walletId === undefined || walletId === null) return false;
+
+    const response = await axios.post(`${config.api.vbaPrefix}/vba/${walletId}/vbaData/${country}`, vbaData, {
+      auth: {
+        username: 'admin',
+        password: 'adm1nadm1n',
+      },
+    });
+    if (response && response.status === HttpStatusCode.OK) return true;
+  } catch (error) {
+    // just return false
+  }
+  return false;
+}
+
 export default {
   getWalletsByAccountId: (sessionId, accountId, limit, offset) => getWalletsByAccountId(sessionId, accountId, limit, offset),
   getWalletById: (sessionId, walletId) => getWalletById(sessionId, walletId),
@@ -161,4 +179,5 @@ export default {
   searchWallet: (sessionId, keyword, type) => searchWallet(sessionId, keyword, type),
   updateStatus: (sessionId, walletId, status) => updateStatus(sessionId, walletId, status),
   updateVerification: (sessionId, walletId, vbaVerificationData) => updateVerification(sessionId, walletId, vbaVerificationData),
+  updateVbaData: (walletId, country, vbaData) => updateVbaData(walletId, country, vbaData),
 };

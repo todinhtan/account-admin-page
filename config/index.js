@@ -8,5 +8,6 @@ export default {
   api: {
     prefix: process.env.API_PREFIX || 'https://go-test.epiapi.com/v2',
     pageSize: process.env.PAGE_SIZE || 10,
+    vbaPrefix: process.env.VBA_API_PREFIX || 'http://localhost:8080',
   },
 };
