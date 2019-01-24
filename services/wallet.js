@@ -130,7 +130,7 @@ async function updateVerification(sessionId, walletId, vbaVerificationData) {
         || !vbaVerificationData.repAddress.country) delete vbaVerificationData.repAddress;
     }
 
-    if (vbaVerificationData.merchantId.length > 0) {
+    if (vbaVerificationData.merchantId && vbaVerificationData.merchantId.length > 0) {
       vbaVerificationData.merchantIds = [];
       // merchant
       for (let i = 0; i < vbaVerificationData.merchantId.length; i++) {
