@@ -5,6 +5,7 @@ import sessionService from './session';
 import commonService from './common';
 import transactionService from './transaction';
 import documentService from './document';
+import paymentMethodService from './paymentMethod';
 
 export default {
   transferService,
@@ -14,4 +15,5 @@ export default {
   commonService,
   transactionService,
   documentService,
+  paymentMethodService,
 };

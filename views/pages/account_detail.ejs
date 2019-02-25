@@ -205,6 +205,13 @@
           }) %>
         </div>
         <% } %>
+        <% if (listPaymentMethod.items.length > 0) { %>
+        <div class="col-md-12">
+          <%- include('../includes/_table/paymentMethods', {
+            listPaymentMethod: listPaymentMethod,
+          }) %>
+        </div>
+        <% } %>
       </div>
     </section>
     <!-- /.content -->
