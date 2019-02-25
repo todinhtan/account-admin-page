@@ -29,8 +29,8 @@
           <% listHistorySession.items.forEach(function(sess, index) { %>
           <tr>
             <td><%= sess.id %></td>
-            <td><%= sess.createdAt ? (new Date(sess.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
-            <td><%= sess.expiresAt ? (new Date(sess.expiresAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
+            <td><%= sess.createdAt ? moment(sess.createdAt).format('LLLL') : 'N/A' %></td>
+            <td><%= sess.expiresAt ? moment(sess.expiresAt).format('LLLL') : 'N/A' %></td>
             <td><%= sess.deviceType %></td>
             <td><%= sess.ipAddress %></td>
             <td><%= sess.language %></td>

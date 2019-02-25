@@ -32,8 +32,8 @@
           <% listTransfer.items.forEach(function(transfer, index) { %>
           <tr>
             <td><%= transfer.id %></td>
-            <td><%= (new Date(transfer.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) %></td>
-            <td><%= (new Date(transfer.closedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) %></td>
+            <td><%= moment(transfer.createdAt).format('LLLL') %></td>
+            <td><%= moment(transfer.closedAt).format('LLLL') %></td>
             <td><a href="<%= friendlyNames[transfer.source].url %>"><%= friendlyNames[transfer.source].name %></a></td>
             <td><a href="<%= friendlyNames[transfer.dest].url %>"><%= friendlyNames[transfer.dest].name %></a></td>
             <td><%= transfer.status %></td>
