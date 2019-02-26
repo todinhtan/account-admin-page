@@ -32,6 +32,19 @@ async function getPaymentMethodsByAccount(sessionId, accountId, limit, offset) {
   return result;
 }
 
+async function getPaymentMethodById(sessionId, methodId) {
+  try {
+    if (sessionId === undefined || sessionId === null) return null;
+    if (methodId === undefined || methodId === null) return null;
+    const response = await axios.get(`${config.api.prefix}/paymentMethod/${methodId}?sessionId=${sessionId}`);
+    if (response && response.status === HttpStatusCode.OK && response.data) return response.data;
+  } catch (error) {
+    // just return false
+  }
+  return null;
+}
+
 export default {
   getPaymentMethodsByAccount: (sessionId, accountId, limit, offset) => getPaymentMethodsByAccount(sessionId, accountId, limit, offset),
+  getPaymentMethodById: (sessionId, methodId) => getPaymentMethodById(sessionId, methodId),
 };
