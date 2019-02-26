@@ -70,11 +70,11 @@
                     <% if (transfer != null) { %>
                     <tr>
                       <td><%= transfer.id %></td>
-                      <td><%= (new Date(transfer.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) %></td>
+                      <td><%= moment(transfer.createdAt).format('LLLL') %></td>
                       <% if (transfer.completedAt == null && transfer.cancelledAt == null) { %>
-                      <td>N/A</td>
+                        <td>N/A</td>
                       <% } else { %>
-                      <td><%= (new Date(transfer.completedAt ? transfer.completedAt : transfer.cancelledAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) %></td>
+                        <td><%= moment(transfer.completedAt ? transfer.completedAt : transfer.cancelledAt).format('LLLL') %></td>
                       <% } %>
                       <td><a href="<%= friendlyNames[transfer.source].url %>"><%= friendlyNames[transfer.source].name %></a></td>
                       <td><a href="<%= friendlyNames[transfer.dest].url %>"><%= friendlyNames[transfer.dest].name %></a></td>

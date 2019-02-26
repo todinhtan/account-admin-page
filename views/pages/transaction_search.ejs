@@ -73,10 +73,10 @@
                     <% if (transaction != null) { %>
                     <tr>
                       <td><%= transaction.id %></td>
-                      <td><%= (transaction.createdAt !== null) ? (new Date(transaction.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
-                      <td><%= (transaction.confirmedAt !== null) ? (new Date(transaction.confirmedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
-                      <td><%= (transaction.cancelledAt !== null) ? (new Date(transaction.cancelledAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
-                      <td><%= (transaction.reversedAt !== null) ? (new Date(transaction.reversedAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })) : 'N/A' %></td>
+                      <td><%= moment(transaction.createdAt).format('LLLL') : 'N/A' %></td>
+                      <td><%= moment(transaction.confirmedAt).format('LLLL') : 'N/A' %></td>
+                      <td><%= moment(transaction.cancelledAt).format('LLLL') : 'N/A' %></td>
+                      <td><%= moment(transaction.reversedAt).format('LLLL') : 'N/A' %></td>
                       <td><a href="<%= friendlyNames[transaction.source].url %>"><%= friendlyNames[transaction.source].name %></a></td>
                       <td><a href="<%= friendlyNames[transaction.dest].url %>"><%= friendlyNames[transaction.dest].name %></a></td>
                       <td><%= transaction.status %></td>

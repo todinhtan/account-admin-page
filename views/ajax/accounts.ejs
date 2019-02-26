@@ -17,7 +17,7 @@
     }
   %>
   <td><%= acc.profile.type %></td>
-  <td><%= new Date(acc.createdAt).toLocaleDateString() %></td>
+  <td><%= moment(acc.createdAt).format('LLLL') %></td>
   <td><span class="label label-<%= labelType %>"><%= acc.status %></span></td>
 </tr>
 <% }) %>

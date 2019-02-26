@@ -64,7 +64,7 @@
                     </tr>
                     <tr>
                       <td>Created at</td>
-                      <td><%= new Date(currentAccount.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }) %></td>
+                      <td><%= moment(currentAccount.createdAt).format('LLLL') %></td>
                     </tr>
                     <tr>
                       <td>Name</td>

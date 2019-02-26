@@ -60,7 +60,7 @@
                     </tr>
                     <tr>
                       <td>Created date</td>
-                      <td><%= new Date(currentWallet.createdAt).toLocaleDateString({}, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }) %></td>
+                      <td><%= moment(currentWallet.createdAt).format('LLLL') %></td>
                     </tr>
                     <tr>
                       <td>Type</td>
