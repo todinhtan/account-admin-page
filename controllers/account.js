@@ -10,6 +10,7 @@ export async function getAccountDetail(req, res) {
   const listTransfer = await services.transferService.getTransfersBySRN(req.session.sessionId, `account:${req.params.accountId}`, req.session.transferPageSize, 0);
   const listTransaction = await services.transactionService.getTransactionsBySRN(req.session.sessionId, `account:${req.params.accountId}`, req.session.transactionPageSize, 0);
   const listHistorySession = await services.accountService.getSessionHistory(req.session.sessionId, req.params.accountId, req.session.sessionPageSize, 0);
+  const listPaymentMethod = await services.paymentMethodService.getPaymentMethodsByAccount(req.session.sessionId, req.params.accountId, 100 /* get all methods in one call */, 0);
   let friendlyNames = {};
   // get friendly name of SRN
   for (const tr of listTransfer.items) {
@@ -21,7 +22,13 @@ export async function getAccountDetail(req, res) {
     friendlyNames = await services.commonService.storeSrnFriendlyName(tr.dest, friendlyNames, req.session.sessionId);
   }
   res.render('pages/account_detail', {
-    currentAccount, listWallet, listTransfer, listTransaction, listHistorySession, friendlyNames,
+    currentAccount,
+    listWallet,
+    listTransfer,
+    listTransaction,
+    listHistorySession,
+    friendlyNames,
+    listPaymentMethod,
   });
 }
 

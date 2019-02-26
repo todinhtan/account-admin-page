@@ -1,0 +1,46 @@
+<div class="box box-info">
+  <div class="box-header with-border">
+      <h3 class="box-title">Payment methods</h3>
+
+      <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+      </button>
+      <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+      </div>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+      <div class="table-responsive">
+      <table class="table no-margin data-tbl">
+          <thead>
+          <tr>
+              <th>ID</th>
+              <th>Created at</th>
+              <th>Owner</th>
+              <th>Name</th>
+              <th>Currency</th>
+              <th>Status</th>
+              <th>Link type</th>
+              <th>Beneficiary type</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% listPaymentMethod.items.forEach(function(method, index) { %>
+          <tr>
+              <td><%= method.id %></td>
+              <td><%= moment(method.createdAt).format('LLLL') %></td>
+              <td><a href="/account/<%= method.ownerName %>"><%= method.owner %></a></td>
+              <td><%= method.name %></td>
+              <td><%= method.defaultCurrency %></td>
+              <td><%= method.status %></td>
+              <td><%= method.linkType %></td>
+              <td><%= method.beneficiaryType %></td>
+          </tr>
+          <% }) %>
+          </tbody>
+      </table>
+      </div>
+      <!-- /.table-responsive -->
+  </div>
+  <!-- /.box-body -->
+</div>
