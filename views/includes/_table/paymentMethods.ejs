@@ -27,7 +27,7 @@
           <tbody>
           <% listPaymentMethod.items.forEach(function(method, index) { %>
           <tr>
-              <td><%= method.id %></td>
+              <td><a href="/payment-method/<%= method.id %>"><%= method.id %></a></td>
               <td><%= moment(method.createdAt).format('LLLL') %></td>
               <td><a href="/account/<%= method.ownerName %>"><%= method.owner %></a></td>
               <td><%= method.name %></td>
