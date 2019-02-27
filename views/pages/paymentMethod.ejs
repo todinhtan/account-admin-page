@@ -38,14 +38,11 @@
                 <table class="table no-margin">
                   <tbody>
                     <% Object.keys(method.details).forEach(function(key, index) { %>
-                      <% if (index % 2 == 0) { %>
+                      <% var fetchFields = ["paymentMethodType","owner","attachBlockchains","currency","country","accountNumber","priority","chargeablePM","beneficiaryType","beneficiaryName","beneficiaryAddress","bankName","accountType","swiftBic"] %>
+                      <% if (fetchFields.indexOf(key) > -1) { %>
                         <tr>
                           <td><strong><%=key%></strong></td>
                           <td><%= method.details[key] ? method.details[key] : 'N/A' %></td>
-                        <% if (index < (Object.keys(method.details).length - 1)) { %>
-                          <td><strong><%=Object.keys(method.details)[index+1]%></strong></td>
-                          <td><%= method.details[Object.keys(method.details)[index+1]] ? method.details[Object.keys(method.details)[index+1]] : 'N/A' %></td>
-                        <% } %>
                         </tr>
                       <% } %>
                     <% }) %>
