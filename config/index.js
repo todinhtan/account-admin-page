@@ -10,4 +10,5 @@ export default {
     pageSize: process.env.PAGE_SIZE || 10,
     vbaPrefix: process.env.VBA_API_PREFIX || 'http://localhost:8080',
   },
+  tz: 'Asia/Shanghai',
 };

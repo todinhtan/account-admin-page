@@ -19,8 +19,8 @@ import { verifySession } from '../middlewares';
 const router = Router();
 
 router.get('/account/:accountId', verifySession, getAccountDetail);
-router.get('/account/:accountId/transfers/download', verifySession, downloadTransfers);
-router.get('/account/:accountId/transactions/download', verifySession, downloadTransactions);
+router.post('/account/:accountId/transfers/download', verifySession, downloadTransfers);
+router.post('/account/:accountId/transactions/download', verifySession, downloadTransactions);
 router.get('/account/:accountId/disable', verifySession, disableAccount);
 router.get('/account/:accountId/verifyIdentity/:identity', verifySession, verifyIdentity);
 router.get('/account/:accountId/removeIdentity/:identity', verifySession, removeIdentity);

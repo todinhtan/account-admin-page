@@ -1,8 +1,8 @@
 <% listTransfer.items.forEach(function(transfer, index) { %>
 <tr>
   <td><%= transfer.id %></td>
-  <td><%= moment(transfer.createdAt).format('LLLL') %></td>
-  <td><%= moment(transfer.closedAt).format('LLLL') %></td>
+  <td><%= transfer.createdAt ? moment(transfer.createdAt).format('LLLL') : 'N/A' %></td>
+  <td><%= transfer.closedAt ? moment(transfer.closedAt).format('LLLL') : 'N/A' %></td>
   <td><a href="<%= friendlyNames[transfer.source].url %>"><%= friendlyNames[transfer.source].name %></a></td>
   <td><a href="<%= friendlyNames[transfer.dest].url %>"><%= friendlyNames[transfer.dest].name %></a></td>
   <td><%= transfer.status %></td>

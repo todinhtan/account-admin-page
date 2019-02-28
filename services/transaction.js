@@ -3,6 +3,8 @@
 import axios from 'axios';
 import HttpStatusCode from 'http-status-codes';
 import json2csv from 'json2csv';
+import moment from 'moment';
+import 'moment-timezone';
 
 import config from '../config';
 
@@ -33,9 +35,36 @@ async function getTransactionsBySRN(sessionId, srn, limit, offset) {
   return result;
 }
 
-async function getTransactionCsvBySRN(sessionId, srn, limit, offset) {
+async function getTransactionsBySRNWithRange(sessionId, srn, limit, offset, from, to) {
+  const result = {
+    items: [],
+    total: 0,
+    size: config.api.pageSize,
+  };
+  let l = parseInt(limit, 10);
+  let o = parseInt(offset, 10);
+  if (isNaN(l) || l < 1) l = config.api.pageSize;
+  if (isNaN(o) || o < 1) o = 0;
+
+  result.size = l;
+  try {
+    const allTransactionsResp = await axios.get(`${config.api.prefix}/transactions/${srn}?sessionId=${sessionId}&from=${from}&to=${to}&limit=${l}&offset=${o}`);
+    if (allTransactionsResp && allTransactionsResp.status === HttpStatusCode.OK && allTransactionsResp.data) {
+      result.items = allTransactionsResp.data.data;
+      result.total = allTransactionsResp.data.recordsTotal;
+    }
+  } catch (error) {
+    // let transactions empty
+  }
+
+  result.totalPage = Math.ceil(result.total / limit);
+
+  return result;
+}
+
+async function getTransactionCsvBySRN(sessionId, srn, limit, offset, from, to) {
   const json2csvParser = new json2csv.Parser();
-  const listTransaction = await getTransactionsBySRN(sessionId, srn, limit, offset);
+  const listTransaction = await getTransactionsBySRNWithRange(sessionId, srn, limit, offset, from, to);
 
   const reMappingData = listTransaction.items.map((trans) => {
     const res = {
@@ -44,18 +73,10 @@ async function getTransactionCsvBySRN(sessionId, srn, limit, offset) {
       Destination: trans.dest,
       Currency: trans.currency,
       Amount: trans.amount,
-      'Created at': trans.createdAt ? new Date(trans.createdAt).toLocaleDateString({}, {
-        year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric',
-      }) : 'N/A',
-      'Confirmed at': trans.confirmedAt ? new Date(trans.confirmedAt).toLocaleDateString({}, {
-        year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric',
-      }) : 'N/A',
-      'Cancelled at': trans.cancelledAt ? new Date(trans.cancelledAt).toLocaleDateString({}, {
-        year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric',
-      }) : 'N/A',
-      'Reversed at': trans.reversedAt ? new Date(trans.reversedAt).toLocaleDateString({}, {
-        year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric',
-      }) : 'N/A',
+      'Created at': trans.createdAt ? moment(trans.createdAt).tz(config.tz).format('LLLL') : 'N/A',
+      'Confirmed at': trans.confirmedAt ? moment(trans.confirmedAt).tz(config.tz).format('LLLL') : 'N/A',
+      'Cancelled at': trans.cancelledAt ? moment(trans.cancelledAt).tz(config.tz).format('LLLL') : 'N/A',
+      'Reversed at': trans.reversedAt ? moment(trans.reversedAt).tz(config.tz).format('LLLL') : 'N/A',
       Message: trans.message,
       'Allow Overdraft': trans.allowOverdraft,
       Authorizer: trans.authorizer,
@@ -76,7 +97,7 @@ async function getTransactionCsvBySRN(sessionId, srn, limit, offset) {
     return res;
   });
 
-  return json2csvParser.parse(reMappingData);
+  return reMappingData.length ? json2csvParser.parse(reMappingData) : [];
 }
 
 async function getTransactionById(sessionId, tid) {
@@ -94,6 +115,6 @@ async function getTransactionById(sessionId, tid) {
 
 export default {
   getTransactionsBySRN: (sessionId, srn, limit, offset) => getTransactionsBySRN(sessionId, srn, limit, offset),
-  getTransactionCsvBySRN: (sessionId, srn, limit, offset) => getTransactionCsvBySRN(sessionId, srn, limit, offset),
+  getTransactionCsvBySRN: (sessionId, srn, limit, offset, from, to) => getTransactionCsvBySRN(sessionId, srn, limit, offset, from, to),
   getTransactionById: (sessionId, tid) => getTransactionById(sessionId, tid),
 };

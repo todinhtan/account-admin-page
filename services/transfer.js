@@ -3,6 +3,8 @@
 import axios from 'axios';
 import HttpStatusCode from 'http-status-codes';
 import json2csv from 'json2csv';
+import moment from 'moment';
+import 'moment-timezone';
 
 import config from '../config';
 
@@ -33,18 +35,41 @@ async function getTransfersBySRN(sessionId, srn, limit, offset) {
   return result;
 }
 
-async function getTransferCsvBySRN(sessionId, srn, limit, offset) {
+async function getTransfersBySRNWithRange(sessionId, srn, limit, offset, from, to) {
+  const result = {
+    items: [],
+    total: 0,
+    size: config.api.pageSize,
+  };
+  let l = parseInt(limit, 10);
+  let o = parseInt(offset, 10);
+  if (isNaN(l) || l < 1) l = config.api.pageSize;
+  if (isNaN(o) || o < 1) o = 0;
+
+  result.size = l;
+  try {
+    const allTransfersResp = await axios.get(`${config.api.prefix}/transfers/${srn}?sessionId=${sessionId}&from=${from}&to=${to}&limit=${l}&offset=${o}`);
+    if (allTransfersResp && allTransfersResp.status === HttpStatusCode.OK && allTransfersResp.data) {
+      result.items = allTransfersResp.data.data;
+      result.total = allTransfersResp.data.recordsTotal;
+    }
+  } catch (error) {
+    // let accounts empty
+  }
+
+  result.totalPage = Math.ceil(result.total / limit);
+
+  return result;
+}
+
+async function getTransferCsvBySRN(sessionId, srn, limit, offset, from, to) {
   const json2csvParser = new json2csv.Parser();
-  const listTransfer = await getTransfersBySRN(sessionId, srn, limit, offset);
+  const listTransfer = await getTransfersBySRNWithRange(sessionId, srn, limit, offset, from, to);
   const reMappingData = listTransfer.items.map((trans) => {
     const res = {
       ID: trans.id,
-      'Created at': new Date(trans.createdAt).toLocaleDateString({}, {
-        year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric',
-      }),
-      'Closed at': new Date(trans.closedAt).toLocaleDateString({}, {
-        year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric',
-      }),
+      'Created at': trans.createdAt ? moment(trans.createdAt).tz(config.tz).format('LLLL') : 'N/A',
+      'Closed at': trans.closedAt ? moment(trans.closedAt).tz(config.tz).format('LLLL') : 'N/A',
       'Custom ID': trans.customId,
       Source: trans.source,
       Destination: trans.dest,
@@ -65,7 +90,7 @@ async function getTransferCsvBySRN(sessionId, srn, limit, offset) {
     };
     return res;
   });
-  return json2csvParser.parse(reMappingData);
+  return reMappingData.length ? json2csvParser.parse(reMappingData) : [];
 }
 
 export async function getTransferById(sessionId, tid) {
@@ -114,7 +139,7 @@ export async function finalise(sessionId, tid) {
 
 export default {
   getTransfersBySRN: (sessionId, srn, limit, offset) => getTransfersBySRN(sessionId, srn, limit, offset),
-  getTransferCsvBySRN: (sessionId, srn, limit, offset) => getTransferCsvBySRN(sessionId, srn, limit, offset),
+  getTransferCsvBySRN: (sessionId, srn, limit, offset, from, to) => getTransferCsvBySRN(sessionId, srn, limit, offset, from, to),
   getTransferById: (sessionId, tid) => getTransferById(sessionId, tid),
   addFunds: (sessionId, amount, srn) => addFunds(sessionId, amount, srn),
   finalise: (sessionId, tid) => finalise(sessionId, tid),

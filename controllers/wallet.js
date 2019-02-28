@@ -2,6 +2,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable max-len */
+import moment from 'moment';
 import services from '../services';
 
 export async function getWalletDetail(req, res) {
@@ -64,20 +65,18 @@ export async function updateWalletNote(req, res) {
 }
 
 export async function downloadTransfers(req, res) {
-  let page = parseInt(req.query.page, 10);
-  if (isNaN(page) || page < 1) page = 1;
-  const offset = (page - 1) * req.session.transferPageSize;
-  const transferCsv = await services.transferService.getTransferCsvBySRN(req.session.sessionId, `wallet:${req.params.walletId}`, req.session.transferPageSize, offset);
+  const from = moment(req.body.from, 'YYYY-MM-DD').format('x');
+  const to = moment(req.body.to, 'YYYY-MM-DD').format('x');
+  const transferCsv = await services.transferService.getTransferCsvBySRN(req.session.sessionId, `wallet:${req.params.walletId}`, req.body.limit, 0, from, to);
   res.setHeader('Content-Disposition', `attachment; filename=${req.params.walletId}_transfers.csv`);
   res.type('text/csv');
   return res.send(transferCsv).end();
 }
 
 export async function downloadTransactions(req, res) {
-  let page = parseInt(req.query.page, 10);
-  if (isNaN(page) || page < 1) page = 1;
-  const offset = (page - 1) * req.session.transactionPageSize;
-  const transactionsCsv = await services.transactionService.getTransactionCsvBySRN(req.session.sessionId, `wallet:${req.params.walletId}`, req.session.transactionPageSize, offset);
+  const from = moment(req.body.from, 'YYYY-MM-DD').format('x');
+  const to = moment(req.body.to, 'YYYY-MM-DD').format('x');
+  const transactionsCsv = await services.transactionService.getTransactionCsvBySRN(req.session.sessionId, `wallet:${req.params.walletId}`, req.body.limit, 0, from, to);
   res.setHeader('Content-Disposition', `attachment; filename=${req.params.walletId}_transactions.csv`);
   res.type('text/csv');
   return res.send(transactionsCsv).end();

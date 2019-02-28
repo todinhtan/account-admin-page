@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // middleware to make session variables available to all templates
 app.use((req, res, next) => {
-  moment.tz.setDefault('Asia/Shanghai');
+  moment.tz.setDefault(config.tz);
   // inject moment
   res.locals.moment = moment;
   res.locals.account = req.session.account;
