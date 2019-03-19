@@ -11,6 +11,8 @@ import config from './config';
 import logger from './utils/logger';
 import routes from './routes';
 
+require('./utils/db');
+
 const app = express();
 app.use(session({
   secret: '59HSWMPdhcRhgcJ5',

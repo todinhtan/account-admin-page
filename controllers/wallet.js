@@ -51,8 +51,10 @@ export async function getWalletDetail(req, res) {
     });
   }
 
+  const authorizeDoc = await services.walletService.findAuthorizeDocByWallet(currentWallet.id);
+
   res.render('pages/wallet_detail', {
-    currentWallet, listTransfer, listTransaction, friendlyNames, balances, document,
+    currentWallet, listTransfer, listTransaction, friendlyNames, balances, document, authorizeDoc,
   });
 }
 
@@ -126,5 +128,15 @@ export async function updateVbaData(req, res) {
       req.session.messages = ['Updated VBA data successfully!'];
     }
   }
+  res.redirect(req.header('Referer'));
+}
+
+export async function saveAuthorizeDoc(req, res) {
+  const { walletId } = req.params;
+  const docData = req.body;
+
+  const result = await services.walletService.saveAuthorizeDoc(walletId, docData, req.session.account ? req.session.account.id : '');
+  if (result) req.session.messages = ['Successfully'];
+  else req.session.errors = ['Failed to save data'];
   res.redirect(req.header('Referer'));
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-restricted-syntax */
@@ -6,7 +7,10 @@
 /* eslint-disable max-len */
 import axios from 'axios';
 import HttpStatusCode from 'http-status-codes';
+import AuthorizeDoc from '../models/authorize_doc';
+import VbaRequest from '../models/vba';
 
+import logger from '../utils/logger';
 import config from '../config';
 
 async function getWalletsByAccountId(sessionId, accountId, limit, offset) {
@@ -171,6 +175,31 @@ async function updateVbaData(walletId, country, vbaData) {
   return false;
 }
 
+async function saveAuthorizeDoc(walletId, docData, adminAccountId) {
+  const vbaRequest = await VbaRequest.findOne({ walletId }).catch((err) => { logger.error(err); });
+  if (vbaRequest && vbaRequest._doc && vbaRequest._doc.vbaData && vbaRequest._doc.vbaData.userId) {
+    const { userId } = vbaRequest._doc.vbaData;
+    const newRecord = {
+      walletId,
+      userId,
+      ...docData,
+      adminAccountId,
+    };
+
+    const affectedDoc = await AuthorizeDoc.findOneAndUpdate({ walletId }, { $set: { ...newRecord, status: 'PENDING' } }, { new: true, upsert: true }).catch((err) => {
+      logger.error(err);
+    });
+
+    return !!affectedDoc;
+  }
+  return false;
+}
+
+async function findAuthorizeDocByWallet(walletId) {
+  const doc = await AuthorizeDoc.findOne({ walletId }).catch((err) => { logger.error(err); });
+  return doc;
+}
+
 export default {
   getWalletsByAccountId: (sessionId, accountId, limit, offset) => getWalletsByAccountId(sessionId, accountId, limit, offset),
   getWalletById: (sessionId, walletId) => getWalletById(sessionId, walletId),
@@ -180,4 +209,6 @@ export default {
   updateStatus: (sessionId, walletId, status) => updateStatus(sessionId, walletId, status),
   updateVerification: (sessionId, walletId, vbaVerificationData) => updateVerification(sessionId, walletId, vbaVerificationData),
   updateVbaData: (walletId, country, vbaData) => updateVbaData(walletId, country, vbaData),
+  saveAuthorizeDoc: (walletId, data, adminAccountId) => saveAuthorizeDoc(walletId, data, adminAccountId),
+  findAuthorizeDocByWallet: walletId => findAuthorizeDocByWallet(walletId),
 };

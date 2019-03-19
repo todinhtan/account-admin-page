@@ -8,6 +8,7 @@ import {
   updateStatus,
   updateVerification,
   updateVbaData,
+  saveAuthorizeDoc,
 } from '../controllers/wallet';
 import { verifySession } from '../middlewares';
 
@@ -25,5 +26,8 @@ router.post('/wallet/:walletId/vbaData/update', verifySession, updateVbaData);
 
 // search
 router.get('/wallets/search', verifySession, searchWallet);
+
+// post
+router.post('/wallet/:walletId/authorizeDoc', verifySession, saveAuthorizeDoc);
 
 export default router;
