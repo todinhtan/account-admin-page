@@ -135,7 +135,7 @@ export async function saveAuthorizeDoc(req, res) {
   const { walletId } = req.params;
   const docData = req.body;
 
-  const result = await services.walletService.saveAuthorizeDoc(walletId, docData, req.session.account ? req.session.account.id : '');
+  const result = await services.walletService.saveAuthorizeDoc(walletId, docData, req.session.account ? req.session.account.id : '', req.session.account && req.session.account.profile ? req.session.account.profile.name : '');
   if (result) req.session.messages = ['Successfully'];
   else req.session.errors = ['Failed to save data'];
   res.redirect(req.header('Referer'));

@@ -59,6 +59,10 @@ const AuthorizeDocSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    adminAccountName: {
+      type: String,
+      trim: true,
+    },
   },
   {
     timestamps: { createdAt: 'created_time', updatedAt: 'updated_time' },
