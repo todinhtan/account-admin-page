@@ -410,6 +410,7 @@
             </div>
             <div class="modal-body">
               <div class="row">
+                <input type="hidden" name="idDoc" value="<%= document.idDoc ? document.idDoc : '' %>">
                 <div class="form-group col-md-12">
                   <label for="fullName">Full Name</label>
                   <input type="text" required id="fullName" name="fullName" class="form-control" value="<%= currentWallet.vbaVerificationData ? (currentWallet.vbaVerificationData.nameEn || currentWallet.vbaVerificationData.nameCn) : '' %>">

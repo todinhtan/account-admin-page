@@ -63,6 +63,10 @@ const AuthorizeDocSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    idDoc: {
+      type: String,
+      trim: true,
+    },
   },
   {
     timestamps: { createdAt: 'created_time', updatedAt: 'updated_time' },
