@@ -21,6 +21,9 @@ const AuthorizeDocSchema = new mongoose.Schema(
     dob: {
       type: Number,
     },
+    dobString: {
+      type: String,
+    },
     address: {
       street1: {
         type: String,
