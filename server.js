@@ -4,9 +4,10 @@ import compression from 'compression';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
-
 import moment from 'moment';
 import 'moment-timezone';
+import pinyin from 'pinyin';
+
 import config from './config';
 import logger from './utils/logger';
 import routes from './routes';
@@ -29,6 +30,8 @@ app.use((req, res, next) => {
   moment.tz.setDefault(config.tz);
   // inject moment
   res.locals.moment = moment;
+  // inject pinyin
+  res.locals.pinyin = pinyin;
   res.locals.account = req.session.account;
   res.locals.messages = req.session.messages;
   req.session.messages = [];

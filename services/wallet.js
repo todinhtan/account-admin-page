@@ -191,6 +191,10 @@ async function saveAuthorizeDoc(walletId, docData, adminAccountId, adminAccountN
       logger.error(err);
     });
 
+    await VbaRequest.update({ walletId }, { $set: { authorization: 'DONE' } }).catch((err) => {
+      logger.error(err);
+    });
+
     return !!affectedDoc;
   }
   return false;

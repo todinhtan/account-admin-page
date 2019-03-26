@@ -1,0 +1,21 @@
+<% listUnauthorizedVba.items.forEach(function(vba, index) { %>
+<tr>
+  <td><%= vba.vbaData ? vba.vbaData.userId : '' %></td>
+  <td><%= vba.walletId %></td>
+  <td>PENDING</td>
+  <td><a href="#" data-toggle="modal" data-target="#authorizeDoc-modal"
+    data-action="/wallet/<%= vba.walletId %>/authorizeDoc"
+    data-name="<%= pinyin(vba.nameEn || vba.nameCn).join(' ') %>"
+    data-sex="<%= vba.entityType %>"
+    data-idnumber="<%= vba.idNumber %>"
+    data-dob="<%= moment(vba.dateOfBirth).format('MM/DD/YYYY') %>"
+    data-street1="<%= vba.address ? pinyin(vba.address.street1).join(' ') : '' %>"
+    data-street2="<%= vba.address ? pinyin(vba.address.street2).join(' ') : '' %>"
+    data-city="<%= vba.address ? pinyin(vba.address.city).join(' ') : '' %>"
+    data-state="<%= vba.address ? pinyin(vba.address.state).join(' ') : '' %>"
+    data-postalcode="<%= vba.address ? pinyin(vba.address.postalCode).join(' ') : '' %>"
+    data-country="<%= vba.address ? pinyin(vba.address.country).join(' ') : '' %>"
+    data-iddoc="<%= vba.idDoc %>"
+    title="Create" class="btn btn-sm btn-success btn-flat open-vbaModal">Create</a></td>
+</tr>
+<% }) %>

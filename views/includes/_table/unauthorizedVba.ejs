@@ -1,0 +1,70 @@
+<div class="box box-info">
+  <div class="box-header with-border">
+    <h3 class="box-title">Unauthorized VBAs</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+      </button>
+      <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+    </div>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <div class="table-responsive">
+      <table id="account_list" class="table no-margin">
+        <thead>
+          <tr>
+            <th>Account Id</th>
+            <th>Wallet Id</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% listUnauthorizedVba.items.forEach(function(vba, index) { %>
+          <tr>
+            <td><%= vba.vbaData ? vba.vbaData.userId : '' %></td>
+            <td><%= vba.walletId %></td>
+            <td>PENDING</td>
+            <td><a href="#" data-toggle="modal" data-target="#authorizeDoc-modal"
+              data-action="/wallet/<%= vba.walletId %>/authorizeDoc"
+              data-name="<%= pinyin(vba.nameEn || vba.nameCn).join(' ') %>"
+              data-sex="<%= vba.entityType %>"
+              data-idnumber="<%= vba.idNumber %>"
+              data-dob="<%= moment(vba.dateOfBirth).format('MM/DD/YYYY') %>"
+              data-street1="<%= vba.address ? pinyin(vba.address.street1).join(' ') : '' %>"
+              data-street2="<%= vba.address ? pinyin(vba.address.street2).join(' ') : '' %>"
+              data-city="<%= vba.address ? pinyin(vba.address.city).join(' ') : '' %>"
+              data-state="<%= vba.address ? pinyin(vba.address.state).join(' ') : '' %>"
+              data-postalcode="<%= vba.address ? pinyin(vba.address.postalCode).join(' ') : '' %>"
+              data-country="<%= vba.address ? pinyin(vba.address.country).join(' ') : '' %>"
+              data-iddoc="<%= vba.idDoc %>"
+              title="Create" class="btn btn-sm btn-success btn-flat open-vbaModal">Create</a></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <!-- /.table-responsive -->
+  </div>
+  <!-- /.box-body -->
+  <% if (listUnauthorizedVba.totalPage > 1 && useDataTablePaging) { %>
+  <div class="box-footer clearfix dataTables_wrapper">
+    <div class="row">
+      <div class="col-md-12 pull-left">
+        <div class="dataTables_paginate paging_simple_numbers">
+          <ul class="pagination">
+            <% for (let i = 1; i <= listUnauthorizedVba.totalPage; i++) { %>
+            <li class="paginate_button ajax_paginate <%= (i === 1) ? 'active' : '' %>">
+              <a href="/vba/unauthorized/ajax?page=<%= i %>" data-dt-idx="<%= i %>" tabindex="<%= i - 1 %>"><%= i %></a>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+  <div class="overlay" style="display: none;">
+    <i class="fa fa-refresh fa-spin"></i>
+  </div>
+</div>

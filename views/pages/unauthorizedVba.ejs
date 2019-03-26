@@ -1,0 +1,170 @@
+<% var page_title = 'EPIAPI Admin | Unauthorized VBA'; %>
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <% include ../partials/header %>
+  <% include ../partials/left-sidebar %>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>Unauthorized VBA
+        <small>Total <%= listUnauthorizedVba.total %> results</small>
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+      <% include ../partials/message-container %>
+      <div class="row">
+        <% if (listUnauthorizedVba.items.length > 0) { %>
+        <div class="col-md-12">
+          <%- include('../includes/_table/unauthorizedVba', { listUnauthorizedVba: listUnauthorizedVba, useDataTablePaging: true }) %>
+        </div>
+        <% } %>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <div class="modal fade" id="authorizeDoc-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="#" method="POST">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Authorization docs</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <h4 style="text-align: center;">Id document</h4>
+              <img id="id_doc_img" style="max-width: 300px; display: block; margin: 0 auto;" src="https://via.placeholder.com/300x225" alt="">
+            </div>
+            <hr>
+            <div class="row">
+              <input type="hidden" name="idDoc" value="">
+              <div class="form-group col-md-12">
+                <label for="fullName">Full Name</label>
+                <input type="text" required id="fullName" name="fullName" class="form-control" value="">
+              </div>
+              <div class="form-group col-md-12">
+                <label for="sex">Sex</label>
+                <input type="text" id="sex" name="sex" class="form-control" value="">
+              </div>
+              <div class="form-group col-md-12">
+                <label for="ethnicity">Ethnicity</label>
+                <input type="text" id="ethnicity" name="ethnicity" class="form-control" value="">
+              </div>
+              <div class="form-group col-md-12">
+                <label for="citizenIdNumber">Citizen ID Number</label>
+                <input type="text" id="citizenIdNumber" name="citizenIdNumber" class="form-control" value="">
+              </div>
+              <div class="form-group col-md-12">
+                <label for="dob">Date of birth</label>
+                <input type="text" id="dob" name="dobString" class="form-control" value="">
+                <small>Format MM/DD/YYYY</small>
+              </div>
+            </div>
+            <h4>Address</h4>
+            <div class="row">
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="street1">Street1</label>
+                <input type="text" id="street1" name="address[street1]" class="form-control" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="street2">Street2</label>
+                <input type="text" id="street2" name="address[street2]" class="form-control" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="city">City</label>
+                <input type="text" id="city" name="address[city]" class="form-control" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="state">State</label>
+                <input type="text" id="state" name="address[state]" class="form-control" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="postalCode">Postal Code</label>
+                <input type="text" id="postalCode" name="address[postalCode]" class="form-control" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="country">Country</label>
+                <input type="text" id="country" name="address[country]" class="form-control" value="">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <% include ../partials/footer %>
+</div>
+<!-- ./wrapper -->
+
+<% include ../partials/foot %>
+<script>
+  $('.content').on('click', '.open-vbaModal', function(e) {
+    var _self = $(this);
+    var _name = _self.data('name');
+    var _sex = _self.data('sex');
+    var _idNumber = _self.data('idnumber');
+    var _dob = _self.data('dob');
+    var _street1 = _self.data('street1');
+    var _street2 = _self.data('street2');
+    var _city = _self.data('city');
+    var _state = _self.data('state');
+    var _postalCode = _self.data('postalcode');
+    var _country = _self.data('country');
+    var _idDoc = _self.data('iddoc');
+    var target = _self.data('target');
+    var _action = _self.data('action');
+
+    var _modal = $(target);
+    _modal.find('[name=fullName]').val(_name);
+    _modal.find('[name=sex]').val(_sex);
+    _modal.find('[name=ethnicity]').val('');
+    _modal.find('[name=citizenIdNumber]').val(_idNumber);
+    _modal.find('[name=dobString]').val(_dob);
+    _modal.find('[name="address[street1]"]').val(_street1);
+    _modal.find('[name="address[street2]"]').val(_street2);
+    _modal.find('[name="address[city]"]').val(_city);
+    _modal.find('[name="address[state]"]').val(_state);
+    _modal.find('[name="address[postalCode]"]').val(_postalCode);
+    _modal.find('[name="address[country]"]').val(_country);
+    _modal.find('form').attr('action', _action);
+
+    // get actual idDoc uri
+    $.ajax({
+      url: '/idDoc/ajax',
+      type: 'POST',
+      data: {
+        idDoc: _idDoc
+      },
+      success: function(data) {
+        _modal.find('[name=idDoc]').val(data);
+        if (data) _modal.find('#id_doc_img').attr('src', data);
+      },
+      error: function(error) {
+        console.log(error);
+      }
+    })
+  })
+</script>
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->
+</body>
+</html>

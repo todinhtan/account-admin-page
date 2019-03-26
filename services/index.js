@@ -6,6 +6,7 @@ import commonService from './common';
 import transactionService from './transaction';
 import documentService from './document';
 import paymentMethodService from './paymentMethod';
+import vbaService from './vba';
 
 export default {
   transferService,
@@ -16,4 +17,5 @@ export default {
   transactionService,
   documentService,
   paymentMethodService,
+  vbaService,
 };
