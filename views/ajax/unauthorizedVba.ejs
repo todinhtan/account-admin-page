@@ -1,5 +1,6 @@
 <% listUnauthorizedVba.items.forEach(function(vba, index) { %>
 <tr>
+  <td><%= vba.accountId ? vba.accountId : '' %></td>
   <td><%= vba.vbaData ? vba.vbaData.userId : '' %></td>
   <td><%= vba.walletId %></td>
   <td>PENDING</td>
