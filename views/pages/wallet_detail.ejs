@@ -418,7 +418,7 @@
                 <input type="hidden" name="idDoc" value="<%= document.idDoc ? document.idDoc : '' %>">
                 <div class="form-group col-md-12">
                   <label for="fullName">Full Name</label>
-                  <input type="text" required id="fullName" name="fullName" class="form-control" value="<%= currentWallet.vbaVerificationData ? pinyin(currentWallet.vbaVerificationData.nameEn || currentWallet.vbaVerificationData.nameCn).join(' ') : '' %>">
+                  <input type="text" required id="fullName" name="fullName" class="form-control" value="<%= currentWallet.vbaVerificationData ? pinyin(currentWallet.vbaVerificationData.nameEn || currentWallet.vbaVerificationData.nameCn, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>">
                 </div>
                 <div class="form-group col-md-12">
                   <label for="sex">Sex</label>
@@ -442,19 +442,19 @@
               <div class="row">
                 <div class="form-group col-md-6 col-sm-12">
                   <label for="street1">Street1</label>
-                  <input type="text" id="street1" name="address[street1]" class="form-control" value="<%= currentWallet.vbaVerificationData && currentWallet.vbaVerificationData.address ? pinyin(currentWallet.vbaVerificationData.address.street1).join(' ') : '' %>">
+                  <input type="text" id="street1" name="address[street1]" class="form-control" value="<%= currentWallet.vbaVerificationData && currentWallet.vbaVerificationData.address ? pinyin(currentWallet.vbaVerificationData.address.street1, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>">
                 </div>
                 <div class="form-group col-md-6 col-sm-12">
                   <label for="street2">Street2</label>
-                  <input type="text" id="street2" name="address[street2]" class="form-control" value="<%= currentWallet.vbaVerificationData && currentWallet.vbaVerificationData.address ? pinyin(currentWallet.vbaVerificationData.address.street2).join(' ') : '' %>">
+                  <input type="text" id="street2" name="address[street2]" class="form-control" value="<%= currentWallet.vbaVerificationData && currentWallet.vbaVerificationData.address ? pinyin(currentWallet.vbaVerificationData.address.street2, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>">
                 </div>
                 <div class="form-group col-md-6 col-sm-12">
                   <label for="city">City</label>
-                  <input type="text" id="city" name="address[city]" class="form-control" value="<%= currentWallet.vbaVerificationData && currentWallet.vbaVerificationData.address ? pinyin(currentWallet.vbaVerificationData.address.city).join(' ') : '' %>">
+                  <input type="text" id="city" name="address[city]" class="form-control" value="<%= currentWallet.vbaVerificationData && currentWallet.vbaVerificationData.address ? pinyin(currentWallet.vbaVerificationData.address.city, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>">
                 </div>
                 <div class="form-group col-md-6 col-sm-12">
                   <label for="state">State</label>
-                  <input type="text" id="state" name="address[state]" class="form-control" value="<%= currentWallet.vbaVerificationData && currentWallet.vbaVerificationData.address ? pinyin(currentWallet.vbaVerificationData.address.state).join(' ') : '' %>">
+                  <input type="text" id="state" name="address[state]" class="form-control" value="<%= currentWallet.vbaVerificationData && currentWallet.vbaVerificationData.address ? pinyin(currentWallet.vbaVerificationData.address.state, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>">
                 </div>
                 <div class="form-group col-md-6 col-sm-12">
                   <label for="postalCode">Postal Code</label>
@@ -462,7 +462,7 @@
                 </div>
                 <div class="form-group col-md-6 col-sm-12">
                   <label for="country">Country</label>
-                  <input type="text" id="country" name="address[country]" class="form-control" value="<%= currentWallet.vbaVerificationData && currentWallet.vbaVerificationData.address ? pinyin(currentWallet.vbaVerificationData.address.country).join(' ') : '' %>">
+                  <input type="text" id="country" name="address[country]" class="form-control" value="<%= currentWallet.vbaVerificationData && currentWallet.vbaVerificationData.address ? pinyin(currentWallet.vbaVerificationData.address.country, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>">
                 </div>
               </div>
             </div>

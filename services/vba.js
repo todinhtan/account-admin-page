@@ -16,11 +16,11 @@ async function getUnauthorizedVba(limit, offset) {
   if (isNaN(o) || o < 1) o = 0;
 
   result.size = l;
-  const vbas = await VbaRequest.find({ 'vbaData.userId': { $exists: true }, $or: [{ authorization: { $exists: false } }, { authorization: 'PENDING' }] })
+  const vbas = await VbaRequest.find({ country: 'US', 'vbaData.userId': { $exists: true }, $or: [{ authorization: { $exists: false } }, { authorization: 'PENDING' }] })
     .skip(offset).limit(limit)
     .catch((err) => { logger.error(err); });
   if (vbas) result.items = vbas.map(v => v._doc);
-  result.total = await VbaRequest.find({ 'vbaData.userId': { $exists: true }, $or: [{ authorization: { $exists: false } }, { authorization: 'PENDING' }] }).count();
+  result.total = await VbaRequest.find({ country: 'US', 'vbaData.userId': { $exists: true }, $or: [{ authorization: { $exists: false } }, { authorization: 'PENDING' }] }).count();
 
   result.totalPage = Math.ceil(result.total / limit);
 

@@ -29,16 +29,16 @@
             <td>PENDING</td>
             <td><a href="#" data-toggle="modal" data-target="#authorizeDoc-modal"
               data-action="/wallet/<%= vba.walletId %>/authorizeDoc"
-              data-name="<%= pinyin(vba.nameEn || vba.nameCn).join(' ') %>"
+              data-name="<%= pinyin(vba.nameEn || vba.nameCn, { style: pinyin.STYLE_NORMAL }).join(' ') %>"
               data-sex="<%= vba.entityType %>"
               data-idnumber="<%= vba.idNumber %>"
               data-dob="<%= moment(vba.dateOfBirth).format('MM/DD/YYYY') %>"
-              data-street1="<%= vba.address ? pinyin(vba.address.street1).join(' ') : '' %>"
-              data-street2="<%= vba.address ? pinyin(vba.address.street2).join(' ') : '' %>"
-              data-city="<%= vba.address ? pinyin(vba.address.city).join(' ') : '' %>"
-              data-state="<%= vba.address ? pinyin(vba.address.state).join(' ') : '' %>"
-              data-postalcode="<%= vba.address ? pinyin(vba.address.postalCode).join(' ') : '' %>"
-              data-country="<%= vba.address ? pinyin(vba.address.country).join(' ') : '' %>"
+              data-street1="<%= vba.address ? pinyin(vba.address.street1, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>"
+              data-street2="<%= vba.address ? pinyin(vba.address.street2, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>"
+              data-city="<%= vba.address ? pinyin(vba.address.city, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>"
+              data-state="<%= vba.address ? pinyin(vba.address.state, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>"
+              data-postalcode="<%= vba.address ? pinyin(vba.address.postalCode, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>"
+              data-country="<%= vba.address ? pinyin(vba.address.country, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>"
               data-iddoc="<%= vba.idDoc %>"
               title="Create" class="btn btn-sm btn-success btn-flat open-vbaModal">Create</a></td>
           </tr>
