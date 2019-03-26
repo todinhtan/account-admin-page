@@ -4,6 +4,7 @@ import axios from 'axios';
 import HttpStatusCode from 'http-status-codes';
 
 import config from '../config';
+import logger from '../utils/logger';
 
 async function isAdmin(sessionId) {
   try {
@@ -12,7 +13,7 @@ async function isAdmin(sessionId) {
     if (response && response.status === HttpStatusCode.OK
       && response.data && response.data === true) return true;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
   return false;
 }
@@ -24,7 +25,7 @@ async function getAccountById(sessionId, accountId) {
     const response = await axios.get(`${config.api.prefix}/account/${accountId}?sessionId=${sessionId}`);
     if (response && response.status === HttpStatusCode.OK && response.data) return response.data;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
   return null;
 }
@@ -42,7 +43,7 @@ async function disableAccount(sessionId, accountId) {
     const response = await axios.post(`${config.api.prefix}/account/${accountId}/markForDisable?sessionId=${sessionId}`, { reason: 'made by admin' });
     if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
 
   return false;
@@ -69,7 +70,7 @@ async function getSessionHistory(sessionId, accountId, limit, offset) {
       result.total = allSessionsResp.data.recordsTotal;
     }
   } catch (error) {
-    // just return empty
+    logger.error(error.stack);
   }
 
   result.totalPage = Math.ceil(result.total / limit);
@@ -96,7 +97,7 @@ async function getAccounts(sessionId, limit, offset) {
       result.total = allAccountsResp.data.recordsTotal;
     }
   } catch (error) {
-    // leave empty
+    logger.error(error.stack);
   }
 
   result.totalPage = Math.ceil(result.total / limit);
@@ -124,7 +125,7 @@ async function searchByKeyword(sessionId, keyword, limit, offset) {
       result.total = allAccountsResp.data.recordsTotal;
     }
   } catch (error) {
-    // leave empty
+    logger.error(error.stack);
   }
 
   result.totalPage = Math.ceil(result.total / limit);
@@ -139,7 +140,7 @@ async function markUnderReview(sessionId, accountId) {
     const response = await axios.post(`${config.api.prefix}/account/${accountId}/markForUnderReview?sessionId=${sessionId}`, { reason: 'made by admin' });
     if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
 
   return false;
@@ -152,7 +153,7 @@ async function markNeedAttention(sessionId, accountId) {
     const response = await axios.post(`${config.api.prefix}/account/${accountId}/markForNeedAttention?sessionId=${sessionId}`, { reason: 'made by admin' });
     if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
 
   return false;
@@ -165,7 +166,7 @@ async function markApproved(sessionId, accountId) {
     const response = await axios.post(`${config.api.prefix}/account/${accountId}/markForApproved?sessionId=${sessionId}`, { reason: 'made by admin' });
     if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
 
   return false;
@@ -178,7 +179,7 @@ async function markRejected(sessionId, accountId) {
     const response = await axios.post(`${config.api.prefix}/account/${accountId}/markForRejected?sessionId=${sessionId}`, { reason: 'made by admin' });
     if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
 
   return false;
@@ -192,7 +193,7 @@ async function verifyIdentity(sessionId, accountId, identity) {
     const response = await axios.post(`${config.api.prefix}/account/${accountId}/markIdentityVerified?sessionId=${sessionId}`, { identity });
     if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
 
   return false;
@@ -206,7 +207,7 @@ async function removeIdentity(sessionId, accountId, identity) {
     const response = await axios.post(`${config.api.prefix}/account/${accountId}/removeIdentity?sessionId=${sessionId}`, { srn: identity });
     if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
 
   return false;
@@ -219,7 +220,7 @@ async function sendResetPassword(sessionId, identity) {
     const response = await axios.post(`${config.api.prefix}/sendResetPassword?sessionId=${sessionId}`, { identity });
     if (response && (response.status === HttpStatusCode.OK || response.status === HttpStatusCode.NO_CONTENT)) return true;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
 
   return false;

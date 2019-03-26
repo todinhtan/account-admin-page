@@ -7,6 +7,7 @@ import moment from 'moment';
 import 'moment-timezone';
 
 import config from '../config';
+import logger from '../utils/logger';
 
 async function getTransactionsBySRN(sessionId, srn, limit, offset) {
   const result = {
@@ -27,7 +28,7 @@ async function getTransactionsBySRN(sessionId, srn, limit, offset) {
       result.total = allTransactionsResp.data.recordsTotal;
     }
   } catch (error) {
-    // let transactions empty
+    logger.error(error.stack);
   }
 
   result.totalPage = Math.ceil(result.total / limit);
@@ -54,7 +55,7 @@ async function getTransactionsBySRNWithRange(sessionId, srn, limit, offset, from
       result.total = allTransactionsResp.data.recordsTotal;
     }
   } catch (error) {
-    // let transactions empty
+    logger.error(error.stack);
   }
 
   result.totalPage = Math.ceil(result.total / limit);
@@ -107,7 +108,7 @@ async function getTransactionById(sessionId, tid) {
     const response = await axios.get(`${config.api.prefix}/transaction/${tid}?sessionId=${sessionId}`);
     if (response && response.status === HttpStatusCode.OK && response.data) return response.data;
   } catch (error) {
-    // just return null
+    logger.error(error.stack);
   }
 
   return null;

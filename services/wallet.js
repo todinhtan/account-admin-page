@@ -33,7 +33,7 @@ async function getWalletsByAccountId(sessionId, accountId, limit, offset) {
       result.total = allWalletsResp.data.recordsTotal;
     }
   } catch (error) {
-    // let accounts empty
+    logger.error(error.stack);
   }
 
   result.totalPage = Math.ceil(result.total / limit);
@@ -48,7 +48,7 @@ async function getWalletById(sessionId, walletId) {
     const response = await axios.get(`${config.api.prefix}/wallet?walletId=${walletId}&sessionId=${sessionId}`);
     if (response && response.status === HttpStatusCode.OK && response.data) return response.data;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
   return null;
 }
@@ -66,7 +66,7 @@ async function updateNote(sessionId, walletId, notes) {
     const response = await axios.post(`${config.api.prefix}/wallet/${walletId}/update?sessionId=${sessionId}`, { notes });
     if (response && response.status === HttpStatusCode.OK) return true;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
   return false;
 }
@@ -87,7 +87,7 @@ async function searchWallet(sessionId, keyword, type) {
         return null;
     }
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
   return null;
 }
@@ -152,7 +152,7 @@ async function updateVerification(sessionId, walletId, vbaVerificationData) {
     const response = await axios.post(`${config.api.prefix}/wallet/${walletId}/update?sessionId=${sessionId}`, { vbaVerificationData });
     if (response && response.status === HttpStatusCode.OK) return true;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
   return false;
 }
@@ -170,7 +170,7 @@ async function updateVbaData(walletId, country, vbaData) {
     });
     if (response && response.status === HttpStatusCode.OK) return true;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
   return false;
 }

@@ -4,6 +4,7 @@ import axios from 'axios';
 import HttpStatusCode from 'http-status-codes';
 
 import config from '../config';
+import logger from '../utils/logger';
 
 async function getPaymentMethodsByAccount(sessionId, accountId, limit, offset) {
   const result = {
@@ -24,7 +25,7 @@ async function getPaymentMethodsByAccount(sessionId, accountId, limit, offset) {
       result.total = methodsResponse.data.recordsTotal;
     }
   } catch (error) {
-    // let transactions empty
+    logger.error(error.stack);
   }
 
   result.totalPage = Math.ceil(result.total / limit);
@@ -39,7 +40,7 @@ async function getPaymentMethodById(sessionId, methodId) {
     const response = await axios.get(`${config.api.prefix}/paymentMethod/${methodId}?sessionId=${sessionId}`);
     if (response && response.status === HttpStatusCode.OK && response.data) return response.data;
   } catch (error) {
-    // just return false
+    logger.error(error.stack);
   }
   return null;
 }

@@ -4,6 +4,7 @@ import axios from 'axios';
 import HttpStatusCode from 'http-status-codes';
 
 import config from '../config';
+import logger from '../utils/logger';
 
 async function getDocumentUri(sessionId, docId) {
   try {
@@ -13,7 +14,7 @@ async function getDocumentUri(sessionId, docId) {
       return docResponse.data.uri;
     }
   } catch (error) {
-    // let transactions empty
+    logger.error(error.stack);
   }
   return null;
 }
