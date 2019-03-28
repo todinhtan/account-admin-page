@@ -27,12 +27,23 @@ async function getUnauthorizedVba(limit, offset) {
   return result;
 }
 
+async function getVbaByWallet(walletId) {
+  const vba = await VbaRequest.findOne({ walletId, country: 'US' }).catch((err) => { logger.error(err); });
+  let doc = null;
+  if (vba) {
+    doc = vba._doc;
+    if (doc.vbaData) delete doc.vbaData;
+  }
+  return doc;
+}
+
 async function markDoneUnauthorizedVba(walletId) {
-  const doc = await VbaRequest.findOneAndUpdate({ walletId }, { $set: { authorization: 'DONE' } }, { new: true });
+  const doc = await VbaRequest.findOneAndUpdate({ walletId, country: 'US' }, { $set: { authorization: 'DONE' } }, { new: true });
   return !!doc;
 }
 
 export default {
   getUnauthorizedVba: (limit, offset) => getUnauthorizedVba(limit, offset),
   markDoneUnauthorizedVba: walletId => markDoneUnauthorizedVba(walletId),
+  getVbaByWallet: walletId => getVbaByWallet(walletId),
 };

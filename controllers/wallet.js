@@ -20,11 +20,17 @@ export async function getWalletDetail(req, res) {
     friendlyNames = await services.commonService.storeSrnFriendlyName(tr.dest, friendlyNames, req.session.sessionId);
   }
 
+  const vba = await services.vbaService.getVbaByWallet(req.params.walletId);
+
   // get documents
   const document = {};
-  if (currentWallet.vbaVerificationData) {
-    if (currentWallet.vbaVerificationData.idDoc) document.idDoc = await services.documentService.getDocumentUri(req.session.sessionId, currentWallet.vbaVerificationData.idDoc);
-    if (currentWallet.vbaVerificationData.coiDoc) document.coiDoc = await services.documentService.getDocumentUri(req.session.sessionId, currentWallet.vbaVerificationData.coiDoc);
+  // if (currentWallet.vbaVerificationData) {
+  //   if (currentWallet.vbaVerificationData.idDoc) document.idDoc = await services.documentService.getDocumentUri(req.session.sessionId, currentWallet.vbaVerificationData.idDoc);
+  //   if (currentWallet.vbaVerificationData.coiDoc) document.coiDoc = await services.documentService.getDocumentUri(req.session.sessionId, currentWallet.vbaVerificationData.coiDoc);
+  // }
+  if (vba) {
+    if (vba.idDoc) document.idDoc = await services.documentService.getDocumentUri(req.session.sessionId, vba.idDoc);
+    if (vba.coiDoc) document.coiDoc = await services.documentService.getDocumentUri(req.session.sessionId, vba.coiDoc);
   }
 
   // get beauty array of balance currencies
@@ -54,7 +60,7 @@ export async function getWalletDetail(req, res) {
   const authorizeDoc = await services.walletService.findAuthorizeDocByWallet(currentWallet.id);
 
   res.render('pages/wallet_detail', {
-    currentWallet, listTransfer, listTransaction, friendlyNames, balances, document, authorizeDoc,
+    currentWallet, listTransfer, listTransaction, friendlyNames, balances, document, authorizeDoc, vba,
   });
 }
 
