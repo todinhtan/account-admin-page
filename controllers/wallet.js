@@ -109,7 +109,8 @@ export async function updateStatus(req, res) {
 
 export async function updateVerification(req, res) {
   req.body.countries = req.body.countries.split(',');
-  const isSuccess = await services.walletService.updateVerification(req.session.sessionId, req.params.walletId, req.body);
+  // const isSuccess = await services.walletService.updateVerification(req.session.sessionId, req.params.walletId, req.body);
+  const isSuccess = await services.walletService.updateVerificationToVbaService(req.params.walletId, req.body);
   if (isSuccess) {
     req.session.messages = ['Updated VBA verification successfully!'];
   }

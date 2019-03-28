@@ -205,6 +205,55 @@ async function findAuthorizeDocByWallet(walletId) {
   return doc;
 }
 
+async function updateVerificationToVbaService(walletId, vbaVerificationData) {
+  try {
+    if (walletId === undefined || walletId === null) return false;
+
+    // rebuild post param
+    for (const key of Object.keys(vbaVerificationData)) {
+      if (!vbaVerificationData[key]) delete vbaVerificationData[key];
+    }
+    if (vbaVerificationData.address != null) {
+      if (!vbaVerificationData.address.street1
+        || !vbaVerificationData.address.street2
+        || !vbaVerificationData.address.city
+        || !vbaVerificationData.address.state
+        || !vbaVerificationData.address.postalCode
+        || !vbaVerificationData.address.country) delete vbaVerificationData.address;
+    }
+    if (vbaVerificationData.repAddress != null) {
+      if (!vbaVerificationData.repAddress.street1
+        || !vbaVerificationData.repAddress.street2
+        || !vbaVerificationData.repAddress.city
+        || !vbaVerificationData.repAddress.state
+        || !vbaVerificationData.repAddress.postalCode
+        || !vbaVerificationData.repAddress.country) delete vbaVerificationData.repAddress;
+    }
+
+    if (vbaVerificationData.merchantId && vbaVerificationData.merchantId.length > 0) {
+      vbaVerificationData.merchantIds = [];
+      // merchant
+      for (let i = 0; i < vbaVerificationData.merchantId.length; i++) {
+        vbaVerificationData.merchantIds.push({
+          merchantId: vbaVerificationData.merchantId[i],
+          merchantIdType: vbaVerificationData.merchantIdType[i],
+          merchantIdCountry: vbaVerificationData.merchantIdCountry[i],
+        });
+      }
+
+      delete vbaVerificationData.merchantId;
+      delete vbaVerificationData.merchantIdType;
+      delete vbaVerificationData.merchantIdCountry;
+    }
+
+    const updatedDoc = await VbaRequest.findOneAndUpdate({ walletId, country: 'US' }, { $set: { ...vbaVerificationData } }, { new: true });
+    return !!updatedDoc;
+  } catch (error) {
+    logger.error(error.stack);
+  }
+  return false;
+}
+
 export default {
   getWalletsByAccountId: (sessionId, accountId, limit, offset) => getWalletsByAccountId(sessionId, accountId, limit, offset),
   getWalletById: (sessionId, walletId) => getWalletById(sessionId, walletId),
@@ -216,4 +265,5 @@ export default {
   updateVbaData: (walletId, country, vbaData) => updateVbaData(walletId, country, vbaData),
   saveAuthorizeDoc: (walletId, data, adminAccountId, adminAccountName) => saveAuthorizeDoc(walletId, data, adminAccountId, adminAccountName),
   findAuthorizeDocByWallet: walletId => findAuthorizeDocByWallet(walletId),
+  updateVerificationToVbaService: (walletId, vbaVerificationData) => updateVerificationToVbaService(walletId, vbaVerificationData),
 };
