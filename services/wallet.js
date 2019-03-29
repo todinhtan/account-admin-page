@@ -215,19 +215,10 @@ async function updateVerificationToVbaService(walletId, vbaVerificationData) {
     }
     if (vbaVerificationData.address != null) {
       if (!vbaVerificationData.address.street1
-        || !vbaVerificationData.address.street2
         || !vbaVerificationData.address.city
         || !vbaVerificationData.address.state
         || !vbaVerificationData.address.postalCode
         || !vbaVerificationData.address.country) delete vbaVerificationData.address;
-    }
-    if (vbaVerificationData.repAddress != null) {
-      if (!vbaVerificationData.repAddress.street1
-        || !vbaVerificationData.repAddress.street2
-        || !vbaVerificationData.repAddress.city
-        || !vbaVerificationData.repAddress.state
-        || !vbaVerificationData.repAddress.postalCode
-        || !vbaVerificationData.repAddress.country) delete vbaVerificationData.repAddress;
     }
 
     if (vbaVerificationData.merchantId && vbaVerificationData.merchantId.length > 0) {
@@ -246,7 +237,7 @@ async function updateVerificationToVbaService(walletId, vbaVerificationData) {
       delete vbaVerificationData.merchantIdCountry;
     }
 
-    const updatedDoc = await VbaRequest.findOneAndUpdate({ walletId, country: 'US' }, { $set: { ...vbaVerificationData } }, { new: true });
+    const updatedDoc = await VbaRequest.findOneAndUpdate({ walletId, country: 'US' }, { $set: { ...vbaVerificationData, status: 'PENDING' } }, { new: true });
     return !!updatedDoc;
   } catch (error) {
     logger.error(error.stack);

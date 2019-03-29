@@ -267,10 +267,10 @@
             <div class="modal-body">
               <div class="row">
                 <% Object.keys(vba).forEach(function(key, index) { %>
-                  <% if (!['countries', 'address', 'repAddress', 'merchantIds'].includes(key)) { %>
+                  <% if (!['countries', 'address', 'repAddress', 'merchantIds', '__v', '_id', 'created_time', 'updated_time', 'sessionId'].includes(key)) { %>
                   <div class="form-group col-md-6 col-sm-12">
                     <label for="veri<%= index %>"><%=key%></label>
-                    <input <%= vba[key] != null && !['idDoc', 'coiDoc'].includes(key) ? 'readonly' : 'name='+key %> type="text" id="veri<%= index %>" class="form-control" value="<%= vba[key] %>">
+                    <input <%= key == 'status' ? 'readonly' : 'name='+key %> type="text" id="veri<%= index %>" class="form-control" value="<%= vba[key] %>">
                   </div>
                   <% } %>
                 <% }) %>
@@ -279,64 +279,60 @@
                   <input type="text" id="countries" name="countries" class="tag-editor form-control" value="<%= vba.countries ? vba.countries.join(',') : '' %>">
                 </div>
               </div>
-              <% if (vba.address == null) { %>
-                <h4>Address</h4>
-                <div class="row">
-                  <div class="form-group col-md-6 col-sm-12">
-                    <label for="street1">street1</label>
-                    <input type="text" id="street1" name="address[street1]" class="form-control">
-                  </div>
-                  <div class="form-group col-md-6 col-sm-12">
-                    <label for="street2">street2</label>
-                    <input type="text" id="street2" name="address[street2]" class="form-control">
-                  </div>
-                  <div class="form-group col-md-6 col-sm-12">
-                    <label for="city">city</label>
-                    <input type="text" id="city" name="address[city]" class="form-control">
-                  </div>
-                  <div class="form-group col-md-6 col-sm-12">
-                    <label for="state">state</label>
-                    <input type="text" id="state" name="address[state]" class="form-control">
-                  </div>
-                  <div class="form-group col-md-6 col-sm-12">
-                    <label for="postalCode">postalCode</label>
-                    <input type="text" id="postalCode" name="address[postalCode]" class="form-control">
-                  </div>
-                  <div class="form-group col-md-6 col-sm-12">
-                    <label for="country">country</label>
-                    <input type="text" id="country" name="address[country]" class="form-control">
-                  </div>
+              <h4>Address</h4>
+              <div class="row">
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="street1">street1</label>
+                  <input type="text" required id="street1" name="address[street1]" class="form-control" value="<%= vba.address && vba.address.street1 ? vba.address.street1 : '' %>">
                 </div>
-              <% } %>
-              <% if (vba.repAddress == null) { %>
-                <h4>Rep address</h4>
-                <div class="row">
-                  <div class="form-group col-md-6 col-sm-12">
-                    <label for="rep-street1">street1</label>
-                    <input type="text" id="rep-street1" name="repAddress[street1]" class="form-control">
-                  </div>
-                  <div class="form-group col-md-6 col-sm-12">
-                    <label for="rep-street2">street2</label>
-                    <input type="text" id="rep-street2" name="repAddress[street2]" class="form-control">
-                  </div>
-                  <div class="form-group col-md-6 col-sm-12">
-                    <label for="rep-city">city</label>
-                    <input type="text" id="rep-city" name="repAddress[city]" class="form-control">
-                  </div>
-                  <div class="form-group col-md-6 col-sm-12">
-                    <label for="rep-state">state</label>
-                    <input type="text" id="rep-state" name="repAddress[state]" class="form-control">
-                  </div>
-                  <div class="form-group col-md-6 col-sm-12">
-                    <label for="rep-postalCode">postalCode</label>
-                    <input type="text" id="rep-postalCode" name="repAddress[postalCode]" class="form-control">
-                  </div>
-                  <div class="form-group col-md-6 col-sm-12">
-                    <label for="rep-country">country</label>
-                    <input type="text" id="rep-country" name="repAddress[country]" class="form-control">
-                  </div>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="street2">street2</label>
+                  <input type="text" id="street2" name="address[street2]" class="form-control" value="<%= vba.address && vba.address.street2 ? vba.address.street2 : '' %>">
                 </div>
-              <% } %>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="city">city</label>
+                  <input type="text" required id="city" name="address[city]" class="form-control" value="<%= vba.address && vba.address.city ? vba.address.city : '' %>">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="state">state</label>
+                  <input type="text" required id="state" name="address[state]" class="form-control" value="<%= vba.address && vba.address.state ? vba.address.state : '' %>">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="postalCode">postalCode</label>
+                  <input type="text" required id="postalCode" name="address[postalCode]" class="form-control" value="<%= vba.address && vba.address.postalCode ? vba.address.postalCode : '' %>">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="country">country</label>
+                  <input type="text" required id="country" name="address[country]" class="form-control" value="<%= vba.address && vba.address.country ? vba.address.country : '' %>">
+                </div>
+              </div>
+              <h4>Rep address</h4>
+              <div class="row">
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="rep-street1">street1</label>
+                  <input type="text" id="rep-street1" name="repAddress[street1]" class="form-control" value="<%= vba.repAddress && vba.repAddress.street1 ? vba.repAddress.street1 : '' %>">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="rep-street2">street2</label>
+                  <input type="text" id="rep-street2" name="repAddress[street2]" class="form-control" value="<%= vba.repAddress && vba.repAddress.street2 ? vba.repAddress.street2 : '' %>">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="rep-city">city</label>
+                  <input type="text" id="rep-city" name="repAddress[city]" class="form-control" value="<%= vba.repAddress && vba.repAddress.city ? vba.repAddress.city : '' %>">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="rep-state">state</label>
+                  <input type="text" id="rep-state" name="repAddress[state]" class="form-control" value="<%= vba.repAddress && vba.repAddress.state ? vba.repAddress.state : '' %>">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="rep-postalCode">postalCode</label>
+                  <input type="text" id="rep-postalCode" name="repAddress[postalCode]" class="form-control" value="<%= vba.repAddress && vba.repAddress.postalCode ? vba.repAddress.postalCode : '' %>">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="rep-country">country</label>
+                  <input type="text" id="rep-country" name="repAddress[country]" class="form-control" value="<%= vba.repAddress && vba.repAddress.country ? vba.repAddress.country : '' %>">
+                </div>
+              </div>
               <h4>Merchant IDs</h4>
               <div class="merchant-list">
                 <% if (vba.merchantIds != null) { %>
