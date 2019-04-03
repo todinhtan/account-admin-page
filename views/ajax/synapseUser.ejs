@@ -1,0 +1,6 @@
+<% listSynapseUsers.items.forEach(function(user, index) { %>
+  <tr>
+    <td><%= user.walletId ? user.walletId : '' %></td>
+    <td><%= user.userId ? user.userId : '' %></td>
+  </tr>
+  <% }) %>

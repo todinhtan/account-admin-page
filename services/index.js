@@ -7,6 +7,7 @@ import transactionService from './transaction';
 import documentService from './document';
 import paymentMethodService from './paymentMethod';
 import vbaService from './vba';
+import synapseUserService from './synapseUser';
 
 export default {
   transferService,
@@ -18,4 +19,5 @@ export default {
   documentService,
   paymentMethodService,
   vbaService,
+  synapseUserService,
 };

@@ -47,3 +47,17 @@ export async function getDocumentUriAjax(req, res) {
     res.send(docUri);
   }
 }
+
+export async function getVbaByWalletIdAjax(req, res) {
+  if (!req.xhr) res.send(null);
+  else {
+    let wallet = null;
+    try {
+      wallet = await services.vbaService.getVbaByWallet(req.params.walletId);
+      if (wallet.idDoc) wallet.idDocUri = await services.documentService.getDocumentUri(req.session.sessionId, wallet.idDoc);
+    } catch (error) {
+      // let wallet empty
+    }
+    res.send(wallet);
+  }
+}

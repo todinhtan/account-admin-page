@@ -1,0 +1,53 @@
+<div class="box box-info">
+  <div class="box-header with-border">
+    <h3 class="box-title">VBA status updates</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+      </button>
+      <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+    </div>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <div class="table-responsive">
+      <table id="account_list" class="table no-margin">
+        <thead>
+          <tr>
+            <th>Wallet Id</th>
+            <th>User Id</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% listSynapseUsers.items.forEach(function(user, index) { %>
+          <tr>
+            <td><a class="open-walletId-modal" href="#" data-toggle="modal" data-target="#walletId-modal"><%= user.walletId ? user.walletId : '' %></a></td>
+            <td><a class="open-userId-modal" href="#" data-toggle="modal" data-target="#userId-modal"><%= user.userId ? user.userId : '' %></a></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <!-- /.table-responsive -->
+  </div>
+  <!-- /.box-body -->
+  <% if (listSynapseUsers.totalPage > 1 && useDataTablePaging) { %>
+  <div class="box-footer clearfix dataTables_wrapper">
+    <div class="row">
+      <div class="col-md-12 pull-left">
+        <div class="dataTables_paginate paging_simple_numbers">
+          <ul class="pagination">
+            <% for (let i = 1; i <= listSynapseUsers.totalPage; i++) { %>
+            <li class="paginate_button ajax_paginate <%= (i === 1) ? 'active' : '' %>">
+              <a href="/synapse/users/ajax?page=<%= i %>" data-dt-idx="<%= i %>" tabindex="<%= i - 1 %>"><%= i %></a>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+  <div class="overlay" style="display: none;">
+    <i class="fa fa-refresh fa-spin"></i>
+  </div>
+</div>

@@ -1,0 +1,137 @@
+<% var page_title = 'EPIAPI Admin | Unauthorized VBA'; %>
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <% include ../partials/header %>
+  <% include ../partials/left-sidebar %>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>VBA status updates
+        <small>Total <%= listSynapseUsers.total %> results</small>
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+      <% include ../partials/message-container %>
+      <div class="row">
+        <% if (listSynapseUsers.items.length > 0) { %>
+        <div class="col-md-12">
+          <%- include('../includes/_table/synapseUser', { listSynapseUsers: listSynapseUsers, useDataTablePaging: true }) %>
+        </div>
+        <% } %>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <div class="modal fade" id="walletId-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">VBA verification data & Id document</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <img id="id_doc_img" style="max-width: 300px; display: block; margin: 0 auto;" src="https://via.placeholder.com/300x225" alt="">
+          </div>
+          <hr>
+          <div class="row">
+            <h4 style="text-align: center;">VBA verification data</h4>
+            <div class="vba-data">
+              <pre></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <div class="modal fade" id="userId-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Synapse user documents</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <h4 style="text-align: center;">physical_docs</h4>
+            <div class="physical_docs">
+              <pre></pre>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <h4 style="text-align: center;">social_docs</h4>
+            <div class="social_docs">
+              <pre></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <% include ../partials/footer %>
+</div>
+<!-- ./wrapper -->
+
+<% include ../partials/foot %>
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->
+  <script>
+  $('.content').on('click', '.open-walletId-modal', function(e) {
+    var walletId = $(this).text();
+    var targetId = $(this).data('target');
+    var _modal = $(targetId);
+    $.ajax({
+      url: '/wallet/' + walletId + '/vba/ajax',
+      type: 'GET',
+      success: function(data) {
+        _modal.find('#id_doc_img').attr('src', data.idDocUri);
+        _modal.find('.vba-data pre').html(JSON.stringify(data, undefined, 2));
+      },
+      error: function(error) {
+        console.log(error);
+      }
+    })
+  });
+
+  $('.content').on('click', '.open-userId-modal', function(e) {
+    var userId = $(this).text();
+    var targetId = $(this).data('target');
+    var _modal = $(targetId);
+    $.ajax({
+      url: '/synapse/user/' + userId,
+      type: 'GET',
+      success: function(data) {
+        if (data.documents && data.documents.length) {
+          _modal.find('.physical_docs pre').html(JSON.stringify(data.documents[0].physical_docs, undefined, 2));
+          _modal.find('.social_docs pre').html(JSON.stringify(data.documents[0].social_docs, undefined, 2));
+        }
+      },
+      error: function(error) {
+        console.log(error);
+      }
+    })
+  })
+  </script>
+</body>
+</html>
