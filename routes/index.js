@@ -7,16 +7,18 @@ import transactionRoutes from './transactionRoutes';
 import paymentMethodRoutes from './paymentMethodRoutes';
 import vbaRoutes from './vbaRoutes';
 import synapseUserRoutes from './synapseUserRoutes';
+import docTypeRoutes from './docType';
 
 const router = Router();
 
-router.use('/', webRoutes);
-router.use('/', accountRoutes);
-router.use('/', walletRoutes);
-router.use('/', transferRoutes);
-router.use('/', transactionRoutes);
-router.use('/', paymentMethodRoutes);
-router.use('/', vbaRoutes);
-router.use('/', synapseUserRoutes);
+router.use('/', webRoutes)
+  .use('/', accountRoutes)
+  .use('/', walletRoutes)
+  .use('/', transferRoutes)
+  .use('/', transactionRoutes)
+  .use('/', paymentMethodRoutes)
+  .use('/', vbaRoutes)
+  .use('/', synapseUserRoutes)
+  .use('/', docTypeRoutes);
 
 export default router;

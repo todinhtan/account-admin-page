@@ -15,6 +15,7 @@
           <tr>
             <th>Wallet Id</th>
             <th>User Id</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -22,6 +23,24 @@
           <tr>
             <td><a class="open-walletId-modal" href="#" data-toggle="modal" data-target="#walletId-modal"><%= user.walletId ? user.walletId : '' %></a></td>
             <td><a class="open-userId-modal" href="#" data-toggle="modal" data-target="#userId-modal"><%= user.userId ? user.userId : '' %></a></td>
+            <td>
+              <form action="/docType/create" class="form-inline" method="POST">
+                <input type="hidden" name="walletId" value="<%= user.walletId ? user.walletId : '' %>">
+                <input type="hidden" name="userId" value="<%= user.userId ? user.userId : '' %>">
+                <div class="form-group">
+                  <select name="docType" class="form-control" required>
+                    <option value="">--- Select docType ---</option>
+                    <option value="authorization">Authorization docs</option>
+                    <option value="idDoc">idDoc</option>
+                    <option value="coiDoc">coiDoc</option>
+                    <option value="amz">amz</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-default">Insert</button>
+                </div>
+              </form>
+            </td>
           </tr>
           <% }) %>
         </tbody>
