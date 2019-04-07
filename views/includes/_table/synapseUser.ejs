@@ -24,7 +24,7 @@
             <td><a class="open-walletId-modal" href="#" data-toggle="modal" data-target="#walletId-modal"><%= user.walletId ? user.walletId : '' %></a></td>
             <td><a class="open-userId-modal" href="#" data-toggle="modal" data-target="#userId-modal"><%= user.userId ? user.userId : '' %></a></td>
             <td>
-              <form action="/docType/create" class="form-inline" method="POST">
+              <form action="/docType/create" class="form-inline form-doc-type" method="POST">
                 <input type="hidden" name="walletId" value="<%= user.walletId ? user.walletId : '' %>">
                 <input type="hidden" name="userId" value="<%= user.userId ? user.userId : '' %>">
                 <div class="form-group">

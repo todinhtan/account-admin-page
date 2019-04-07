@@ -19,6 +19,66 @@ const ScheduledReupDocSchema = new mongoose.Schema(
       },
       required: true,
     },
+    authorizationData: {
+      fullName: {
+        type: String,
+        trim: true,
+      },
+      sex: {
+        type: String,
+        enum: {
+          values: ['CORP', 'M', 'F'],
+        },
+      },
+      ethnicity: {
+        type: String,
+        trim: true,
+      },
+      dobString: {
+        type: String,
+      },
+      address: {
+        street1: {
+          type: String,
+          trim: true,
+        },
+        street2: {
+          type: String,
+          trim: true,
+        },
+        city: {
+          type: String,
+          trim: true,
+        },
+        state: {
+          type: String,
+          trim: true,
+        },
+        postalCode: {
+          type: String,
+          trim: true,
+        },
+        country: {
+          type: String,
+          trim: true,
+        },
+      },
+      citizenIdNumber: {
+        type: String,
+      },
+      adminAccountId: {
+        type: String,
+        trim: true,
+      },
+      adminAccountName: {
+        type: String,
+        trim: true,
+      },
+      idDoc: {
+        type: String,
+        trim: true,
+      },
+    },
     status: {
       type: String,
       enum: {

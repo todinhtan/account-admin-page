@@ -32,7 +32,7 @@
               data-name="<%= pinyin(vba.nameEn || vba.nameCn, { style: pinyin.STYLE_NORMAL }).join(' ') %>"
               data-sex="<%= vba.entityType %>"
               data-idnumber="<%= vba.idNumber %>"
-              data-dob="<%= moment(vba.dateOfBirth).format('MM/DD/YYYY') %>"
+              data-dob="<%= moment(vba.dateOfBirth, 'x').format('MM/DD/YYYY') %>"
               data-street1="<%= vba.address ? pinyin(vba.address.street1, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>"
               data-street2="<%= vba.address ? pinyin(vba.address.street2, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>"
               data-city="<%= vba.address ? pinyin(vba.address.city, { style: pinyin.STYLE_NORMAL }).join(' ') : '' %>"

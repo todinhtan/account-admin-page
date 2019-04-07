@@ -3,6 +3,8 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable max-len */
+import pinyin from 'pinyin';
+import moment from 'moment';
 import services from '../services';
 
 export async function getQueuedSynapseUsers(req, res) {
@@ -35,4 +37,27 @@ export async function getSynapseUserByIdAjax(req, res) {
   if (!req.xhr) return res.send(null);
   const user = await services.synapseUserService.getSynapseUserById(req.params.userId);
   return res.json(user);
+}
+
+export async function getVbaByWalletIdAjax(req, res) {
+  if (!req.xhr) res.send(null);
+  else {
+    let wallet = null;
+    try {
+      wallet = await services.vbaService.getVbaByWallet(req.params.walletId);
+      if (wallet.idDoc) wallet.idDocUri = await services.documentService.getDocumentUri(req.session.sessionId, wallet.idDoc);
+      if (wallet.nameEn) wallet.nameEn = pinyin(wallet.nameEn, { style: pinyin.STYLE_NORMAL }).join(' ');
+      if (wallet.nameCn) wallet.nameCn = pinyin(wallet.nameCn, { style: pinyin.STYLE_NORMAL }).join(' ');
+      if (wallet.address) wallet.address.street1 = pinyin(wallet.address.street1, { style: pinyin.STYLE_NORMAL }).join(' ');
+      if (wallet.address) wallet.address.street2 = pinyin(wallet.address.street2, { style: pinyin.STYLE_NORMAL }).join(' ');
+      if (wallet.address) wallet.address.city = pinyin(wallet.address.city, { style: pinyin.STYLE_NORMAL }).join(' ');
+      if (wallet.address) wallet.address.state = pinyin(wallet.address.state, { style: pinyin.STYLE_NORMAL }).join(' ');
+      if (wallet.address) wallet.address.postalCode = pinyin(wallet.address.postalCode, { style: pinyin.STYLE_NORMAL }).join(' ');
+      if (wallet.address) wallet.address.country = pinyin(wallet.address.country, { style: pinyin.STYLE_NORMAL }).join(' ');
+      if (wallet.dateOfBirth) wallet.dobString = moment(wallet.dateOfBirth, 'x').format('MM/DD/YYYY');
+    } catch (error) {
+      // let wallet empty
+    }
+    res.send(wallet);
+  }
 }
