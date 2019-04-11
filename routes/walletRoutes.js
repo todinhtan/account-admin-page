@@ -9,6 +9,12 @@ import {
   updateVerification,
   updateVbaData,
   saveAuthorizeDoc,
+  findIdDocByWallet,
+  findCoiDocByWallet,
+  updateIdDocByWallet,
+  updateCoiDocByWallet,
+  findMerchantsByWallet,
+  updateFirstMerchantByWallet,
 } from '../controllers/wallet';
 import { verifySession } from '../middlewares';
 
@@ -29,5 +35,13 @@ router.get('/wallets/search', verifySession, searchWallet);
 
 // post
 router.post('/wallet/:walletId/authorizeDoc', verifySession, saveAuthorizeDoc);
+router.post('/wallet/idDoc/update', verifySession, updateIdDocByWallet);
+router.post('/wallet/coiDoc/update', verifySession, updateCoiDocByWallet);
+router.post('/wallet/merchant/update', verifySession, updateFirstMerchantByWallet);
+
+// ajax
+router.get('/wallet/:walletId/idDoc', verifySession, findIdDocByWallet);
+router.get('/wallet/:walletId/coiDoc', verifySession, findCoiDocByWallet);
+router.get('/wallet/:walletId/merchants', verifySession, findMerchantsByWallet);
 
 export default router;

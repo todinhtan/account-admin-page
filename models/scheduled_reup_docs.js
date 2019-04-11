@@ -15,7 +15,7 @@ const ScheduledReupDocSchema = new mongoose.Schema(
     docType: {
       type: String,
       enum: {
-        values: ['authorization', 'idDoc', 'coiDoc', 'amz'],
+        values: ['authorization', 'idDoc', 'coiDoc', 'amz', 'basic'],
       },
       required: true,
     },
@@ -76,6 +76,52 @@ const ScheduledReupDocSchema = new mongoose.Schema(
       },
       idDoc: {
         type: String,
+        trim: true,
+      },
+    },
+    userData: {
+      email: {
+        type: String,
+        trim: true,
+      },
+      phone_number: {
+        type: String,
+        trim: true,
+      },
+      ip: {
+        type: String,
+        trim: true,
+      },
+      address_street: {
+        type: String,
+        trim: true,
+      },
+      address_city: {
+        type: String,
+        trim: true,
+      },
+      address_subdivision: {
+        type: String,
+        trim: true,
+      },
+      address_postal_code: {
+        type: String,
+        trim: true,
+      },
+      address_country_code: {
+        type: String,
+        trim: true,
+      },
+      day: {
+        type: Number,
+        trim: true,
+      },
+      month: {
+        type: Number,
+        trim: true,
+      },
+      year: {
+        type: Number,
         trim: true,
       },
     },

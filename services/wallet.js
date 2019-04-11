@@ -12,6 +12,7 @@ import VbaRequest from '../models/vba';
 
 import logger from '../utils/logger';
 import config from '../config';
+import documentService from './document';
 
 async function getWalletsByAccountId(sessionId, accountId, limit, offset) {
   const result = {
@@ -245,6 +246,60 @@ async function updateVerificationToVbaService(walletId, vbaVerificationData) {
   return false;
 }
 
+async function findIdDocByWallet(sessionId, walletId) {
+  if (sessionId === undefined || sessionId === null) return null;
+  const doc = await VbaRequest.findOne({ walletId, country: 'US' }).catch((err) => { logger.error(err); });
+  if (doc && doc._doc && doc._doc.idDoc) {
+    const docUri = await documentService.getDocumentUri(sessionId, doc._doc.idDoc);
+    return { idDoc: doc._doc.idDoc, docUri };
+  }
+  return null;
+}
+
+async function findCoiDocByWallet(sessionId, walletId) {
+  if (sessionId === undefined || sessionId === null) return null;
+  const doc = await VbaRequest.findOne({ walletId, country: 'US' }).catch((err) => { logger.error(err); });
+  if (doc && doc._doc && doc._doc.coiDoc) {
+    const docUri = await documentService.getDocumentUri(sessionId, doc._doc.coiDoc);
+    return { coiDoc: doc._doc.coiDoc, docUri };
+  }
+  return null;
+}
+
+async function findMerchantsByWallet(walletId) {
+  const doc = await VbaRequest.findOne({ walletId, country: 'US' }).catch((err) => { logger.error(err); });
+  if (doc && doc._doc && doc._doc.merchantIds) return doc._doc.merchantIds;
+  return null;
+}
+
+async function updateIdDocByWallet(sessionId, walletId, idDoc) {
+  if (sessionId === undefined || sessionId === null) return null;
+  const updatedDoc = await VbaRequest.findOneAndUpdate({ walletId, country: 'US' }, { $set: { idDoc } }, { new: true }).catch((err) => { logger.error(err); });
+  if (updatedDoc && updatedDoc._doc && updatedDoc._doc.idDoc) {
+    const docUri = await documentService.getDocumentUri(sessionId, updatedDoc._doc.idDoc);
+    return { doc: updatedDoc._doc.idDoc, docUri };
+  }
+  return null;
+}
+
+async function updateCoiDocByWallet(sessionId, walletId, coiDoc) {
+  if (sessionId === undefined || sessionId === null) return null;
+  const updatedDoc = await VbaRequest.findOneAndUpdate({ walletId, country: 'US' }, { $set: { coiDoc } }, { new: true }).catch((err) => { logger.error(err); });
+  if (updatedDoc && updatedDoc._doc && updatedDoc._doc.coiDoc) {
+    const docUri = await documentService.getDocumentUri(sessionId, updatedDoc._doc.coiDoc);
+    return { doc: updatedDoc._doc.coiDoc, docUri };
+  }
+  return null;
+}
+
+async function updateFirstMerchantByWallet(walletId, merchantId) {
+  const updatedDoc = await VbaRequest.findOneAndUpdate({ walletId, country: 'US' }, { $set: { 'merchantIds.0.merchantId': merchantId } }, { new: true }).catch((err) => { logger.error(err); });
+  if (updatedDoc && updatedDoc._doc && updatedDoc._doc.merchantIds && updatedDoc._doc.merchantIds.length) {
+    return updatedDoc._doc.merchantIds[0].merchantId;
+  }
+  return null;
+}
+
 export default {
   getWalletsByAccountId: (sessionId, accountId, limit, offset) => getWalletsByAccountId(sessionId, accountId, limit, offset),
   getWalletById: (sessionId, walletId) => getWalletById(sessionId, walletId),
@@ -257,4 +312,10 @@ export default {
   saveAuthorizeDoc: (walletId, data, adminAccountId, adminAccountName) => saveAuthorizeDoc(walletId, data, adminAccountId, adminAccountName),
   findAuthorizeDocByWallet: walletId => findAuthorizeDocByWallet(walletId),
   updateVerificationToVbaService: (walletId, vbaVerificationData) => updateVerificationToVbaService(walletId, vbaVerificationData),
+  findIdDocByWallet: (sessionId, walletId) => findIdDocByWallet(sessionId, walletId),
+  findCoiDocByWallet: (sessionId, walletId) => findCoiDocByWallet(sessionId, walletId),
+  updateIdDocByWallet: (sessionId, walletId, idDoc) => updateIdDocByWallet(sessionId, walletId, idDoc),
+  updateCoiDocByWallet: (sessionId, walletId, coiDoc) => updateCoiDocByWallet(sessionId, walletId, coiDoc),
+  findMerchantsByWallet: walletId => findMerchantsByWallet(walletId),
+  updateFirstMerchantByWallet: (walletId, merchantId) => updateFirstMerchantByWallet(walletId, merchantId),
 };

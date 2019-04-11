@@ -147,3 +147,78 @@ export async function saveAuthorizeDoc(req, res) {
   else req.session.errors = ['Failed to save data'];
   res.redirect(req.header('Referer'));
 }
+
+export async function findIdDocByWallet(req, res) {
+  if (!req.xhr) res.send(null);
+  else {
+    let result = null;
+    const { walletId } = req.params;
+    try {
+      result = await services.walletService.findIdDocByWallet(req.session.sessionId, walletId);
+    } catch (error) {
+      // let accounts empty
+    }
+    res.json(result);
+  }
+}
+
+export async function findCoiDocByWallet(req, res) {
+  if (!req.xhr) res.send(null);
+  else {
+    let result = null;
+    const { walletId } = req.params;
+    try {
+      result = await services.walletService.findCoiDocByWallet(req.session.sessionId, walletId);
+    } catch (error) {
+      // let accounts empty
+    }
+    res.json(result);
+  }
+}
+
+export async function updateIdDocByWallet(req, res) {
+  let result = null;
+  const { walletId, idDoc } = req.body;
+  try {
+    result = await services.walletService.updateIdDocByWallet(req.session.sessionId, walletId, idDoc);
+  } catch (error) {
+    // let accounts empty
+  }
+  res.json(result);
+}
+
+export async function updateCoiDocByWallet(req, res) {
+  let result = null;
+  const { walletId, coiDoc } = req.body;
+  try {
+    result = await services.walletService.updateCoiDocByWallet(req.session.sessionId, walletId, coiDoc);
+  } catch (error) {
+    // let accounts empty
+  }
+  res.json(result);
+}
+
+export async function findMerchantsByWallet(req, res) {
+  if (!req.xhr) res.send(null);
+  else {
+    let result = null;
+    const { walletId } = req.params;
+    try {
+      result = await services.walletService.findMerchantsByWallet(walletId);
+    } catch (error) {
+      // let accounts empty
+    }
+    res.json(result);
+  }
+}
+
+export async function updateFirstMerchantByWallet(req, res) {
+  let result = null;
+  const { walletId, merchantId } = req.body;
+  try {
+    result = await services.walletService.updateFirstMerchantByWallet(walletId, merchantId);
+  } catch (error) {
+    // let accounts empty
+  }
+  res.send(result);
+}

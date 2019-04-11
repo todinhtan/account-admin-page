@@ -171,6 +171,216 @@
     <!-- /.modal-dialog -->
   </div>
 
+  <div class="modal fade" id="idDoc-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Id document</h4>
+        </div>
+        <div class="modal-body">
+          <form action="/wallet/idDoc/update" class="form-inline form-ajax" data-target="idDoc" method="POST">
+            <input type="hidden" name="walletId" value="">
+            <div class="form-group">
+              <input id="idDoc" type="text" class="form-control" name="idDoc" value="">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-default">Update</button>
+            </div>
+            <div class="form-group has-success message" style="display: none;">
+              &nbsp;
+              <label>Success</label>
+            </div>
+            <div class="form-group has-error message" style="display: none;">
+              &nbsp;
+              <label>Failed</label>
+            </div>
+          </form>
+        </div>
+        <form action="/docType/create" data-form="idDoc" method="POST">
+          <input type="hidden" name="walletId" value="">
+          <input type="hidden" name="userId" value="">
+          <input type="hidden" name="docType" value="idDoc">
+          <div class="modal-body">
+            <div class="row">
+              <img id="id_doc_img" style="max-width: 300px; display: block; margin: 0 auto;" src="https://via.placeholder.com/300x225" alt="">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <div class="modal fade" id="coiDoc-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">coi document</h4>
+        </div>
+        <div class="modal-body">
+          <form action="/wallet/coiDoc/update" class="form-inline form-ajax" data-target="coiDoc" method="POST">
+            <input type="hidden" name="walletId" value="">
+            <div class="form-group">
+              <input id="coiDoc" type="text" class="form-control" name="coiDoc" value="">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-default">Update</button>
+            </div>
+            <div class="form-group has-success message" style="display: none;">
+              &nbsp;
+              <label>Success</label>
+            </div>
+            <div class="form-group has-error message" style="display: none;">
+              &nbsp;
+              <label>Failed</label>
+            </div>
+          </form>
+        </div>
+        <form action="/docType/create" data-form="coiDoc" method="POST">
+          <input type="hidden" name="walletId" value="">
+          <input type="hidden" name="userId" value="">
+          <input type="hidden" name="docType" value="coiDoc">
+          <div class="modal-body">
+            <div class="row">
+              <img id="id_doc_img" style="max-width: 300px; display: block; margin: 0 auto;" src="https://via.placeholder.com/300x225" alt="">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <div class="modal fade" id="amz-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">AMZ</h4>
+        </div>
+        <div class="modal-body">
+          <form action="/wallet/merchant/update" class="form-inline form-merchant-ajax" method="POST">
+            <input type="hidden" name="walletId" value="">
+            <div class="form-group">
+              <input id="merchantId" type="text" class="form-control" name="merchantId" value="">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-default">Update</button>
+            </div>
+            <div class="form-group has-success message" style="display: none;">
+              &nbsp;
+              <label>Success</label>
+            </div>
+            <div class="form-group has-error message" style="display: none;">
+              &nbsp;
+              <label>Failed</label>
+            </div>
+          </form>
+        </div>
+        <form action="/docType/create" data-form="amz" method="POST">
+          <input type="hidden" name="walletId" value="">
+          <input type="hidden" name="userId" value="">
+          <input type="hidden" name="docType" value="amz">
+          <div class="modal-body">
+            <a target="_blank" class="amz-link" href="#">empty</a>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <div class="modal fade" id="basic-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Synapse user information</h4>
+        </div>
+        <form action="/docType/create" method="POST">
+          <input type="hidden" name="walletId" value="">
+          <input type="hidden" name="userId" value="">
+          <input type="hidden" name="docType" value="basic">
+          <div class="modal-body">
+            <div class="row">
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="email">email</label>
+                <input type="text" class="form-control" name="userData[email]" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="phone_number">phone_number</label>
+                <input type="text" class="form-control" name="userData[phone_number]" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="ip">ip</label>
+                <input type="text" class="form-control" name="userData[ip]" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="address_street">address_street</label>
+                <input type="text" class="form-control" name="userData[address_street]" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="address_city">address_city</label>
+                <input type="text" class="form-control" name="userData[address_city]" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="address_subdivision">address_subdivision</label>
+                <input type="text" class="form-control" name="userData[address_subdivision]" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="address_postal_code">address_postal_code</label>
+                <input type="text" class="form-control" name="userData[address_postal_code]" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="address_country_code">address_country_code</label>
+                <input type="text" class="form-control" name="userData[address_country_code]" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="day">day (birth)</label>
+                <input type="text" class="form-control" name="userData[day]" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="month">month (birth)</label>
+                <input type="text" class="form-control" name="userData[month]" value="">
+              </div>
+              <div class="form-group col-md-6 col-sm-12">
+                <label for="year">year (birth)</label>
+                <input type="text" class="form-control" name="userData[year]" value="">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
   <% include ../partials/footer %>
 </div>
 <!-- ./wrapper -->
@@ -253,8 +463,142 @@
         },
       })
       return false;
+    } else if (_docType === 'idDoc') {
+      var _modal = $('#idDoc-modal');
+      var _walletId = _self.find('[name=walletId]').val();
+      var _userId = _self.find('[name=userId]').val();
+      _modal.find('[name=walletId]').val(_walletId);
+      _modal.find('[name=userId]').val(_userId);
+      $.ajax({
+        url: '/wallet/' + _walletId + '/idDoc',
+        type: 'GET',
+        success: function(data) {
+          _modal.find('[name=idDoc]').val(data && data.idDoc ? data.idDoc : '');
+          var uri = data && data.docUri ? data.docUri : 'https://via.placeholder.com/300x225';
+          _modal.find('#id_doc_img').attr('src', uri);
+
+          _modal.modal('show');
+        },
+        error: function(error) {
+          console.log(error);
+        },
+      })
+      return false;
+    } else if (_docType === 'coiDoc') {
+      var _modal = $('#coiDoc-modal');
+      var _walletId = _self.find('[name=walletId]').val();
+      var _userId = _self.find('[name=userId]').val();
+      _modal.find('[name=walletId]').val(_walletId);
+      _modal.find('[name=userId]').val(_userId);
+      $.ajax({
+        url: '/wallet/' + _walletId + '/coiDoc',
+        type: 'GET',
+        success: function(data) {
+          _modal.find('[name=coiDoc]').val(data && data.coiDoc ? data.coiDoc : '');
+          var uri = data && data.docUri ? data.docUri : 'https://via.placeholder.com/300x225';
+          _modal.find('#id_doc_img').attr('src', uri);
+
+          _modal.modal('show');
+        },
+        error: function(error) {
+          console.log(error);
+        },
+      })
+      return false;
+    } else if (_docType === 'amz') {
+      var _modal = $('#amz-modal');
+      var _walletId = _self.find('[name=walletId]').val();
+      var _userId = _self.find('[name=userId]').val();
+      _modal.find('[name=walletId]').val(_walletId);
+      _modal.find('[name=userId]').val(_userId);
+      $.ajax({
+        url: '/wallet/' + _walletId + '/merchants',
+        type: 'GET',
+        success: function(data) {
+          if (data && data.length) {
+            _modal.find('.amz-link').text(data[0].merchantId ? 'https://www.amazon.com/s?merchant=' + data[0].merchantId : 'empty');
+            _modal.find('.amz-link').attr('href', data[0].merchantId ? 'https://www.amazon.com/s?merchant=' + data[0].merchantId : '#');
+            _modal.find('[name="merchantId"]').val(data[0].merchantId ? data[0].merchantId : 'empty');
+          }
+
+          _modal.modal('show');
+        },
+        error: function(error) {
+          console.log(error);
+        },
+      })
+      return false;
+    } else if (_docType === 'basic') {
+      var _modal = $('#basic-modal');
+      var _walletId = _self.find('[name=walletId]').val();
+      var _userId = _self.find('[name=userId]').val();
+      _modal.find('[name=walletId]').val(_walletId);
+      _modal.find('[name=userId]').val(_userId);
+
+      _modal.find('[name="userData[email]"]').val(_self.find('.email').val());
+      _modal.find('[name="userData[phone_number]"]').val(_self.find('.phone_number').val());
+      _modal.find('[name="userData[ip]"]').val(_self.find('.ip').val());
+      _modal.find('[name="userData[address_street]"]').val(_self.find('.address_street').val());
+      _modal.find('[name="userData[address_city]"]').val(_self.find('.address_city').val());
+      _modal.find('[name="userData[address_subdivision]"]').val(_self.find('.address_subdivision').val());
+      _modal.find('[name="userData[address_postal_code]"]').val(_self.find('.address_postal_code').val());
+      _modal.find('[name="userData[address_country_code]"]').val(_self.find('.address_country_code').val());
+      _modal.find('[name="userData[day]"]').val(_self.find('.day').val());
+      _modal.find('[name="userData[month]"]').val(_self.find('.month').val());
+      _modal.find('[name="userData[year]"]').val(_self.find('.year').val());
+      
+      _modal.modal('show');
+      return false;
     }
   });
+
+  $('.form-ajax').on('submit', function(e) {
+    e.preventDefault();
+    var _self = $(this);
+    var _target = _self.data('target');
+    var _formTarget = $('[data-form='+_target+']');
+    _self.find('.message').hide();
+    $.ajax({
+      url: _self.attr('action'),
+      type: 'POST',
+      data: _self.serialize(),
+      success: function(data) {
+        console.log(data);
+        if (data) {
+          _formTarget.find('[name='+_target+']').val(data.doc);
+          _formTarget.find('#id_doc_img').attr('src', data.docUri ? data.docUri : 'https://via.placeholder.com/300x225');
+          _self.find('.has-success').fadeIn();
+        } else _self.find('.has-error').fadeIn();
+      },
+      error: function(error) {
+        console.log(error);
+      },
+    });
+  })
+
+  $('.form-merchant-ajax').on('submit', function(e) {
+    e.preventDefault();
+    var _self = $(this);
+    var _target = 'amz';
+    var _formTarget = $('[data-form='+_target+']');
+    _self.find('.message').hide();
+    $.ajax({
+      url: _self.attr('action'),
+      type: 'POST',
+      data: _self.serialize(),
+      success: function(data) {
+        console.log(data);
+        if (data) {
+          _formTarget.find('.amz-link').text('https://www.amazon.com/s?merchant=' + data);
+          _formTarget.find('.amz-link').attr('href', 'https://www.amazon.com/s?merchant=' + data);
+          _self.find('.has-success').fadeIn();
+        } else _self.find('.has-error').fadeIn();
+      },
+      error: function(error) {
+        console.log(error);
+      },
+    });
+  })
   </script>
 </body>
 </html>
