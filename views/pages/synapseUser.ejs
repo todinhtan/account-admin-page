@@ -528,24 +528,29 @@
         },
       })
       return false;
-    } else if (_docType === 'basic') {
+    } else if (_docType === 'basic' || _docType === 'company_basic') {
       var _modal = $('#basic-modal');
       var _walletId = _self.find('[name=walletId]').val();
       var _userId = _self.find('[name=userId]').val();
+
+      if (_docType === 'basic') _modal.find('.modal-title').text('Synapse individual information');
+      else _modal.find('.modal-title').text('Synapse company information');
+
       _modal.find('[name=walletId]').val(_walletId);
       _modal.find('[name=userId]').val(_userId);
+      _modal.find('[name=docType]').val(_docType);
 
-      _modal.find('[name="userData[email]"]').val(_self.find('.email').val());
-      _modal.find('[name="userData[phone_number]"]').val(_self.find('.phone_number').val());
-      _modal.find('[name="userData[ip]"]').val(_self.find('.ip').val());
-      _modal.find('[name="userData[address_street]"]').val(_self.find('.address_street').val());
-      _modal.find('[name="userData[address_city]"]').val(_self.find('.address_city').val());
-      _modal.find('[name="userData[address_subdivision]"]').val(_self.find('.address_subdivision').val());
-      _modal.find('[name="userData[address_postal_code]"]').val(_self.find('.address_postal_code').val());
-      _modal.find('[name="userData[address_country_code]"]').val(_self.find('.address_country_code').val());
-      _modal.find('[name="userData[day]"]').val(_self.find('.day').val());
-      _modal.find('[name="userData[month]"]').val(_self.find('.month').val());
-      _modal.find('[name="userData[year]"]').val(_self.find('.year').val());
+      _modal.find('[name="userData[email]"]').val(_self.find('.' + _docType + '.email').val());
+      _modal.find('[name="userData[phone_number]"]').val(_self.find('.' + _docType + '.phone_number').val());
+      _modal.find('[name="userData[ip]"]').val(_self.find('.' + _docType + '.ip').val());
+      _modal.find('[name="userData[address_street]"]').val(_self.find('.' + _docType + '.address_street').val());
+      _modal.find('[name="userData[address_city]"]').val(_self.find('.' + _docType + '.address_city').val());
+      _modal.find('[name="userData[address_subdivision]"]').val(_self.find('.' + _docType + '.address_subdivision').val());
+      _modal.find('[name="userData[address_postal_code]"]').val(_self.find('.' + _docType + '.address_postal_code').val());
+      _modal.find('[name="userData[address_country_code]"]').val(_self.find('.' + _docType + '.address_country_code').val());
+      _modal.find('[name="userData[day]"]').val(_self.find('.' + _docType + '.day').val());
+      _modal.find('[name="userData[month]"]').val(_self.find('.' + _docType + '.month').val());
+      _modal.find('[name="userData[year]"]').val(_self.find('.' + _docType + '.year').val());
       
       _modal.modal('show');
       return false;

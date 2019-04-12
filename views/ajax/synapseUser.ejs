@@ -6,17 +6,35 @@
       <form action="/docType/create" class="form-inline form-doc-type" method="POST">
         <input type="hidden" name="walletId" value="<%= user.walletId ? user.walletId : '' %>">
         <input type="hidden" name="userId" value="<%= user.userId ? user.userId : '' %>">
-        <input type="hidden" class="email" value="<%= user.documents && user.documents.length ? user.documents[0].email : '' %>">
-        <input type="hidden" class="phone_number" value="<%= user.documents && user.documents.length ? user.documents[0].phone_number : '' %>">
-        <input type="hidden" class="ip" value="<%= user.documents && user.documents.length ? user.documents[0].ip : '' %>">
-        <input type="hidden" class="address_street" value="<%= user.documents && user.documents.length ? user.documents[0].address_street : '' %>">
-        <input type="hidden" class="address_city" value="<%= user.documents && user.documents.length ? user.documents[0].address_city : '' %>">
-        <input type="hidden" class="address_subdivision" value="<%= user.documents && user.documents.length ? user.documents[0].address_subdivision : '' %>">
-        <input type="hidden" class="address_postal_code" value="<%= user.documents && user.documents.length ? user.documents[0].address_postal_code : '' %>">
-        <input type="hidden" class="address_country_code" value="<%= user.documents && user.documents.length ? user.documents[0].address_country_code : '' %>">
-        <input type="hidden" class="day" value="<%= user.documents && user.documents.length ? user.documents[0].day : '' %>">
-        <input type="hidden" class="month" value="<%= user.documents && user.documents.length ? user.documents[0].month : '' %>">
-        <input type="hidden" class="year" value="<%= user.documents && user.documents.length ? user.documents[0].year : '' %>">
+        <% if (user.documents && user.documents.length) { %>
+          <% user.documents.forEach(function(doc, index) { %>
+            <% if (doc.email.endsWith('epiapi.com') || doc.email.endsWith('sendwyre.com')) { %>
+              <input type="hidden" class="company_basic email" value="<%= doc.email : '' %>">
+              <input type="hidden" class="company_basic phone_number" value="<%= doc.phone_number : '' %>">
+              <input type="hidden" class="company_basic ip" value="<%= doc.ip : '' %>">
+              <input type="hidden" class="company_basic address_street" value="<%= doc.address_street : '' %>">
+              <input type="hidden" class="company_basic address_city" value="<%= doc.address_city : '' %>">
+              <input type="hidden" class="company_basic address_subdivision" value="<%= doc.address_subdivision : '' %>">
+              <input type="hidden" class="company_basic address_postal_code" value="<%= doc.address_postal_code : '' %>">
+              <input type="hidden" class="company_basic address_country_code" value="<%= doc.address_country_code : '' %>">
+              <input type="hidden" class="company_basic day" value="<%= doc.day : '' %>">
+              <input type="hidden" class="company_basic month" value="<%= doc.month : '' %>">
+              <input type="hidden" class="company_basic year" value="<%= doc.year : '' %>">
+            <% } else { %>
+              <input type="hidden" class="basic email" value="<%= doc.email : '' %>">
+              <input type="hidden" class="basic phone_number" value="<%= doc.phone_number : '' %>">
+              <input type="hidden" class="basic ip" value="<%= doc.ip : '' %>">
+              <input type="hidden" class="basic address_street" value="<%= doc.address_street : '' %>">
+              <input type="hidden" class="basic address_city" value="<%= doc.address_city : '' %>">
+              <input type="hidden" class="basic address_subdivision" value="<%= doc.address_subdivision : '' %>">
+              <input type="hidden" class="basic address_postal_code" value="<%= doc.address_postal_code : '' %>">
+              <input type="hidden" class="basic address_country_code" value="<%= doc.address_country_code : '' %>">
+              <input type="hidden" class="basic day" value="<%= doc.day : '' %>">
+              <input type="hidden" class="basic month" value="<%= doc.month : '' %>">
+              <input type="hidden" class="basic year" value="<%= doc.year : '' %>">
+            <% } %>
+          <% }) %>
+        <% } %>
         <div class="form-group">
           <select name="docType" class="form-control" required>
             <option value="">--- Select docType ---</option>
@@ -24,7 +42,15 @@
             <option value="idDoc">idDoc</option>
             <option value="coiDoc">coiDoc</option>
             <option value="amz">amz</option>
-            <option value="basic">basic</option>
+            <% if (user.documents && user.documents.length) { %>
+              <% user.documents.forEach(function(doc, index) { %>
+                <% if (doc.email.endsWith('epiapi.com') || doc.email.endsWith('sendwyre.com')) { %>
+                  <option value="company_basic">company_basic</option>
+                <% } else { %>
+                  <option value="basic">basic</option>
+                <% } %>
+              <% }) %>
+            <% } %>
           </select>
         </div>
         <div class="form-group">

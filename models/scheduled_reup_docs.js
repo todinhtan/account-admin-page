@@ -15,7 +15,7 @@ const ScheduledReupDocSchema = new mongoose.Schema(
     docType: {
       type: String,
       enum: {
-        values: ['authorization', 'idDoc', 'coiDoc', 'amz', 'basic'],
+        values: ['authorization', 'idDoc', 'coiDoc', 'amz', 'basic', 'company_basic'],
       },
       required: true,
     },
