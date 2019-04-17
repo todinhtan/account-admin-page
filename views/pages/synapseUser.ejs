@@ -88,6 +88,118 @@
     <!-- /.modal-dialog -->
   </div>
 
+  <div class="modal fade" id="synapseDoc-modal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Base document</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <h4 style="text-align: center;">Basic document information</h4>
+            <div class="base_doc">
+              <form action="/docType/create" method="POST">
+                <input type="hidden" name="walletId" value="">
+                <input type="hidden" name="userId" value="">
+                <input type="hidden" name="docType" value="">
+                <input type="hidden" name="baseDocId" value="">
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="email">email</label>
+                      <input type="text" class="form-control" name="userData[email]" value="">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="phone_number">phone_number</label>
+                      <input type="text" class="form-control" name="userData[phone_number]" value="">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="ip">ip</label>
+                      <input type="text" class="form-control" name="userData[ip]" value="">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="address_street">address_street</label>
+                      <input type="text" class="form-control" name="userData[address_street]" value="">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="address_city">address_city</label>
+                      <input type="text" class="form-control" name="userData[address_city]" value="">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="address_subdivision">address_subdivision</label>
+                      <input type="text" class="form-control" name="userData[address_subdivision]" value="">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="address_postal_code">address_postal_code</label>
+                      <input type="text" class="form-control" name="userData[address_postal_code]" value="">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="address_country_code">address_country_code</label>
+                      <input type="text" class="form-control" name="userData[address_country_code]" value="">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="day">day (birth)</label>
+                      <input type="text" class="form-control" name="userData[day]" value="">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="month">month (birth)</label>
+                      <input type="text" class="form-control" name="userData[month]" value="">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12">
+                      <label for="year">year (birth)</label>
+                      <input type="text" class="form-control" name="userData[year]" value="">
+                    </div>
+                    <div class="form-group col-sm-12">
+                      <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <h4 style="text-align: center;">Physical documents</h4>
+            <div class="physical_docs">
+            </div>
+          </div>
+          <div class="row">
+            <h4 style="text-align: center;">Or add new physical document</h4>
+            <div class="add_new_physical_docs">
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <form style="text-align: center;" action="#" class="form-inline form-doc-type" method="POST">
+                      <input type="hidden" name="walletId" value="">
+                      <input type="hidden" name="userId" value="">
+                      <input type="hidden" name="baseDocId" value="">
+                      <div class="form-group">
+                        <select name="docType" class="form-control" required>
+                          <option value="">--- Select docType ---</option>
+                          <option value="authorization">Authorization docs</option>
+                          <option value="idDoc">idDoc</option>
+                          <option value="coiDoc">coiDoc</option>
+                          <option value="amz">amz</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-default">Insert</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
   <div class="modal fade" id="authorizeDoc-modal">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -95,6 +207,8 @@
           <input type="hidden" name="walletId" value="">
           <input type="hidden" name="userId" value="">
           <input type="hidden" name="docType" value="authorization">
+          <input type="hidden" name="baseDocId" value="">
+          <input type="hidden" name="subDocId" value="">
           <input type="hidden" name="authorizationData[adminAccountId]" value="<%= account.id ? account.id : '' %>">
           <input type="hidden" name="authorizationData[adminAccountName]" value="<%= account.profile ? account.profile.name : '' %>">
           <div class="modal-header">
@@ -202,6 +316,8 @@
           <input type="hidden" name="walletId" value="">
           <input type="hidden" name="userId" value="">
           <input type="hidden" name="docType" value="idDoc">
+          <input type="hidden" name="baseDocId" value="">
+          <input type="hidden" name="subDocId" value="">
           <div class="modal-body">
             <div class="row">
               <img id="id_doc_img" style="max-width: 300px; display: block; margin: 0 auto;" src="https://via.placeholder.com/300x225" alt="">
@@ -249,6 +365,8 @@
           <input type="hidden" name="walletId" value="">
           <input type="hidden" name="userId" value="">
           <input type="hidden" name="docType" value="coiDoc">
+          <input type="hidden" name="baseDocId" value="">
+          <input type="hidden" name="subDocId" value="">
           <div class="modal-body">
             <div class="row">
               <img id="id_doc_img" style="max-width: 300px; display: block; margin: 0 auto;" src="https://via.placeholder.com/300x225" alt="">
@@ -296,6 +414,8 @@
           <input type="hidden" name="walletId" value="">
           <input type="hidden" name="userId" value="">
           <input type="hidden" name="docType" value="amz">
+          <input type="hidden" name="baseDocId" value="">
+          <input type="hidden" name="subDocId" value="">
           <div class="modal-body">
             <a target="_blank" class="amz-link" href="#">empty</a>
           </div>
@@ -381,6 +501,41 @@
     <!-- /.modal-dialog -->
   </div>
 
+  <div class="physical-doc-tpl" style="display: none;">
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <p style="word-break: break-word;">id: %p_doc_id%</p>
+          <p>type: %p_doc_type%</p>
+          <p>status: %p_doc_status%</p>
+          <form action="#" class="form-inline form-doc-type" method="POST">
+            <input type="hidden" name="walletId" value="%wallet_id%">
+            <input type="hidden" name="userId" value="%user_id%">
+            <input type="hidden" name="baseDocId" value="%base_doc_id%">
+            <input type="hidden" name="subDocId" value="%sub_doc_id%">
+            <div class="form-group">
+              <select name="docType" class="form-control" required>
+                <option value="">--- Select docType ---</option>
+                <option value="authorization">Authorization docs</option>
+                <option value="idDoc">idDoc</option>
+                <option value="coiDoc">coiDoc</option>
+                <option value="amz">amz</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-default">Update</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <img class="pimg" style="max-width: 300px; display: block;" src="%p_doc_image%" alt="">
+          <p style="word-break: break-word;"><a target="_blank" class="pdoc" style="display: none;" href="%p_doc_pdf%">%p_doc_pdf%</a></p>
+        </div>
+      </div>
+    </div>
+    <hr style="border-top: 1px solid black;">
+  </div>
+
   <% include ../partials/footer %>
 </div>
 <!-- ./wrapper -->
@@ -426,7 +581,7 @@
     })
   })
 
-  $('.content').on('submit', '.form-doc-type', function(e) {
+  $(document).on('submit', '.form-doc-type', function(e) {
     var _self = $(this);
     var _docType = _self.find('[name=docType]').val();
     if (_docType === 'authorization') {
@@ -435,6 +590,12 @@
       var _userId = _self.find('[name=userId]').val();
       _modal.find('[name=walletId]').val(_walletId);
       _modal.find('[name=userId]').val(_userId);
+      if (_self.find('[name=baseDocId]').length) {
+        _modal.find('[name=baseDocId]').val(_self.find('[name=baseDocId]').val());
+      }
+      if (_self.find('[name=subDocId]').length) {
+        _modal.find('[name=subDocId]').val(_self.find('[name=subDocId]').val());
+      }
       $.ajax({
         url: '/vba/wallet/' + _walletId + '/pinyin',
         type: 'GET',
@@ -469,6 +630,12 @@
       var _userId = _self.find('[name=userId]').val();
       _modal.find('[name=walletId]').val(_walletId);
       _modal.find('[name=userId]').val(_userId);
+      if (_self.find('[name=baseDocId]').length) {
+        _modal.find('[name=baseDocId]').val(_self.find('[name=baseDocId]').val());
+      }
+      if (_self.find('[name=subDocId]').length) {
+        _modal.find('[name=subDocId]').val(_self.find('[name=subDocId]').val());
+      }
       $.ajax({
         url: '/wallet/' + _walletId + '/idDoc',
         type: 'GET',
@@ -490,6 +657,12 @@
       var _userId = _self.find('[name=userId]').val();
       _modal.find('[name=walletId]').val(_walletId);
       _modal.find('[name=userId]').val(_userId);
+      if (_self.find('[name=baseDocId]').length) {
+        _modal.find('[name=baseDocId]').val(_self.find('[name=baseDocId]').val());
+      }
+      if (_self.find('[name=subDocId]').length) {
+        _modal.find('[name=subDocId]').val(_self.find('[name=subDocId]').val());
+      }
       $.ajax({
         url: '/wallet/' + _walletId + '/coiDoc',
         type: 'GET',
@@ -511,6 +684,12 @@
       var _userId = _self.find('[name=userId]').val();
       _modal.find('[name=walletId]').val(_walletId);
       _modal.find('[name=userId]').val(_userId);
+      if (_self.find('[name=baseDocId]').length) {
+        _modal.find('[name=baseDocId]').val(_self.find('[name=baseDocId]').val());
+      }
+      if (_self.find('[name=subDocId]').length) {
+        _modal.find('[name=subDocId]').val(_self.find('[name=subDocId]').val());
+      }
       $.ajax({
         url: '/wallet/' + _walletId + '/merchants',
         type: 'GET',
@@ -603,6 +782,56 @@
         console.log(error);
       },
     });
+  });
+
+  $('.content').on('click', '.open-synapse-doc-modal', function(e) {
+    var _document = $(this).data('document');
+    var targetId = $(this).data('target');
+    var _walletId = $(this).data('walletid');
+    var _userId = $(this).data('userid');
+    var _modal = $(targetId);
+    var isCompany = _document.email.endsWith('epiapi.com') || _document.email.endsWith('sendwyre.com');
+    _modal.find('.modal-title').text((isCompany ? 'Company document: ' : 'Individual document: ') + _document.id);
+
+    _modal.find('[name=walletId]').val(_walletId);
+    _modal.find('[name=userId]').val(_userId);
+    _modal.find('input[name=docType]').val(isCompany ? 'company_basic': 'basic');
+    _modal.find('[name=baseDocId]').val(_document.id);
+
+    _modal.find('[name="userData[email]"]').val(_document.email);
+    _modal.find('[name="userData[phone_number]"]').val(_document.phone_number);
+    _modal.find('[name="userData[ip]"]').val(_document.ip);
+    _modal.find('[name="userData[address_street]"]').val(_document.address_street);
+    _modal.find('[name="userData[address_city]"]').val(_document.address_city);
+    _modal.find('[name="userData[address_subdivision]"]').val(_document.address_subdivision);
+    _modal.find('[name="userData[address_postal_code]"]').val(_document.address_postal_code);
+    _modal.find('[name="userData[address_country_code]"]').val(_document.address_country_code);
+    _modal.find('[name="userData[day]"]').val(_document.day);
+    _modal.find('[name="userData[month]"]').val(_document.month);
+    _modal.find('[name="userData[year]"]').val(_document.year);
+
+    _modal.find('.base_doc pre').text();
+
+    // add physical docs panel
+    _modal.find('.physical_docs').html('');
+    if (_document.physical_docs && _document.physical_docs.length) {
+      var pdocTpl = $('.physical-doc-tpl').html();
+      _document.physical_docs.forEach(function(pdoc, index) {
+        var content = pdocTpl.replace('%p_doc_id%', pdoc.id)
+            .replace('%p_doc_type%', pdoc.document_type)
+            .replace('%p_doc_status%', pdoc.status)
+            .replace('%p_doc_image%', pdoc.document_value)
+            .replace('%wallet_id%', _walletId)
+            .replace('%user_id%', _userId)
+            .replace('%base_doc_id%', _document.id)
+            .replace('%sub_doc_id%', pdoc.id);
+        if (pdoc.document_value.endsWith('.pdf')) {
+          content = content.split('%p_doc_pdf%').join(pdoc.document_value);
+          content = content.replace('class="pdoc" style="display: none;"', 'class="pdoc" style="display: block;"');
+        }
+        _modal.find('.physical_docs').append(content);
+      });
+    }
   })
   </script>
 </body>

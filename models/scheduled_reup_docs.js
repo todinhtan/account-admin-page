@@ -19,6 +19,14 @@ const ScheduledReupDocSchema = new mongoose.Schema(
       },
       required: true,
     },
+    baseDocId: {
+      type: String,
+      trim: true,
+    },
+    subDocId: {
+      type: String,
+      trim: true,
+    },
     authorizationData: {
       fullName: {
         type: String,
