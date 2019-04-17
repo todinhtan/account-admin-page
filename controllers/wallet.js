@@ -59,8 +59,10 @@ export async function getWalletDetail(req, res) {
 
   const authorizeDoc = await services.walletService.findAuthorizeDocByWallet(currentWallet.id);
 
+  const synapseUser = await services.synapseUserService.getSynapseUserByWalletId(req.params.walletId);
+
   res.render('pages/wallet_detail', {
-    currentWallet, listTransfer, listTransaction, friendlyNames, balances, document, authorizeDoc, vba,
+    currentWallet, listTransfer, listTransaction, friendlyNames, balances, document, authorizeDoc, vba, synapseUser,
   });
 }
 

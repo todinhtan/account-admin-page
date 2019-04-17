@@ -144,7 +144,7 @@
           </div>
         </div>
         <% } %>
-        <% if (document.idDoc || document.coiDoc) { %>
+        <% if (synapseUser && synapseUser.documents && synapseUser.documents.length) { %>
         <div class="col-md-6">
           <div class="box box-info">
             <div class="box-header with-border">
@@ -153,14 +153,16 @@
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                 </button>
-                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
               </div>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <div class="row">
-                <% if (document.idDoc) { %><div class="col-md-12">idDoc: <a href="<%= document.idDoc %>"><%= document.idDoc %></a></div><% } %>
-                <% if (document.coiDoc) { %><div class="col-md-12">coiDoc: <a href="<%= document.coiDoc %>"><%= document.coiDoc %></a></div><% } %>
+                <% synapseUser.documents.forEach(function(doc, index) { %>
+                <div class="col-md-12"><a class="open-synapse-doc-modal" href="#" data-toggle="modal" data-target="#synapseDoc-modal" data-walletid="<%= synapseUser.walletId %>" data-userid="<%= synapseUser.userId %>" data-document="<%= JSON.stringify(doc) %>">
+                <%= doc.email.endsWith('epiapi.com') || doc.email.endsWith('sendwyre.com') ? 'Company document' : 'Individual document' %>
+                </a></div>
+                <% }) %>
               </div>
             </div>
             <!-- /.box-body -->
@@ -472,6 +474,343 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
+    <div class="modal fade" id="synapseDoc-modal">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Base document</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <h4 style="text-align: center;">Basic document information</h4>
+              <div class="base_doc">
+                <form action="/docType/create" method="POST">
+                  <input type="hidden" name="walletId" value="">
+                  <input type="hidden" name="userId" value="">
+                  <input type="hidden" name="docType" value="">
+                  <input type="hidden" name="baseDocId" value="">
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="form-group col-md-6 col-sm-12">
+                        <label for="email">email</label>
+                        <input type="text" class="form-control" name="userData[email]" value="">
+                      </div>
+                      <div class="form-group col-md-6 col-sm-12">
+                        <label for="phone_number">phone_number</label>
+                        <input type="text" class="form-control" name="userData[phone_number]" value="">
+                      </div>
+                      <div class="form-group col-md-6 col-sm-12">
+                        <label for="ip">ip</label>
+                        <input type="text" class="form-control" name="userData[ip]" value="">
+                      </div>
+                      <div class="form-group col-md-6 col-sm-12">
+                        <label for="address_street">address_street</label>
+                        <input type="text" class="form-control" name="userData[address_street]" value="">
+                      </div>
+                      <div class="form-group col-md-6 col-sm-12">
+                        <label for="address_city">address_city</label>
+                        <input type="text" class="form-control" name="userData[address_city]" value="">
+                      </div>
+                      <div class="form-group col-md-6 col-sm-12">
+                        <label for="address_subdivision">address_subdivision</label>
+                        <input type="text" class="form-control" name="userData[address_subdivision]" value="">
+                      </div>
+                      <div class="form-group col-md-6 col-sm-12">
+                        <label for="address_postal_code">address_postal_code</label>
+                        <input type="text" class="form-control" name="userData[address_postal_code]" value="">
+                      </div>
+                      <div class="form-group col-md-6 col-sm-12">
+                        <label for="address_country_code">address_country_code</label>
+                        <input type="text" class="form-control" name="userData[address_country_code]" value="">
+                      </div>
+                      <div class="form-group col-md-6 col-sm-12">
+                        <label for="day">day (birth)</label>
+                        <input type="text" class="form-control" name="userData[day]" value="">
+                      </div>
+                      <div class="form-group col-md-6 col-sm-12">
+                        <label for="month">month (birth)</label>
+                        <input type="text" class="form-control" name="userData[month]" value="">
+                      </div>
+                      <div class="form-group col-md-6 col-sm-12">
+                        <label for="year">year (birth)</label>
+                        <input type="text" class="form-control" name="userData[year]" value="">
+                      </div>
+                      <div class="form-group col-sm-12">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <h4 style="text-align: center;">Physical documents</h4>
+              <div class="physical_docs">
+              </div>
+            </div>
+            <div class="row">
+              <h4 style="text-align: center;">Or add new physical document</h4>
+              <div class="add_new_physical_docs">
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <form style="text-align: center;" action="#" class="form-inline form-doc-type" method="POST">
+                        <input type="hidden" name="walletId" value="">
+                        <input type="hidden" name="userId" value="">
+                        <input type="hidden" name="baseDocId" value="">
+                        <div class="form-group">
+                          <select name="docType" class="form-control" required>
+                            <option value="">--- Select docType ---</option>
+                            <option value="authorization">Authorization docs</option>
+                            <option value="idDoc">idDoc</option>
+                            <option value="coiDoc">coiDoc</option>
+                            <option value="amz">amz</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-default">Insert</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="idDoc-modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Id document</h4>
+          </div>
+          <div class="modal-body">
+            <form action="/wallet/idDoc/update" class="form-inline form-ajax" data-target="idDoc" method="POST">
+              <input type="hidden" name="walletId" value="">
+              <div class="form-group">
+                <input id="idDoc" type="text" class="form-control" name="idDoc" value="">
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-default">Update</button>
+              </div>
+              <div class="form-group has-success message" style="display: none;">
+                &nbsp;
+                <label>Success</label>
+              </div>
+              <div class="form-group has-error message" style="display: none;">
+                &nbsp;
+                <label>Failed</label>
+              </div>
+            </form>
+          </div>
+          <form action="/docType/create" data-form="idDoc" method="POST">
+            <input type="hidden" name="walletId" value="">
+            <input type="hidden" name="userId" value="">
+            <input type="hidden" name="docType" value="idDoc">
+            <input type="hidden" name="baseDocId" value="">
+            <input type="hidden" name="subDocId" value="">
+            <div class="modal-body">
+              <div class="row">
+                <img id="id_doc_img" style="max-width: 300px; display: block; margin: 0 auto;" src="https://via.placeholder.com/300x225" alt="">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="coiDoc-modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">coi document</h4>
+          </div>
+          <div class="modal-body">
+            <form action="/wallet/coiDoc/update" class="form-inline form-ajax" data-target="coiDoc" method="POST">
+              <input type="hidden" name="walletId" value="">
+              <div class="form-group">
+                <input id="coiDoc" type="text" class="form-control" name="coiDoc" value="">
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-default">Update</button>
+              </div>
+              <div class="form-group has-success message" style="display: none;">
+                &nbsp;
+                <label>Success</label>
+              </div>
+              <div class="form-group has-error message" style="display: none;">
+                &nbsp;
+                <label>Failed</label>
+              </div>
+            </form>
+          </div>
+          <form action="/docType/create" data-form="coiDoc" method="POST">
+            <input type="hidden" name="walletId" value="">
+            <input type="hidden" name="userId" value="">
+            <input type="hidden" name="docType" value="coiDoc">
+            <input type="hidden" name="baseDocId" value="">
+            <input type="hidden" name="subDocId" value="">
+            <div class="modal-body">
+              <div class="row">
+                <img id="id_doc_img" style="max-width: 300px; display: block; margin: 0 auto;" src="https://via.placeholder.com/300x225" alt="">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="amz-modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">AMZ</h4>
+          </div>
+          <div class="modal-body">
+            <form action="/wallet/merchant/update" class="form-inline form-merchant-ajax" method="POST">
+              <input type="hidden" name="walletId" value="">
+              <div class="form-group">
+                <input id="merchantId" type="text" class="form-control" name="merchantId" value="">
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-default">Update</button>
+              </div>
+              <div class="form-group has-success message" style="display: none;">
+                &nbsp;
+                <label>Success</label>
+              </div>
+              <div class="form-group has-error message" style="display: none;">
+                &nbsp;
+                <label>Failed</label>
+              </div>
+            </form>
+          </div>
+          <form action="/docType/create" data-form="amz" method="POST">
+            <input type="hidden" name="walletId" value="">
+            <input type="hidden" name="userId" value="">
+            <input type="hidden" name="docType" value="amz">
+            <input type="hidden" name="baseDocId" value="">
+            <input type="hidden" name="subDocId" value="">
+            <div class="modal-body">
+              <a target="_blank" class="amz-link" href="#">empty</a>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="authorizeDocQueued-modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="/docType/create" method="POST">
+            <input type="hidden" name="walletId" value="">
+            <input type="hidden" name="userId" value="">
+            <input type="hidden" name="docType" value="authorization">
+            <input type="hidden" name="baseDocId" value="">
+            <input type="hidden" name="subDocId" value="">
+            <input type="hidden" name="authorizationData[adminAccountId]" value="<%= account.id ? account.id : '' %>">
+            <input type="hidden" name="authorizationData[adminAccountName]" value="<%= account.profile ? account.profile.name : '' %>">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Authorization docs</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <h4 style="text-align: center;">Id document</h4>
+                <img id="id_doc_img" style="max-width: 300px; display: block; margin: 0 auto;" src="https://via.placeholder.com/300x225" alt="">
+              </div>
+              <hr>
+              <div class="row">
+                <input type="hidden" name="authorizationData[idDoc]" value="">
+                <div class="form-group col-md-12">
+                  <label for="fullName">Full Name</label>
+                  <input type="text" required id="fullName" name="authorizationData[fullName]" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="sex">Sex</label>
+                  <input type="text" id="sex" name="authorizationData[sex]" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="ethnicity">Ethnicity</label>
+                  <input type="text" id="ethnicity" name="authorizationData[ethnicity]" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="citizenIdNumber">Citizen ID Number</label>
+                  <input type="text" id="citizenIdNumber" name="authorizationData[citizenIdNumber]" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="dob">Date of birth</label>
+                  <input type="text" id="dob" name="authorizationData[dobString]" class="form-control" value="">
+                  <small>Format MM/DD/YYYY</small>
+                </div>
+              </div>
+              <h4>Address</h4>
+              <div class="row">
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="street1">Street1</label>
+                  <input type="text" id="street1" name="authorizationData[address][street1]" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="street2">Street2</label>
+                  <input type="text" id="street2" name="authorizationData[address][street2]" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="city">City</label>
+                  <input type="text" id="city" name="authorizationData[address][city]" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="state">State</label>
+                  <input type="text" id="state" name="authorizationData[address][state]" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="postalCode">Postal Code</label>
+                  <input type="text" id="postalCode" name="authorizationData[address][postalCode]" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                  <label for="country">Country</label>
+                  <input type="text" id="country" name="authorizationData[address][country]" class="form-control" value="">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
   </div>
   <!-- /.content-wrapper -->
 
@@ -497,11 +836,274 @@
     </div>
   </div>
 </div>
+
+<div class="physical-doc-tpl" style="display: none;">
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <p style="word-break: break-word;">id: %p_doc_id%</p>
+        <p>type: %p_doc_type%</p>
+        <p>status: %p_doc_status%</p>
+        <form action="#" class="form-inline form-doc-type" method="POST">
+          <input type="hidden" name="walletId" value="%wallet_id%">
+          <input type="hidden" name="userId" value="%user_id%">
+          <input type="hidden" name="baseDocId" value="%base_doc_id%">
+          <input type="hidden" name="subDocId" value="%sub_doc_id%">
+          <div class="form-group">
+            <select name="docType" class="form-control" required>
+              <option value="">--- Select docType ---</option>
+              <option value="authorization">Authorization docs</option>
+              <option value="idDoc">idDoc</option>
+              <option value="coiDoc">coiDoc</option>
+              <option value="amz">amz</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-default">Update</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <img class="pimg" style="max-width: 300px; display: block;" src="%p_doc_image%" alt="">
+        <p style="word-break: break-word;"><a target="_blank" class="pdoc" style="display: none;" href="%p_doc_pdf%">%p_doc_pdf%</a></p>
+      </div>
+    </div>
+  </div>
+  <hr style="border-top: 1px solid black;">
+</div>
+
 <script>
   $('.add-merchant').on('click', function(e) {
     e.preventDefault();
     $('.merchant-list').append($('#merchant-row-tpl').html());
-  })
+  });
+
+  $('.content').on('click', '.open-synapse-doc-modal', function(e) {
+    var _document = $(this).data('document');
+    var targetId = $(this).data('target');
+    var _walletId = $(this).data('walletid');
+    var _userId = $(this).data('userid');
+    var _modal = $(targetId);
+    var isCompany = _document.email.endsWith('epiapi.com') || _document.email.endsWith('sendwyre.com');
+    _modal.find('.modal-title').text((isCompany ? 'Company document: ' : 'Individual document: ') + _document.id);
+
+    _modal.find('[name=walletId]').val(_walletId);
+    _modal.find('[name=userId]').val(_userId);
+    _modal.find('input[name=docType]').val(isCompany ? 'company_basic': 'basic');
+    _modal.find('[name=baseDocId]').val(_document.id);
+
+    _modal.find('[name="userData[email]"]').val(_document.email);
+    _modal.find('[name="userData[phone_number]"]').val(_document.phone_number);
+    _modal.find('[name="userData[ip]"]').val(_document.ip);
+    _modal.find('[name="userData[address_street]"]').val(_document.address_street);
+    _modal.find('[name="userData[address_city]"]').val(_document.address_city);
+    _modal.find('[name="userData[address_subdivision]"]').val(_document.address_subdivision);
+    _modal.find('[name="userData[address_postal_code]"]').val(_document.address_postal_code);
+    _modal.find('[name="userData[address_country_code]"]').val(_document.address_country_code);
+    _modal.find('[name="userData[day]"]').val(_document.day);
+    _modal.find('[name="userData[month]"]').val(_document.month);
+    _modal.find('[name="userData[year]"]').val(_document.year);
+
+    _modal.find('.base_doc pre').text();
+
+    // add physical docs panel
+    _modal.find('.physical_docs').html('');
+    if (_document.physical_docs && _document.physical_docs.length) {
+      var pdocTpl = $('.physical-doc-tpl').html();
+      _document.physical_docs.forEach(function(pdoc, index) {
+        var content = pdocTpl.replace('%p_doc_id%', pdoc.id)
+            .replace('%p_doc_type%', pdoc.document_type)
+            .replace('%p_doc_status%', pdoc.status)
+            .replace('%p_doc_image%', pdoc.document_value)
+            .replace('%wallet_id%', _walletId)
+            .replace('%user_id%', _userId)
+            .replace('%base_doc_id%', _document.id)
+            .replace('%sub_doc_id%', pdoc.id);
+        if (pdoc.document_value.endsWith('.pdf')) {
+          content = content.split('%p_doc_pdf%').join(pdoc.document_value);
+          content = content.replace('class="pdoc" style="display: none;"', 'class="pdoc" style="display: block;"');
+        }
+        _modal.find('.physical_docs').append(content);
+      });
+    }
+  });
+
+  $(document).on('submit', '.form-doc-type', function(e) {
+    var _self = $(this);
+    var _docType = _self.find('[name=docType]').val();
+    if (_docType === 'authorization') {
+      var _modal = $('#authorizeDocQueued-modal');
+      var _walletId = _self.find('[name=walletId]').val();
+      var _userId = _self.find('[name=userId]').val();
+      _modal.find('[name=walletId]').val(_walletId);
+      _modal.find('[name=userId]').val(_userId);
+      if (_self.find('[name=baseDocId]').length) {
+        _modal.find('[name=baseDocId]').val(_self.find('[name=baseDocId]').val());
+      }
+      if (_self.find('[name=subDocId]').length) {
+        _modal.find('[name=subDocId]').val(_self.find('[name=subDocId]').val());
+      }
+      $.ajax({
+        url: '/vba/wallet/' + _walletId + '/pinyin',
+        type: 'GET',
+        success: function(data) {
+          console.log(data.address.street1);
+          _modal.find('#id_doc_img').attr('src', data.idDocUri);
+          _modal.find('[name="authorizationData[idDoc]"]').val(data.idDocUri);
+
+          // fill data
+          _modal.find('[name="authorizationData[fullName]"]').val(data.nameEn || data.nameCn);
+          _modal.find('[name="authorizationData[sex]"]').val(data.entityType);
+          _modal.find('[name="authorizationData[ethnicity]"]').val('');
+          _modal.find('[name="authorizationData[citizenIdNumber]"]').val(data.idNumber);
+          _modal.find('[name="authorizationData[dobString]"]').val(data.dobString);
+          _modal.find('[name="authorizationData[address][street1]"]').val(data.address.street1);
+          _modal.find('[name="authorizationData[address][street2]"]').val(data.address.street2);
+          _modal.find('[name="authorizationData[address][city]"]').val(data.address.city);
+          _modal.find('[name="authorizationData[address][state]"]').val(data.address.state);
+          _modal.find('[name="authorizationData[address][postalCode]"]').val(data.address.postalCode);
+          _modal.find('[name="authorizationData[address][country]"]').val(data.address.country);
+
+          _modal.modal('show');
+        },
+        error: function(error) {
+          console.log(error);
+        },
+      })
+      return false;
+    } else if (_docType === 'idDoc') {
+      var _modal = $('#idDoc-modal');
+      var _walletId = _self.find('[name=walletId]').val();
+      var _userId = _self.find('[name=userId]').val();
+      _modal.find('[name=walletId]').val(_walletId);
+      _modal.find('[name=userId]').val(_userId);
+      if (_self.find('[name=baseDocId]').length) {
+        _modal.find('[name=baseDocId]').val(_self.find('[name=baseDocId]').val());
+      }
+      if (_self.find('[name=subDocId]').length) {
+        _modal.find('[name=subDocId]').val(_self.find('[name=subDocId]').val());
+      }
+      $.ajax({
+        url: '/wallet/' + _walletId + '/idDoc',
+        type: 'GET',
+        success: function(data) {
+          _modal.find('[name=idDoc]').val(data && data.idDoc ? data.idDoc : '');
+          var uri = data && data.docUri ? data.docUri : 'https://via.placeholder.com/300x225';
+          _modal.find('#id_doc_img').attr('src', uri);
+
+          _modal.modal('show');
+        },
+        error: function(error) {
+          console.log(error);
+        },
+      })
+      return false;
+    } else if (_docType === 'coiDoc') {
+      var _modal = $('#coiDoc-modal');
+      var _walletId = _self.find('[name=walletId]').val();
+      var _userId = _self.find('[name=userId]').val();
+      _modal.find('[name=walletId]').val(_walletId);
+      _modal.find('[name=userId]').val(_userId);
+      if (_self.find('[name=baseDocId]').length) {
+        _modal.find('[name=baseDocId]').val(_self.find('[name=baseDocId]').val());
+      }
+      if (_self.find('[name=subDocId]').length) {
+        _modal.find('[name=subDocId]').val(_self.find('[name=subDocId]').val());
+      }
+      $.ajax({
+        url: '/wallet/' + _walletId + '/coiDoc',
+        type: 'GET',
+        success: function(data) {
+          _modal.find('[name=coiDoc]').val(data && data.coiDoc ? data.coiDoc : '');
+          var uri = data && data.docUri ? data.docUri : 'https://via.placeholder.com/300x225';
+          _modal.find('#id_doc_img').attr('src', uri);
+
+          _modal.modal('show');
+        },
+        error: function(error) {
+          console.log(error);
+        },
+      })
+      return false;
+    } else if (_docType === 'amz') {
+      var _modal = $('#amz-modal');
+      var _walletId = _self.find('[name=walletId]').val();
+      var _userId = _self.find('[name=userId]').val();
+      _modal.find('[name=walletId]').val(_walletId);
+      _modal.find('[name=userId]').val(_userId);
+      if (_self.find('[name=baseDocId]').length) {
+        _modal.find('[name=baseDocId]').val(_self.find('[name=baseDocId]').val());
+      }
+      if (_self.find('[name=subDocId]').length) {
+        _modal.find('[name=subDocId]').val(_self.find('[name=subDocId]').val());
+      }
+      $.ajax({
+        url: '/wallet/' + _walletId + '/merchants',
+        type: 'GET',
+        success: function(data) {
+          if (data && data.length) {
+            _modal.find('.amz-link').text(data[0].merchantId ? 'https://www.amazon.com/s?merchant=' + data[0].merchantId : 'empty');
+            _modal.find('.amz-link').attr('href', data[0].merchantId ? 'https://www.amazon.com/s?merchant=' + data[0].merchantId : '#');
+            _modal.find('[name="merchantId"]').val(data[0].merchantId ? data[0].merchantId : 'empty');
+          }
+
+          _modal.modal('show');
+        },
+        error: function(error) {
+          console.log(error);
+        },
+      })
+      return false;
+    }
+  });
+
+  $('.form-ajax').on('submit', function(e) {
+    e.preventDefault();
+    var _self = $(this);
+    var _target = _self.data('target');
+    var _formTarget = $('[data-form='+_target+']');
+    _self.find('.message').hide();
+    $.ajax({
+      url: _self.attr('action'),
+      type: 'POST',
+      data: _self.serialize(),
+      success: function(data) {
+        console.log(data);
+        if (data) {
+          _formTarget.find('[name='+_target+']').val(data.doc);
+          _formTarget.find('#id_doc_img').attr('src', data.docUri ? data.docUri : 'https://via.placeholder.com/300x225');
+          _self.find('.has-success').fadeIn();
+        } else _self.find('.has-error').fadeIn();
+      },
+      error: function(error) {
+        console.log(error);
+      },
+    });
+  });
+
+  $('.form-merchant-ajax').on('submit', function(e) {
+    e.preventDefault();
+    var _self = $(this);
+    var _target = 'amz';
+    var _formTarget = $('[data-form='+_target+']');
+    _self.find('.message').hide();
+    $.ajax({
+      url: _self.attr('action'),
+      type: 'POST',
+      data: _self.serialize(),
+      success: function(data) {
+        console.log(data);
+        if (data) {
+          _formTarget.find('.amz-link').text('https://www.amazon.com/s?merchant=' + data);
+          _formTarget.find('.amz-link').attr('href', 'https://www.amazon.com/s?merchant=' + data);
+          _self.find('.has-success').fadeIn();
+        } else _self.find('.has-error').fadeIn();
+      },
+      error: function(error) {
+        console.log(error);
+      },
+    });
+  });
 </script>
 </body>
 </html>

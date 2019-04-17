@@ -31,7 +31,13 @@ async function getSynapseUserById(userId) {
   return user ? user._doc : null;
 }
 
+async function getSynapseUserByWalletId(walletId) {
+  const user = await SynapseUser.findOne({ walletId }).catch((err) => { logger.error(err); });
+  return user ? user._doc : null;
+}
+
 export default {
   getQueuedSynapseUsers: (limit, offset) => getQueuedSynapseUsers(limit, offset),
   getSynapseUserById: userId => getSynapseUserById(userId),
+  getSynapseUserByWalletId: walletId => getSynapseUserByWalletId(walletId),
 };
