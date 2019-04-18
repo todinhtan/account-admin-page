@@ -1,6 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-restricted-globals */
 import SynapseUser from '../models/synapse_users';
+import DeactiveNode from '../models/deactive_nodes';
+import LockUser from '../models/lock_users';
 import logger from '../utils/logger';
 
 async function getQueuedSynapseUsers(limit, offset) {
@@ -36,8 +38,40 @@ async function getSynapseUserByWalletId(walletId) {
   return user ? user._doc : null;
 }
 
+async function insertDeactiveNode(userId) {
+  const affectDoc = await DeactiveNode.findOneAndUpdate({ userId }, { $set: { userId, status: 'PENDING' } }, { new: true, upsert: true }).catch((err) => {
+    logger.error(err);
+  });
+  return !!affectDoc;
+}
+
+async function checkIsDeactivatedNode(userId) {
+  const doc = await DeactiveNode.findOne({ userId }).catch((err) => {
+    logger.error(err);
+  });
+  return !!doc;
+}
+
+async function insertLockUser(userId) {
+  const affectDoc = await LockUser.findOneAndUpdate({ userId }, { $set: { userId, status: 'PENDING' } }, { new: true, upsert: true }).catch((err) => {
+    logger.error(err);
+  });
+  return !!affectDoc;
+}
+
+async function checkIsLockedUser(userId) {
+  const doc = await LockUser.findOne({ userId }).catch((err) => {
+    logger.error(err);
+  });
+  return !!doc;
+}
+
 export default {
   getQueuedSynapseUsers: (limit, offset) => getQueuedSynapseUsers(limit, offset),
   getSynapseUserById: userId => getSynapseUserById(userId),
   getSynapseUserByWalletId: walletId => getSynapseUserByWalletId(walletId),
+  insertDeactiveNode: userId => insertDeactiveNode(userId),
+  checkIsDeactivatedNode: userId => checkIsDeactivatedNode(userId),
+  insertLockUser: userId => insertLockUser(userId),
+  checkIsLockedUser: userId => checkIsLockedUser(userId),
 };

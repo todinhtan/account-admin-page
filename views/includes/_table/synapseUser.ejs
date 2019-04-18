@@ -16,6 +16,8 @@
             <th>Wallet Id</th>
             <th>User Id</th>
             <th>Synapse documents</th>
+            <th>Permission</th>
+            <th>Physical docs</th>
           </tr>
         </thead>
         <tbody>
@@ -30,6 +32,21 @@
                   <%= doc.email.endsWith('epiapi.com') || doc.email.endsWith('sendwyre.com') ? 'Company document' : 'Individual document' %>
                 </a></p>
                 <% }) %>
+              <% } %>
+            </td>
+            <td><%= user.permission %></td>
+            <%
+              const docTypes = user.documents.flatMap((baseDoc) => {
+                return baseDoc.physical_docs.map(physDoc => physDoc.document_type);
+              });
+              let docTypeCount = {};
+              for (let dt of docTypes) {
+                docTypeCount[dt] = 1 + (docTypeCount[dt] || 0);
+              }
+            %>
+            <td>
+              <% for (let key in docTypeCount) { %>
+                <%= key %>: <%= docTypeCount[key] %><br>
               <% } %>
             </td>
             <!-- <td>

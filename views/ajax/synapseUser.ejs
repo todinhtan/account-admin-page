@@ -11,6 +11,21 @@
         <% }) %>
       <% } %>
     </td>
+    <td><%= user.permission %></td>
+    <%
+      const docTypes = user.documents.flatMap((baseDoc) => {
+        return baseDoc.physical_docs.map(physDoc => physDoc.document_type);
+      });
+      let docTypeCount = {};
+      for (let dt of docTypes) {
+        docTypeCount[dt] = 1 + (docTypeCount[dt] || 0);
+      }
+    %>
+    <td>
+      <% for (let key in docTypeCount) { %>
+        <%= key %>: <%= docTypeCount[key] %><br>
+      <% } %>
+    </td>
     <!-- <td>
       <form action="/docType/create" class="form-inline form-doc-type" method="POST">
         <input type="hidden" name="walletId" value="<%= user.walletId ? user.walletId : '' %>">

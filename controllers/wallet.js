@@ -61,8 +61,15 @@ export async function getWalletDetail(req, res) {
 
   const synapseUser = await services.synapseUserService.getSynapseUserByWalletId(req.params.walletId);
 
+  let isDeactivatedNode = false;
+  let isLockedUser = false;
+  if (synapseUser && synapseUser.userId) {
+    isDeactivatedNode = await services.synapseUserService.checkIsDeactivatedNode(synapseUser.userId);
+    isLockedUser = await services.synapseUserService.checkIsLockedUser(synapseUser.userId);
+  }
+
   res.render('pages/wallet_detail', {
-    currentWallet, listTransfer, listTransaction, friendlyNames, balances, document, authorizeDoc, vba, synapseUser,
+    currentWallet, listTransfer, listTransaction, friendlyNames, balances, document, authorizeDoc, vba, synapseUser, isDeactivatedNode, isLockedUser,
   });
 }
 

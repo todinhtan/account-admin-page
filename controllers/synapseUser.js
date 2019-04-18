@@ -61,3 +61,27 @@ export async function getVbaByWalletIdAjax(req, res) {
     res.send(wallet);
   }
 }
+
+export async function insertDeactiveNode(req, res) {
+  try {
+    const { userId } = req.params;
+    const success = await services.synapseUserService.insertDeactiveNode(userId);
+    if (success) req.session.messages = ['Inserted deactive node successfully'];
+    else req.session.errors = ['Failed'];
+  } catch (error) {
+    // let accounts empty
+  }
+  res.redirect(req.header('Referer'));
+}
+
+export async function insertLockUser(req, res) {
+  try {
+    const { userId } = req.params;
+    const success = await services.synapseUserService.insertLockUser(userId);
+    if (success) req.session.messages = ['Inserted lock user successfully'];
+    else req.session.errors = ['Failed'];
+  } catch (error) {
+    // let accounts empty
+  }
+  res.redirect(req.header('Referer'));
+}

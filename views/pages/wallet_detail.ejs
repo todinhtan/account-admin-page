@@ -169,6 +169,7 @@
           </div>
         </div>
         <% } %>
+        <% if (currentWallet.vbaData) { %>
         <div class="col-md-6">
           <div class="box box-info">
             <div class="box-header with-border">
@@ -183,9 +184,22 @@
             <div class="box-body">
               <pre><%= JSON.stringify(currentWallet.vbaData, undefined, 2) %></pre>
               <a href="#" data-toggle="modal" data-target="#vbaData-modal" class="btn btn-sm btn-warning btn-flat">Edit</a>
+              <% if (synapseUser && synapseUser.userId) { %>
+                <% if (isDeactivatedNode) { %>
+                  <a href="#" disabled class="btn btn-sm btn-warning btn-flat">Already deactivated node</a>
+                <% } else { %>
+                  <a href="/synapse/user/<%= synapseUser.userId %>/deactiveNode" class="btn btn-sm btn-warning btn-flat">Deactivate node</a>
+                <% } %>
+                <% if (isLockedUser) { %>
+                  <a href="#" disabled class="btn btn-sm btn-warning btn-flat">Already locked user</a>
+                <% } else { %>
+                  <a href="/synapse/user/<%= synapseUser.userId %>/lockUser" class="btn btn-sm btn-warning btn-flat">Lock user</a>
+                <% } %>
+              <% } %>
             </div>
           </div>
         </div>
+        <% } %>
         <div class="col-md-6">
           <div class="box box-info">
             <div class="box-header with-border">
