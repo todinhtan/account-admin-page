@@ -159,9 +159,21 @@
             <div class="box-body">
               <div class="row">
                 <% synapseUser.documents.forEach(function(doc, index) { %>
-                <div class="col-md-12"><a class="open-synapse-doc-modal" href="#" data-toggle="modal" data-target="#synapseDoc-modal" data-walletid="<%= synapseUser.walletId %>" data-userid="<%= synapseUser.userId %>" data-document="<%= JSON.stringify(doc) %>">
-                <%= doc.email.endsWith('epiapi.com') || doc.email.endsWith('sendwyre.com') ? 'Company document' : 'Individual document' %>
-                </a></div>
+                <div class="col-md-12">
+                  <a class="open-synapse-doc-modal" href="#" data-toggle="modal" data-target="#synapseDoc-modal" data-walletid="<%= synapseUser.walletId %>" data-userid="<%= synapseUser.userId %>" data-document="<%= JSON.stringify(doc) %>">
+                    <%= doc.email.endsWith('epiapi.com') || doc.email.endsWith('sendwyre.com') ? 'Company document' : 'Individual document' %>
+                  </a><br>
+                  <%
+                    const docTypes = doc.physical_docs.map(physDoc => physDoc.document_type);
+                    let docTypeCount = {};
+                    for (let dt of docTypes) {
+                      docTypeCount[dt] = 1 + (docTypeCount[dt] || 0);
+                    }
+                  %>
+                  <% for (let key in docTypeCount) { %>
+                    <%= key %>: <%= docTypeCount[key] %><br>
+                  <% } %>
+                </div>
                 <% }) %>
               </div>
             </div>

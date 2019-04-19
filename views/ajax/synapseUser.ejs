@@ -13,17 +13,31 @@
     </td>
     <td><%= user.permission %></td>
     <%
-      const docTypes = user.documents.flatMap((baseDoc) => {
-        return baseDoc.physical_docs.map(physDoc => physDoc.document_type);
+      const individualDocTypes = user.documents.flatMap((baseDoc) => {
+        if (!baseDoc.email.endsWith('epiapi.com') && !baseDoc.email.endsWith('sendwyre.com')) return baseDoc.physical_docs.map(physDoc => physDoc.document_type);
+        else return [];
       });
-      let docTypeCount = {};
-      for (let dt of docTypes) {
-        docTypeCount[dt] = 1 + (docTypeCount[dt] || 0);
+      const companyDocTypes = user.documents.flatMap((baseDoc) => {
+        if (baseDoc.email.endsWith('epiapi.com') || baseDoc.email.endsWith('sendwyre.com')) return baseDoc.physical_docs.map(physDoc => physDoc.document_type);
+        else return [];
+      });
+      let individualDocTypeCount = {};
+      for (let dt of individualDocTypes) {
+        individualDocTypeCount[dt] = 1 + (individualDocTypeCount[dt] || 0);
+      }
+      let companyDocTypeCount = {};
+      for (let dt of companyDocTypes) {
+        companyDocTypeCount[dt] = 1 + (companyDocTypeCount[dt] || 0);
       }
     %>
     <td>
-      <% for (let key in docTypeCount) { %>
-        <%= key %>: <%= docTypeCount[key] %><br>
+      <% for (let key in individualDocTypeCount) { %>
+        <%= key %>: <%= individualDocTypeCount[key] %><br>
+      <% } %>
+    </td>
+    <td>
+      <% for (let key in companyDocTypeCount) { %>
+        <%= key %>: <%= companyDocTypeCount[key] %><br>
       <% } %>
     </td>
     <!-- <td>
