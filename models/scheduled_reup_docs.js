@@ -132,6 +132,22 @@ const ScheduledReupDocSchema = new mongoose.Schema(
         type: Number,
         trim: true,
       },
+      name: {
+        type: String,
+        trim: true,
+      },
+      entity_type: {
+        type: String,
+        trim: true,
+      },
+      entity_scope: {
+        type: String,
+        trim: true,
+      },
+      alias: {
+        type: String,
+        trim: true,
+      },
     },
     status: {
       type: String,
