@@ -9,6 +9,7 @@ import paymentMethodService from './paymentMethod';
 import vbaService from './vba';
 import synapseUserService from './synapseUser';
 import docTypeService from './docType';
+import topupTransfer from './topupTransfer';
 
 export default {
   transferService,
@@ -22,4 +23,5 @@ export default {
   vbaService,
   synapseUserService,
   docTypeService,
+  topupTransfer,
 };

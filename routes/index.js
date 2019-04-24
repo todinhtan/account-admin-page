@@ -8,6 +8,7 @@ import paymentMethodRoutes from './paymentMethodRoutes';
 import vbaRoutes from './vbaRoutes';
 import synapseUserRoutes from './synapseUserRoutes';
 import docTypeRoutes from './docType';
+import topupTransferRoutes from './topupTransferRoutes';
 
 const router = Router();
 
@@ -19,6 +20,7 @@ router.use('/', webRoutes)
   .use('/', paymentMethodRoutes)
   .use('/', vbaRoutes)
   .use('/', synapseUserRoutes)
-  .use('/', docTypeRoutes);
+  .use('/', docTypeRoutes)
+  .use('/', topupTransferRoutes);
 
 export default router;

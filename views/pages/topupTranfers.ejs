@@ -1,0 +1,43 @@
+<% var page_title = 'EPIAPI Admin | Daily topup transfers'; %>
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <% include ../partials/header %>
+  <% include ../partials/left-sidebar %>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>Daily topup transfers</h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+      <% include ../partials/message-container %>
+      <div class="row">
+        <% if (listTransfers.length > 0) { %>
+        <div class="col-md-12">
+          <%- include('../includes/_table/topupTransfer', { listTransfers: listTransfers }) %>
+        </div>
+        <% } %>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <% include ../partials/footer %>
+</div>
+<!-- ./wrapper -->
+
+<% include ../partials/foot %>
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->
+</body>
+</html>

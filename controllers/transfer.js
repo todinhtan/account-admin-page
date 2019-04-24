@@ -58,6 +58,10 @@ export async function addFunds(req, res) {
 }
 
 export async function finalise(req, res) {
+  const { isTopup } = req.query;
   await services.transferService.finalise(req.session.sessionId, req.params.transferId);
+  if (isTopup) {
+    const isDone = await services.topupTransfer.markDoneTopupTransfer(req.params.transferId);
+  }
   res.redirect(req.header('Referer'));
 }

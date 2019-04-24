@@ -1,0 +1,49 @@
+<div class="box box-info">
+  <div class="box-header with-border">
+    <h3 class="box-title">Daily topup transfers</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+      </button>
+      <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+    </div>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <div class="table-responsive">
+      <table id="account_list" class="table no-margin">
+        <thead>
+          <tr>
+            <th>Transfer Id</th>
+            <th>Source</th>
+            <th>Dest</th>
+            <th>Source amount</th>
+            <th>Dest amount</th>
+            <th>Source currency</th>
+            <th>Dest currency</th>
+            <th>Message</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% listTransfers.forEach(function(transfer, index) { %>
+          <tr>
+            <td><%= transfer.transferId %></td>
+            <td><%= transfer.source %></td>
+            <td><%= transfer.dest %></td>
+            <td><%= transfer.sourceAmount %></td>
+            <td><%= transfer.destAmount %></td>
+            <td><%= transfer.sourceCurrency %></td>
+            <td><%= transfer.destCurrency %></td>
+            <td><%= transfer.message %></td>
+            <td><%= transfer.status %></td>
+            <td><a href="/transfer/<%= transfer.transferId %>/finalise?isTopup=true" title="Finalise" class="btn btn-sm btn-success btn-flat">Finalise</a></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <!-- /.table-responsive -->
+  </div>
+  <!-- /.box-body -->
+</div>
