@@ -13,14 +13,13 @@
       <table id="account_list" class="table no-margin">
         <thead>
           <tr>
-            <th>Transfer Id</th>
+            <th>Wyre transfer id</th>
             <th>Source</th>
             <th>Dest</th>
             <th>Source amount</th>
-            <th>Dest amount</th>
             <th>Source currency</th>
             <th>Dest currency</th>
-            <th>Message</th>
+            <th>User id</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -28,16 +27,27 @@
         <tbody>
           <% listTransfers.forEach(function(transfer, index) { %>
           <tr>
-            <td><%= transfer.transferId %></td>
+            <td><%= transfer.wyreTransferId %></td>
             <td><%= transfer.source %></td>
             <td><%= transfer.dest %></td>
             <td><%= transfer.sourceAmount %></td>
-            <td><%= transfer.destAmount %></td>
             <td><%= transfer.sourceCurrency %></td>
             <td><%= transfer.destCurrency %></td>
-            <td><%= transfer.message %></td>
+            <td><%= transfer.userId %></td>
             <td><%= transfer.status %></td>
-            <td><a href="/transfer/<%= transfer.transferId %>/finalise?isTopup=true" title="Finalise" class="btn btn-sm btn-success btn-flat">Finalise</a></td>
+            <td>
+              <form action="/topup/transfer/create" class="form-inline form-doc-type" method="POST">
+                <input type="hidden" name="wyreTransferId" value="<%= transfer.wyreTransferId %>">
+                <input type="hidden" name="source" value="<%= transfer.source %>">
+                <input type="hidden" name="dest" value="<%= transfer.dest %>">
+                <input type="hidden" name="sourceAmount" value="<%= transfer.sourceAmount %>">
+                <input type="hidden" name="sourceCurrency" value="<%= transfer.sourceCurrency %>">
+                <input type="hidden" name="destCurrency" value="<%= transfer.destCurrency %>">
+                <div class="form-group">
+                  <button type="submit" class="btn btn-default">Create</button>
+                </div>
+              </form>
+            </td>
           </tr>
           <% }) %>
         </tbody>

@@ -10,3 +10,13 @@ export async function getQueuedTopupTransfers(req, res) {
   }
   res.render('pages/topupTranfers', { listTransfers });
 }
+
+export async function createTopupTransfer(req, res) {
+  const newTransfer = await services.topupTransfer.createTopupTransfer(req.session.sessionId, req.body);
+  if (newTransfer) {
+    req.session.messages = [`Created transfer ${newTransfer.id} successfully`];
+    await services.topupTransfer.markDoneTopupTransfer(newTransfer.id, req.body.wyreTransferId);
+  } else req.session.errors = ['Created transfer failed'];
+
+  res.redirect(req.header('Referer'));
+}

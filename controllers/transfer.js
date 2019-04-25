@@ -58,10 +58,10 @@ export async function addFunds(req, res) {
 }
 
 export async function finalise(req, res) {
-  const { isTopup } = req.query;
-  await services.transferService.finalise(req.session.sessionId, req.params.transferId);
-  if (isTopup) {
-    const isDone = await services.topupTransfer.markDoneTopupTransfer(req.params.transferId);
-  }
+  const isSuccess = await services.transferService.finalise(req.session.sessionId, req.params.transferId);
+
+  if (isSuccess) req.session.messages = ['Finalised transfer successfully'];
+  else req.session.errors = ['Finalised transfer failed'];
+
   res.redirect(req.header('Referer'));
 }

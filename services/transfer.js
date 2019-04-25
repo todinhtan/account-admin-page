@@ -94,7 +94,7 @@ async function getTransferCsvBySRN(sessionId, srn, limit, offset, from, to) {
   return reMappingData.length ? json2csvParser.parse(reMappingData) : [];
 }
 
-export async function getTransferById(sessionId, tid) {
+async function getTransferById(sessionId, tid) {
   try {
     if (sessionId === undefined || sessionId === null) return false;
     if (tid === undefined || tid === null) return false;
@@ -107,7 +107,7 @@ export async function getTransferById(sessionId, tid) {
   return false;
 }
 
-export async function addFunds(sessionId, amount, srn) {
+async function addFunds(sessionId, amount, srn) {
   try {
     if (sessionId === undefined || sessionId === null) return false;
     if (srn === undefined || srn === null) return false;
@@ -128,14 +128,17 @@ export async function addFunds(sessionId, amount, srn) {
   return true;
 }
 
-export async function finalise(sessionId, tid) {
+async function finalise(sessionId, tid) {
   try {
-    if (sessionId === undefined || sessionId === null) return;
-    if (tid === undefined || tid === null) return;
+    if (sessionId === undefined || sessionId === null) return false;
+    if (tid === undefined || tid === null) return false;
     await axios.post(`${config.api.prefix}/transfer/${tid}/finalise?sessionId=${sessionId}`);
+    // http status 2xx
+    return true;
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
+  return false;
 }
 
 export default {
