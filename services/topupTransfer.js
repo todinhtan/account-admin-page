@@ -7,7 +7,7 @@ import logger from '../utils/logger';
 import config from '../config';
 
 async function getQueuedTopupTransfers() {
-  const transfers = await DailyTopupTransfer.find({ status: 'PENDING' })
+  const transfers = await DailyTopupTransfer.find({ status: 'PENDING' }).sort({ createdAt: -1 })
     .catch((err) => { logger.error(err); });
 
   return transfers ? transfers.map(v => v._doc) : [];
