@@ -28,6 +28,59 @@
       </div>
     </section>
     <!-- /.content -->
+
+    <div class="modal fade" id="topup-transfer-modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="/topup/transfer/update" method="POST">
+            <input type="hidden" name="wyreTransferId" value="">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Edit topup transfer</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label for="source">source</label>
+                  <input type="text" required id="source" name="source" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="dest">dest</label>
+                  <input type="text" required id="dest" name="dest" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="sourceAmount">sourceAmount</label>
+                  <input type="text" required id="sourceAmount" name="sourceAmount" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="sourceCurrency">sourceCurrency</label>
+                  <input type="text" required id="sourceCurrency" name="sourceCurrency" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="destAmount">destAmount</label>
+                  <input type="text" required id="destAmount" name="destAmount" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="destCurrency">destCurrency</label>
+                  <input type="text" required id="destCurrency" name="destCurrency" class="form-control" value="">
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="message">message</label>
+                  <input type="text" id="message" name="message" class="form-control" value="">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
   </div>
   <!-- /.content-wrapper -->
 
@@ -39,5 +92,40 @@
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
+<script>
+$('.content').on('click', '.open-edit-topup-modal', function(e) {
+  var _transfer = $(this).data('transfer');
+  var _target = $(this).data('target');
+  var _modal = $(_target);
+  _modal.find('[name=wyreTransferId]').val(_transfer.wyreTransferId);
+  _modal.find('[name=source]').val(_transfer.source);
+  _modal.find('[name=dest]').val(_transfer.dest);
+  _modal.find('[name=sourceAmount]').val(_transfer.sourceAmount);
+  _modal.find('[name=sourceCurrency]').val(_transfer.sourceCurrency);
+  _modal.find('[name=destAmount]').val(_transfer.destAmount);
+  _modal.find('[name=destCurrency]').val(_transfer.destCurrency);
+  _modal.find('[name=message]').val(_transfer.message);
+})
+
+$('.content').on('click', '.bulk-transfer-chk', function(e) {
+  var _isChecked = $(this).is(':checked');
+  var _target = $('.form-bulk-create-tranfers input[value=' + $(this).val() + ']');
+  if (_isChecked && !_target.is(':checked')) _target.click();
+  if (!_isChecked && _target.is(':checked')) _target.click();
+})
+
+$('.content').on('click', '.toggle-select-all-topup', function(e) {
+  e.preventDefault();
+  var _text = $(this).text();
+  if (_text === 'Select all') {
+    $(this).text('Deselect all');
+    $('.bulk-transfer-chk:not(:checked)').click();
+  } else {
+    $(this).text('Select all');
+    $('.bulk-transfer-chk:checked').click();
+  }
+})
+</script>
+
 </body>
 </html>

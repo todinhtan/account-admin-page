@@ -13,7 +13,9 @@
       <table id="account_list" class="table no-margin">
         <thead>
           <tr>
+            <th><a href="#" class="toggle-select-all-topup">Select all</a></th>
             <th>Wyre transfer id</th>
+            <th>Account number</th>
             <th>Source</th>
             <th>Dest</th>
             <th>Source amount</th>
@@ -21,13 +23,21 @@
             <th>Dest currency</th>
             <th>User id</th>
             <th>Status</th>
-            <th>Action</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <% listTransfers.forEach(function(transfer, index) { %>
           <tr>
+            <td>
+              <input class="bulk-transfer-chk" type="checkbox" name="wyreTransferIds[]" value="<%= transfer.wyreTransferId %>">
+            </td>
             <td><%= transfer.wyreTransferId %></td>
+            <%
+              const vbaRequest = transfer.vbaRequest && transfer.vbaRequest.length ? transfer.vbaRequest[0] : null;
+            %>
+            <td><%= vbaRequest && vbaRequest.vbaData && vbaRequest.vbaData.accountNumber ? vbaRequest.vbaData.accountNumber : '' %></td>
             <td><%= transfer.source %></td>
             <td><%= transfer.dest %></td>
             <td><%= transfer.sourceAmount %></td>
@@ -35,6 +45,8 @@
             <td><%= transfer.destCurrency %></td>
             <td><%= transfer.userId %></td>
             <td><%= transfer.status %></td>
+            <td><a href="#" data-toggle="modal" data-target="#topup-transfer-modal" class="btn btn-default open-edit-topup-modal"
+              data-transfer="<%= JSON.stringify(transfer) %>">Edit</a></td>
             <td>
               <form action="/topup/transfer/create" class="form-inline form-doc-type" method="POST">
                 <input type="hidden" name="wyreTransferId" value="<%= transfer.wyreTransferId %>">
@@ -43,8 +55,9 @@
                 <input type="hidden" name="sourceAmount" value="<%= transfer.sourceAmount %>">
                 <input type="hidden" name="sourceCurrency" value="<%= transfer.sourceCurrency %>">
                 <input type="hidden" name="destCurrency" value="<%= transfer.destCurrency %>">
+                <input type="hidden" name="message" value="<%= transfer.message %>">
                 <div class="form-group">
-                  <button type="submit" class="btn btn-default">Create</button>
+                  <button type="submit" class="btn btn-warning">Create</button>
                 </div>
               </form>
             </td>
@@ -56,4 +69,16 @@
     <!-- /.table-responsive -->
   </div>
   <!-- /.box-body -->
+  <div class="box-footer clearfix">
+    <div class="row">
+      <div class="col-md-12">
+        <form action="/topup/transfer/bulkCreate" class="form-bulk-create-tranfers" method="POST">
+          <% listTransfers.forEach(function(transfer, index) { %>
+            <input style="display: none;" type="checkbox" name="wyreTransferIds[]" value="<%= transfer.wyreTransferId %>">
+          <% }) %>
+          <button type="submit" class="btn btn-primary">Create selected transfers</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
