@@ -24,8 +24,11 @@ async function getQueuedTopupTransfers() {
         as: 'vbaRequest',
       },
     },
+    {
+      $sort: { createdAt: -1 },
+    },
   ]).catch((err) => { logger.error(err); });
-  // const transfers = await DailyTopupTransfer.find({ status: 'PENDING' })
+  // const transfers = await DailyTopupTransfer.find({ status: 'PENDING' }).sort({ createdAt: -1 })
   //   .catch((err) => { logger.error(err); });
 
   return transfers;
