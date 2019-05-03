@@ -112,6 +112,10 @@ $('.content').on('click', '.bulk-transfer-chk', function(e) {
   var _target = $('.form-bulk-create-tranfers input[value=' + $(this).val() + ']');
   if (_isChecked && !_target.is(':checked')) _target.click();
   if (!_isChecked && _target.is(':checked')) _target.click();
+
+  var _removeTarget = $('.form-bulk-remove-tranfers input[value=' + $(this).val() + ']');
+  if (_isChecked && !_removeTarget.is(':checked')) _removeTarget.click();
+  if (!_isChecked && _removeTarget.is(':checked')) _removeTarget.click();
 })
 
 $('.content').on('click', '.toggle-select-all-topup', function(e) {

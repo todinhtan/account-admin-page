@@ -106,6 +106,11 @@ async function bulkCreateTransfers(sessionId, wyreTransferIds) {
   return successIds;
 }
 
+async function bulkMarkRemovedTransfers(wyreTransferIds) {
+  const result = await DailyTopupTransfer.updateMany({ wyreTransferId: { $in: wyreTransferIds } }, { status: 'REMOVED' }).catch(err => logger.error(err));
+  return result.nModified;
+}
+
 export default {
   getQueuedTopupTransfers: () => getQueuedTopupTransfers(),
   markDoneTopupTransfer: (transferId, wyreTransferId) => markDoneTopupTransfer(transferId, wyreTransferId),
@@ -113,4 +118,5 @@ export default {
   createTopupTransfer: (sessionId, transfer) => createTopupTransfer(sessionId, transfer),
   editTopupTransfer: updatedTransfer => editTopupTransfer(updatedTransfer),
   bulkCreateTransfers: (sessionId, wyreTransferIds) => bulkCreateTransfers(sessionId, wyreTransferIds),
+  bulkMarkRemovedTransfers: wyreTransferIds => bulkMarkRemovedTransfers(wyreTransferIds),
 };

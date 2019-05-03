@@ -38,3 +38,12 @@ export async function bulkCreateTransfers(req, res) {
 
   res.redirect(req.header('Referer'));
 }
+
+export async function bulkMarkRemovedTransfers(req, res) {
+  const { wyreTransferIds } = req.body;
+  const modifiedCount = await services.topupTransfer.bulkMarkRemovedTransfers(wyreTransferIds);
+  if (modifiedCount > 0) req.session.messages = [`Removed ${modifiedCount} transfer(s)`];
+  else req.session.errors = ['Failed to remove selected transfers'];
+
+  res.redirect(req.header('Referer'));
+}

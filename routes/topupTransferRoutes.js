@@ -4,6 +4,7 @@ import {
   createTopupTransfer,
   updateTopupTransfer,
   bulkCreateTransfers,
+  bulkMarkRemovedTransfers,
 } from '../controllers/topupTransfer';
 import { verifySession } from '../middlewares';
 
@@ -15,5 +16,6 @@ router.post('/topup/transfer/update', verifySession, updateTopupTransfer);
 
 // bulk create
 router.post('/topup/transfer/bulkCreate', verifySession, bulkCreateTransfers);
+router.post('/topup/transfer/bulkRemove', verifySession, bulkMarkRemovedTransfers);
 
 export default router;

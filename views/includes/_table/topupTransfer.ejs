@@ -71,12 +71,20 @@
   <!-- /.box-body -->
   <div class="box-footer clearfix">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-6">
         <form action="/topup/transfer/bulkCreate" class="form-bulk-create-tranfers" method="POST">
           <% listTransfers.forEach(function(transfer, index) { %>
             <input style="display: none;" type="checkbox" name="wyreTransferIds[]" value="<%= transfer.wyreTransferId %>">
           <% }) %>
           <button type="submit" class="btn btn-primary">Create selected transfers</button>
+        </form>
+      </div>
+      <div class="col-md-6">
+        <form style="text-align: right;" action="/topup/transfer/bulkRemove" class="form-bulk-remove-tranfers" method="POST">
+          <% listTransfers.forEach(function(transfer, index) { %>
+            <input style="display: none;" type="checkbox" name="wyreTransferIds[]" value="<%= transfer.wyreTransferId %>">
+          <% }) %>
+          <button type="submit" class="btn btn-default">Remove selected transfers</button>
         </form>
       </div>
     </div>
