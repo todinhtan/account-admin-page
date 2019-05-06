@@ -28,7 +28,7 @@ async function getTransactionsBySRN(sessionId, srn, limit, offset) {
       result.total = allTransactionsResp.data.recordsTotal;
     }
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
 
   result.totalPage = Math.ceil(result.total / limit);
@@ -55,7 +55,7 @@ async function getTransactionsBySRNWithRange(sessionId, srn, limit, offset, from
       result.total = allTransactionsResp.data.recordsTotal;
     }
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
 
   result.totalPage = Math.ceil(result.total / limit);
@@ -108,7 +108,7 @@ async function getTransactionById(sessionId, tid) {
     const response = await axios.get(`${config.api.prefix}/transaction/${tid}?sessionId=${sessionId}`);
     if (response && response.status === HttpStatusCode.OK && response.data) return response.data;
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
 
   return null;

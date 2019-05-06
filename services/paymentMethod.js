@@ -25,7 +25,7 @@ async function getPaymentMethodsByAccount(sessionId, accountId, limit, offset) {
       result.total = methodsResponse.data.recordsTotal;
     }
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
 
   result.totalPage = Math.ceil(result.total / limit);
@@ -40,7 +40,7 @@ async function getPaymentMethodById(sessionId, methodId) {
     const response = await axios.get(`${config.api.prefix}/paymentMethod/${methodId}?sessionId=${sessionId}`);
     if (response && response.status === HttpStatusCode.OK && response.data) return response.data;
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
   return null;
 }

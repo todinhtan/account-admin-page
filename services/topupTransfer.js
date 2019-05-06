@@ -71,7 +71,7 @@ async function createTopupTransfer(sessionId, transfer) {
     });
     if (response && response.status === HttpStatusCode.OK) return response.data;
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
 
   return null;

@@ -14,7 +14,7 @@ async function getDocumentUri(sessionId, docId) {
       return docResponse.data.uri;
     }
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
   return null;
 }

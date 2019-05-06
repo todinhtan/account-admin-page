@@ -34,7 +34,7 @@ async function getWalletsByAccountId(sessionId, accountId, limit, offset) {
       result.total = allWalletsResp.data.recordsTotal;
     }
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
 
   result.totalPage = Math.ceil(result.total / limit);
@@ -49,7 +49,7 @@ async function getWalletById(sessionId, walletId) {
     const response = await axios.get(`${config.api.prefix}/wallet?walletId=${walletId}&sessionId=${sessionId}`);
     if (response && response.status === HttpStatusCode.OK && response.data) return response.data;
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
   return null;
 }
@@ -67,7 +67,7 @@ async function updateNote(sessionId, walletId, notes) {
     const response = await axios.post(`${config.api.prefix}/wallet/${walletId}/update?sessionId=${sessionId}`, { notes });
     if (response && response.status === HttpStatusCode.OK) return true;
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
   return false;
 }
@@ -88,7 +88,7 @@ async function searchWallet(sessionId, keyword, type) {
         return null;
     }
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
   return null;
 }
@@ -153,7 +153,7 @@ async function updateVerification(sessionId, walletId, vbaVerificationData) {
     const response = await axios.post(`${config.api.prefix}/wallet/${walletId}/update?sessionId=${sessionId}`, { vbaVerificationData });
     if (response && response.status === HttpStatusCode.OK) return true;
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
   return false;
 }
@@ -171,7 +171,7 @@ async function updateVbaData(walletId, country, vbaData) {
     });
     if (response && response.status === HttpStatusCode.OK) return true;
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
   return false;
 }
@@ -241,7 +241,7 @@ async function updateVerificationToVbaService(walletId, vbaVerificationData) {
     const updatedDoc = await VbaRequest.findOneAndUpdate({ walletId, country: 'US' }, { $set: { ...vbaVerificationData, status: 'PENDING' } }, { new: true });
     return !!updatedDoc;
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
   return false;
 }

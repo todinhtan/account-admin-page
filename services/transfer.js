@@ -28,7 +28,7 @@ async function getTransfersBySRN(sessionId, srn, limit, offset) {
       result.total = allTransfersResp.data.recordsTotal;
     }
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
 
   result.totalPage = Math.ceil(result.total / limit);
@@ -55,7 +55,7 @@ async function getTransfersBySRNWithRange(sessionId, srn, limit, offset, from, t
       result.total = allTransfersResp.data.recordsTotal;
     }
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
 
   result.totalPage = Math.ceil(result.total / limit);
@@ -101,7 +101,7 @@ async function getTransferById(sessionId, tid) {
     const response = await axios.get(`${config.api.prefix}/transfer/${tid}?sessionId=${sessionId}`);
     if (response && response.status === HttpStatusCode.OK && response.data) return response.data;
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
 
   return false;
@@ -122,7 +122,7 @@ async function addFunds(sessionId, amount, srn) {
     });
     if (response && response.status === HttpStatusCode.OK) return true;
   } catch (error) {
-    logger.error(error.stack);
+    logger.error(error);
   }
 
   return true;
