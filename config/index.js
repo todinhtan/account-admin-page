@@ -14,4 +14,16 @@ export default {
   database: {
     uri: process.env.MONGO_CONNECTION_STRING,
   },
+  withdraw: {
+    source: {
+      'AC-6TBVQL9WHWQ': 'WYRE_ACCOUNT_ID',
+    },
+    paymentmethod: {
+      'PA-VMPJ88WBUQ6': 'WYRE_PAYMENT_METHOD',
+      'PA-VMPCHEQT4JN': 'WYRE_PAYMENT_METHOD',
+      'PA-ZHP4Y22Q3TN': 'WYRE_PAYMENT_METHOD',
+      'PA-GAPTL6M23H3': 'WYRE_PAYMENT_METHOD',
+    },
+    feeDest: 'AC-ZWGMW2AUXEY',
+  },
 };

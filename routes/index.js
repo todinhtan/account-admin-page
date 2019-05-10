@@ -9,6 +9,7 @@ import vbaRoutes from './vbaRoutes';
 import synapseUserRoutes from './synapseUserRoutes';
 import docTypeRoutes from './docType';
 import topupTransferRoutes from './topupTransferRoutes';
+import withdrawTransferRoutes from './withdrawTransferRoutes';
 
 const router = Router();
 
@@ -21,6 +22,7 @@ router.use('/', webRoutes)
   .use('/', vbaRoutes)
   .use('/', synapseUserRoutes)
   .use('/', docTypeRoutes)
-  .use('/', topupTransferRoutes);
+  .use('/', topupTransferRoutes)
+  .use('/', withdrawTransferRoutes);
 
 export default router;

@@ -10,6 +10,7 @@ import vbaService from './vba';
 import synapseUserService from './synapseUser';
 import docTypeService from './docType';
 import topupTransfer from './topupTransfer';
+import withdrawTransfer from './withdrawTransfer';
 
 export default {
   transferService,
@@ -24,4 +25,5 @@ export default {
   synapseUserService,
   docTypeService,
   topupTransfer,
+  withdrawTransfer,
 };
