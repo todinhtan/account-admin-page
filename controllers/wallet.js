@@ -4,6 +4,7 @@
 /* eslint-disable max-len */
 import moment from 'moment';
 import services from '../services';
+import logger from '../utils/logger';
 
 export async function getWalletDetail(req, res) {
   const currentWallet = await services.walletService.getWalletById(req.session.sessionId, req.params.walletId);
@@ -114,6 +115,29 @@ export async function updateStatus(req, res) {
     req.session.messages = ['Updated status successfully!'];
   }
   res.redirect(`/wallet/${req.params.walletId}`);
+}
+
+
+export async function bulkUpdateStatus(req, res) {
+  const { walletIds, status } = req.body;
+  const { sessionId } = req.session;
+
+  try {
+    if (walletIds && status && walletIds.reduce) {
+      let totalAffected = 0;
+      for (const walletId of walletIds) {
+        const isSuccess = await services.walletService.updateStatus(sessionId, walletId, status);
+        totalAffected += (isSuccess ? 1 : 0);
+      }
+
+      if (totalAffected > 0) req.session.messages = [`${totalAffected} wallet statuses has been updated to ${status}!`];
+      else req.session.errors = ['No wallet status has been updated!'];
+    }
+  } catch (error) {
+    logger.error(error);
+  }
+
+  res.redirect(req.header('Referer'));
 }
 
 export async function updateVerification(req, res) {

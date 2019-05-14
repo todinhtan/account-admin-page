@@ -104,7 +104,7 @@ async function updateStatus(sessionId, walletId, status) {
     });
     if (response && response.status === HttpStatusCode.OK && response.data) return true;
   } catch (error) {
-    // just return false
+    logger.error(error);
   }
   return false;
 }

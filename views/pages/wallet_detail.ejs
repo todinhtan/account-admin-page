@@ -304,7 +304,7 @@
                 <% }) %>
                 <div class="form-group col-md-6 col-sm-12">
                   <label for="countries">countries</label>
-                  <input type="text" id="countries" name="countries" class="tag-editor form-control" value="<%= vba.countries ? vba.countries.join(',') : '' %>">
+                  <input type="text" id="countries" name="countries" class="tag-editor form-control" value="<%= vba.countries && vba.countries.join ? vba.countries.join(',') : '' %>">
                 </div>
               </div>
               <h4>Address</h4>
@@ -904,6 +904,16 @@
             <button type="submit" class="btn btn-default">Update</button>
           </div>
         </form>
+        <form action="/docType/create" class="form-inline form-doc-type" method="POST">
+          <input type="hidden" name="docType" value="delete_physical">
+          <input type="hidden" name="walletId" value="%wallet_id%">
+          <input type="hidden" name="userId" value="%user_id%">
+          <input type="hidden" name="baseDocId" value="%base_doc_id%">
+          <input type="hidden" name="subDocId" value="%sub_doc_id%">
+          <div class="form-group">
+            <button type="submit" class="btn btn-default">Delete</button>
+          </div>
+        </form>
       </div>
       <div class="col-sm-12 col-md-6">
         <img class="pimg" style="max-width: 300px; display: block;" src="%p_doc_image%" alt="">
@@ -958,13 +968,13 @@
       var pdocTpl = $('.physical-doc-tpl').html();
       _document.physical_docs.forEach(function(pdoc, index) {
         var content = pdocTpl.replace('%p_doc_id%', pdoc.id)
-            .replace('%p_doc_type%', pdoc.document_type)
-            .replace('%p_doc_status%', pdoc.status)
-            .replace('%p_doc_image%', pdoc.document_value)
-            .replace('%wallet_id%', _walletId)
-            .replace('%user_id%', _userId)
-            .replace('%base_doc_id%', _document.id)
-            .replace('%sub_doc_id%', pdoc.id);
+          .replace('%p_doc_type%', pdoc.document_type)
+          .replace('%p_doc_status%', pdoc.status)
+          .replace('%p_doc_image%', pdoc.document_value);
+        content = content.split('%wallet_id%').join(_walletId);
+        content = content.split('%user_id%').join(_userId);
+        content = content.split('%base_doc_id%').join(_document.id);
+        content = content.split('%sub_doc_id%').join(pdoc.id);
         if (pdoc.document_value.endsWith('.pdf')) {
           content = content.split('%p_doc_pdf%').join(pdoc.document_value);
           content = content.replace('class="pdoc" style="display: none;"', 'class="pdoc" style="display: block;"');

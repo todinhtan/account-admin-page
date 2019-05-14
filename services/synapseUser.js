@@ -5,6 +5,12 @@ import DeactiveNode from '../models/deactive_nodes';
 import LockUser from '../models/lock_users';
 import logger from '../utils/logger';
 
+async function getAllSynapseUsers() {
+  const users = await SynapseUser.find({ permission: { $ne: 'SEND-AND-RECEIVE' } })
+    .catch((err) => { logger.error(err); });
+  return users ? users.map(u => u._doc) : [];
+}
+
 async function getQueuedSynapseUsers(limit, offset) {
   const result = {
     items: [],
@@ -74,4 +80,5 @@ export default {
   checkIsDeactivatedNode: userId => checkIsDeactivatedNode(userId),
   insertLockUser: userId => insertLockUser(userId),
   checkIsLockedUser: userId => checkIsLockedUser(userId),
+  getAllSynapseUsers: () => getAllSynapseUsers(),
 };

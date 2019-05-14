@@ -15,6 +15,7 @@ import {
   updateCoiDocByWallet,
   findMerchantsByWallet,
   updateFirstMerchantByWallet,
+  bulkUpdateStatus,
 } from '../controllers/wallet';
 import { verifySession } from '../middlewares';
 
@@ -27,6 +28,7 @@ router.post('/wallet/:walletId/transactions/download', verifySession, downloadTr
 
 // update
 router.post('/wallet/:walletId/status', verifySession, updateStatus);
+router.post('/wallet/status/bulkUpdate', verifySession, bulkUpdateStatus);
 router.post('/wallet/:walletId/verification/update', verifySession, updateVerification);
 router.post('/wallet/:walletId/vbaData/update', verifySession, updateVbaData);
 

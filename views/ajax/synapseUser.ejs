@@ -1,5 +1,8 @@
 <% listSynapseUsers.items.forEach(function(user, index) { %>
   <tr>
+    <td>
+      <input class="bulk-row-chk" type="checkbox" value="<%= user.walletId ? user.walletId : '' %>">
+    </td>
     <td><a class="open-walletId-modal" href="#" data-toggle="modal" data-target="#walletId-modal"><%= user.walletId ? user.walletId : '' %></a></td>
     <td><a class="open-userId-modal" href="#" data-toggle="modal" data-target="#userId-modal"><%= user.userId ? user.userId : '' %></a></td>
     <td>

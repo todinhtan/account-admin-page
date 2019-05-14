@@ -8,16 +8,18 @@ import moment from 'moment';
 import services from '../services';
 
 export async function getQueuedSynapseUsers(req, res) {
-  let page = parseInt(req.query.page, 10);
-  if (isNaN(page) || page < 1) page = 1;
-  const offset = (page - 1) * 50;
-  let listSynapseUsers = {};
-  try {
-    listSynapseUsers = await services.synapseUserService.getQueuedSynapseUsers(50, offset);
-  } catch (error) {
-    // let accounts empty
-  }
-  res.render('pages/synapseUser', { listSynapseUsers });
+  // let page = parseInt(req.query.page, 10);
+  // if (isNaN(page) || page < 1) page = 1;
+  // const offset = (page - 1) * 50;
+  // let listSynapseUsers = {};
+  // try {
+  //   listSynapseUsers = await services.synapseUserService.getQueuedSynapseUsers(50, offset);
+  // } catch (error) {
+  //   // let accounts empty
+  // }
+  // res.render('pages/synapseUser', { listSynapseUsers });
+  const synapseUsers = await services.synapseUserService.getAllSynapseUsers();
+  res.render('pages/synapseUser', { synapseUsers });
 }
 
 export async function getQueuedSynapseUsersAjax(req, res) {

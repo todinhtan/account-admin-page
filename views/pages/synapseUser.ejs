@@ -13,18 +13,16 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>VBA status updates
-        <small>Total <%= listSynapseUsers.total %> results</small>
-      </h1>
+      <h1>VBA status updates</h1>
     </section>
 
     <!-- Main content -->
     <section class="content container-fluid">
       <% include ../partials/message-container %>
       <div class="row">
-        <% if (listSynapseUsers.items.length > 0) { %>
+        <% if (synapseUsers.length > 0) { %>
         <div class="col-md-12">
-          <%- include('../includes/_table/synapseUser', { listSynapseUsers: listSynapseUsers, useDataTablePaging: true }) %>
+          <%- include('../includes/_table/synapseUser', { synapseUsers: synapseUsers }) %>
         </div>
         <% } %>
       </div>
@@ -542,6 +540,16 @@
               <button type="submit" class="btn btn-default">Update</button>
             </div>
           </form>
+          <form action="/docType/create" class="form-inline form-doc-type" method="POST">
+            <input type="hidden" name="docType" value="delete_physical">
+            <input type="hidden" name="walletId" value="%wallet_id%">
+            <input type="hidden" name="userId" value="%user_id%">
+            <input type="hidden" name="baseDocId" value="%base_doc_id%">
+            <input type="hidden" name="subDocId" value="%sub_doc_id%">
+            <div class="form-group">
+              <button type="submit" class="btn btn-default">Delete</button>
+            </div>
+          </form>
         </div>
         <div class="col-sm-12 col-md-6">
           <img class="pimg" style="max-width: 300px; display: block;" src="%p_doc_image%" alt="">
@@ -840,17 +848,36 @@
         var content = pdocTpl.replace('%p_doc_id%', pdoc.id)
             .replace('%p_doc_type%', pdoc.document_type)
             .replace('%p_doc_status%', pdoc.status)
-            .replace('%p_doc_image%', pdoc.document_value)
-            .replace('%wallet_id%', _walletId)
-            .replace('%user_id%', _userId)
-            .replace('%base_doc_id%', _document.id)
-            .replace('%sub_doc_id%', pdoc.id);
+            .replace('%p_doc_image%', pdoc.document_value);
+        content = content.split('%wallet_id%').join(_walletId);
+        content = content.split('%user_id%').join(_userId);
+        content = content.split('%base_doc_id%').join(_document.id);
+        content = content.split('%sub_doc_id%').join(pdoc.id);
         if (pdoc.document_value.endsWith('.pdf')) {
           content = content.split('%p_doc_pdf%').join(pdoc.document_value);
           content = content.replace('class="pdoc" style="display: none;"', 'class="pdoc" style="display: block;"');
         }
         _modal.find('.physical_docs').append(content);
       });
+    }
+  });
+
+  $('.content').on('click', '.bulk-row-chk', function(e) {
+    var _isChecked = $(this).is(':checked');
+    var _target = $('.form-bulk-update input[value=' + $(this).val() + ']');
+    if (_isChecked && !_target.is(':checked')) _target.click();
+    if (!_isChecked && _target.is(':checked')) _target.click();
+  })
+
+  $('.content').on('click', '.toggle-select-all-row', function(e) {
+    e.preventDefault();
+    var _text = $(this).text();
+    if (_text === 'Select all') {
+      $(this).text('Deselect all');
+      $('.bulk-row-chk:not(:checked)').click();
+    } else {
+      $(this).text('Select all');
+      $('.bulk-row-chk:checked').click();
     }
   })
   </script>
