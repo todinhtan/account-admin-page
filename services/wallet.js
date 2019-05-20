@@ -177,26 +177,30 @@ async function updateVbaData(walletId, country, vbaData) {
 }
 
 async function saveAuthorizeDoc(walletId, docData, adminAccountId, adminAccountName) {
-  const vbaRequest = await VbaRequest.findOne({ walletId }).catch((err) => { logger.error(err); });
-  if (vbaRequest && vbaRequest._doc && vbaRequest._doc.vbaData && vbaRequest._doc.vbaData.userId) {
-    const { userId } = vbaRequest._doc.vbaData;
-    const newRecord = {
-      walletId,
-      userId,
-      ...docData,
-      adminAccountId,
-      adminAccountName,
-    };
+  try {
+    const vbaRequest = await VbaRequest.findOne({ walletId, country: 'US' }).catch((err) => { logger.error(err); });
+    if (vbaRequest && vbaRequest._doc && vbaRequest._doc.vbaData && vbaRequest._doc.vbaData.userId) {
+      const { userId } = vbaRequest._doc.vbaData;
+      const newRecord = {
+        walletId,
+        userId,
+        ...docData,
+        adminAccountId,
+        adminAccountName,
+      };
 
-    const affectedDoc = await AuthorizeDoc.findOneAndUpdate({ walletId }, { $set: { ...newRecord, status: 'PENDING' } }, { new: true, upsert: true }).catch((err) => {
-      logger.error(err);
-    });
+      const affectedDoc = await AuthorizeDoc.findOneAndUpdate({ walletId }, { $set: { ...newRecord, status: 'PENDING' } }, { new: true, upsert: true }).catch((err) => {
+        logger.error(err);
+      });
 
-    await VbaRequest.update({ walletId }, { $set: { authorization: 'DONE' } }).catch((err) => {
-      logger.error(err);
-    });
+      await VbaRequest.update({ walletId, country: 'US' }, { $set: { authorization: 'DONE' } }).catch((err) => {
+        logger.error(err);
+      });
 
-    return !!affectedDoc;
+      return !!affectedDoc;
+    }
+  } catch (error) {
+    logger.error(error);
   }
   return false;
 }
